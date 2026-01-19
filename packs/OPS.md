@@ -19,6 +19,7 @@ tags: [pack, ops]
 - `constitution/ops_layer/OPS_CANON.md`
 - `constitution/ops_layer/OPS_EXCLUSIONS.md`
 - `constitution/ops_layer/OPS_REFUSALS.md`
+- `ops_layer/mode_seperation.md`
 - `constitution/CORE_GUILD_BOUNDARY.md`
 
 ## Read If Doing X

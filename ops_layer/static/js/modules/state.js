@@ -14,6 +14,7 @@ export let referenceImagePath = null;
 export let recalculateTimeout = null;
 export let currentDbId = null; // Database PK for Smart Save (Edit vs. New)
 export let currentGenesisHash = null; // Phase 5.5: The "ISBN" of current part
+export let opsMode = 'execution'; // Explicit default: execution | planning
 
 // Setters
 export function setCurrentQuoteData(data) { 
@@ -36,12 +37,21 @@ export function setActiveMarkups(markups) {
     activeMarkups = markups; 
     console.log('[STATE] activeMarkups updated:', Object.keys(activeMarkups));
 }
+export function setOpsMode(mode) {
+    if (mode !== 'execution' && mode !== 'planning') {
+        console.warn('[STATE] Invalid opsMode ignored:', mode);
+        return;
+    }
+    opsMode = mode;
+    console.log('[STATE] opsMode set to:', opsMode);
+}
 
 export function getIsManualMode() { return isManualMode; }
 export function getCurrentQuoteData() { return currentQuoteData; }
 export function getSelectedFile() { return selectedFile; }
 export function getCurrentDbId() { return currentDbId; }
 export function getCurrentGenesisHash() { return currentGenesisHash; }
+export function getOpsMode() { return opsMode; }
 
 // Tag Helpers
 export function addTag(tagName, weight = 1.0) {

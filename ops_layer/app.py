@@ -54,6 +54,69 @@ def DEFAULT_SHOP_RATE() -> float:
 
 # --- HELPER FUNCTIONS ---
 
+OPS_MODE_VALUES = {"execution", "planning"}
+EXECUTION_FORBIDDEN_KEYS = {
+    "aggregate",
+    "aggregates",
+    "cluster_stats",
+    "dashboard",
+    "dashboards",
+    "explanation",
+    "history_match",
+    "interpretation",
+    "interpretations",
+    "local_history_analysis",
+    "market_analysis",
+    "metrics",
+    "recommendation",
+    "recommendations",
+    "variance_pct",
+    "why",
+}
+
+
+def get_ops_mode() -> str | None:
+    """Return explicit ops_mode from request or None if missing/invalid."""
+    mode = None
+    if request.is_json:
+        payload = request.get_json(silent=True) or {}
+        mode = payload.get("ops_mode") or payload.get("mode")
+    if not mode:
+        mode = request.form.get("ops_mode")
+    if not mode:
+        mode = request.args.get("ops_mode")
+    if not mode:
+        mode = request.headers.get("X-Ops-Mode")
+    if mode not in OPS_MODE_VALUES:
+        return None
+    return mode
+
+
+def require_ops_mode():
+    mode = get_ops_mode()
+    if mode is None:
+        return None, (jsonify({"error": "ops_mode is required", "success": False}), 400)
+    return mode, None
+
+
+def strip_execution_fields(payload: Any) -> Any:
+    if isinstance(payload, dict):
+        return {
+            key: strip_execution_fields(value)
+            for key, value in payload.items()
+            if key not in EXECUTION_FORBIDDEN_KEYS
+        }
+    if isinstance(payload, list):
+        return [strip_execution_fields(item) for item in payload]
+    return payload
+
+
+def apply_execution_guard(payload: Dict[str, Any]) -> Dict[str, Any]:
+    mode = get_ops_mode()
+    if mode == "execution":
+        return strip_execution_fields(payload)
+    return payload
+
 def load_mesh_file(file_path: str) -> trimesh.Trimesh:
     """Load a mesh file (STL or STEP) using trimesh."""
     if not isinstance(file_path, str):
@@ -80,6 +143,9 @@ def load_mesh_file(file_path: str) -> trimesh.Trimesh:
 def quote() -> Dict[str, Any]:
     """POST /quote endpoint."""
     try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
         print("[DEBUG] /quote endpoint called", flush=True)
         print(f"[DEBUG] request.files keys: {list(request.files.keys())}", flush=True)
         print(f"[DEBUG] request.form keys: {list(request.form.keys())}", flush=True)
@@ -295,6 +361,7 @@ def quote() -> Dict[str, Any]:
                 'process_routing': process_routing_list  # Traveler Tags (Ghost Protocol)
             }
             
+        response = apply_execution_guard(response)
         return jsonify(response)
         
     except Exception as e:
@@ -487,6 +554,9 @@ def confirm_units() -> Dict[str, Any]:
 def recalculate() -> Dict[str, Any]:
     """POST /recalculate endpoint."""
     try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
         data = request.get_json()
         if not data: return jsonify({'error': 'No data'}), 400
         
@@ -532,7 +602,7 @@ def recalculate() -> Dict[str, Any]:
         # Calculate total runtime: one-time setup + ((per-part time + handling time) × quantity)
         total_runtime_mins = setup_time + ((per_part_time + handling_time) * quantity)
         
-        return jsonify({
+        response = {
             'total_price': round(price_result['total_price'], 2),
             'material_cost': round(price_result['material_cost'], 2),
             'labor_cost': round(price_result['labor_cost'], 2),
@@ -542,7 +612,9 @@ def recalculate() -> Dict[str, Any]:
             'machine_time_mins': round(machine_time, 2),
             'hand_time_mins': round(hand_time, 2),
             'quantity': quantity
-        })
+        }
+        response = apply_execution_guard(response)
+        return jsonify(response)
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -555,6 +627,9 @@ def manual_quote() -> Dict[str, Any]:
     Calculates pricing without a 3D file, using stock dimensions and removal rate.
     """
     try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
         data = request.get_json()
         if not data:
             return jsonify({'error': 'No data provided'}), 400
@@ -1972,6 +2047,9 @@ def system_health_endpoint() -> Dict[str, Any]:
         JSON with CPU, memory, disk, and database metrics
     """
     try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
         # Get current process (Python/Flask app)
         process = psutil.Process(os.getpid())
         
@@ -2010,6 +2088,7 @@ def system_health_endpoint() -> Dict[str, Any]:
             }
         }
         
+        health_data = apply_execution_guard(health_data)
         return jsonify(health_data), 200
         
     except Exception as e:
@@ -2777,6 +2856,14 @@ def get_pattern_suggestions() -> Dict[str, Any]:
         }
     """
     try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
+        if mode == "execution":
+            return jsonify({
+                "success": False,
+                "error": "Planning routes are blocked in execution mode"
+            }), 403
         import pattern_matcher
         
         data = request.get_json()

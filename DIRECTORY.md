@@ -2,7 +2,7 @@
 doc_id: directory
 doc_type: spec
 status: active
-version: 2.0
+version: 2.9
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -36,6 +36,7 @@ Authority lives in files, not in chat.
 ### Core
 - `constitution/CONSTITUTION_AUTHORITY.md`
 - `constitution/CORE_DOC_GOVERNANCE.md`
+- `constitution/CORE_LOCAL_FIRST.md`
 - `constitution/CORE_INTERPRETATION_BOUNDARY.md`
 - `constitution/CORE_NON_COLLAPSING.md`
 - `constitution/CORE_QUERY_LAYER_RULES.md`
@@ -44,6 +45,7 @@ Authority lives in files, not in chat.
 - `constitution/CORE_LEDGER_BOUNDARY.md`
 - `constitution/CORE_IDENTIFIER_CONVENTIONS.md`
 - `constitution/CORE_GUILD_BOUNDARY.md`
+- `constitution/ux/UX_INDEX.md`
 
 ### Ops Layer
 - `constitution/ops_layer/OPS_CANON.md`
@@ -88,6 +90,10 @@ Authority lives in files, not in chat.
 - `integrator/INTEGRATOR_HOME.md`
 - `inbox/INBOX.md`
 - `obligations/OBLIGATIONS.md`
+- `ux/UX_INDEX.md`
+- `ux/ui_surface_rules_and_pages.md`
+- `ux/SYSTEM_PAGE_PURPOSE_SPEC.md`
+- `ops_layer/mode_seperation.md`
 
 ---
 
@@ -95,8 +101,17 @@ Authority lives in files, not in chat.
 - `context/STATE_LEDGER_MANIFESTO.md`
 - `context/CONSTITUTION_RULE_MAP.md`
 - `architecture/ARCHITECTURE_INDEX.md`
+- `architecture/SCHEMA_REFERENCE.md`
 - `architecture/NAVIGATION_INDEX.md`
+- `architecture/NAVIGATION_DRIFT_REPORT.md`
 - `architecture/PROMOTION_CHECKLIST.md`
+- `reports/REPORT_1_CURRENT_CAPABILITY_INVENTORY.md`
+- `reports/REPORT_2_SYSTEM_SURFACES_AND_ENTRYPOINTS.md`
+- `reports/REPORT_3_DATA_AND_SCHEMA_FACTS.md`
+- `reports/REPORT_4_TEST_AND_RUNTIME_STATUS.md`
+- `reports/REPORT_5_GOVERNANCE_INTEGRITY_CHECK.md`
+- `scripts/README.md`
+- `tests/README.md`
 - `packs/ARCHITECT.md`
 - `packs/BUILDER.md`
 - `packs/UI_UX.md`
@@ -113,6 +128,21 @@ Authority lives in files, not in chat.
 ## E. Archive (Non-Authoritative)
 - `archive/DECISION_LOG.md`
 - `archive/CLEAN_REBUILD_EXECUTION_PLAN.md`
+- `archive/Docs/_archive/Constitution/Cutter — Canon.md`
+- `archive/Docs/_archive/Constitution/Cutter — Exclusions.md`
+- `archive/Docs/_archive/Constitution/Cutter — Normal Operating Conditions.md`
+- `archive/Docs/_archive/Constitution/Cutter — System Refusals.md`
+- `archive/Docs/_archive/Constitution/Cutter ↔ State Vault — Boundary & Symmet.md`
+- `archive/Docs/_archive/Constitution/Open Questions`
+- `archive/Docs/_archive/Constitution/Open Questions.md`
+- `archive/Docs/_archive/implementation_logs/GENESIS_HASH_PATTERN_MATCHING_COMPLETE.md`
+- `archive/Docs/_archive/implementation_logs/PHASE_5_DOCUMENTATION_UPDATE.md`
+- `archive/Docs/_archive/implementation_logs/README.md`
+- `archive/Docs/_archive/refactoring_process/_REFACTOR_COMPLETE_SUMMARY.md`
+- `archive/Docs/_archive/refactoring_process/_REFACTOR_FINAL_REPORT.md`
+- `archive/Docs/_archive/refactoring_process/_REVIEW_WITH_GEMINI.md`
+- `archive/Docs/_archive/refactoring_process/DOC_REFACTOR_PLAN.md`
+- `archive/Docs/_archive/refactoring_process/README.md`
 
 ---
 

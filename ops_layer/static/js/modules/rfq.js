@@ -19,6 +19,7 @@
 
 import * as ui from './ui.js';
 import * as variance from './variance.js';
+import * as state from './state.js';
 
 // ============================================================================
 // STATE MANAGEMENT
@@ -405,7 +406,8 @@ export async function fetchPatternSuggestions(genesisHash, customerId) {
                 customer_id: customerId,
                 material: material,
                 quantity: quantity,
-                lead_time_days: leadTimeDays
+                lead_time_days: leadTimeDays,
+                ops_mode: state.getOpsMode()
             })
         });
         

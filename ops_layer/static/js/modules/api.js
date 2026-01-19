@@ -6,6 +6,7 @@ import * as state from './state.js';
 import * as rfq from './rfq.js';
 
 export async function calculateQuote(formData) {
+    formData.append('ops_mode', state.getOpsMode());
     const response = await fetch('/quote', { method: 'POST', body: formData });
     if (!response.ok) throw new Error('Quote calculation failed');
     return await response.json();
@@ -29,7 +30,8 @@ export async function recalculateQuote(data) {
         shop_rate: document.getElementById('shop-rate')?.value,
         // Phase 5: complexity_factor removed (always 1.0 for pure physics)
         quantity: quantity,
-        handling_time: handlingTime
+        handling_time: handlingTime,
+        ops_mode: state.getOpsMode()
     };
     
     const response = await fetch('/recalculate', {

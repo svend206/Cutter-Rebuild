@@ -467,7 +467,8 @@ export async function calculateManualQuote() {
         shop_rate: parseFloat(getVal('shop-rate')) || 75,
         quantity: quantity,
         handling_time: parseFloat(getVal('handling-time')) || 0.5,
-        filename: getVal('reference-name-input') || 'Manual Quote'
+        filename: getVal('reference-name-input') || 'Manual Quote',
+        ops_mode: state.getOpsMode()
     };
     
     console.log("MANUAL QUOTE PAYLOAD:", payload);

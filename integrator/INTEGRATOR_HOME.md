@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 1.8
+version: 3.7
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -21,28 +21,19 @@ This is the single status surface.
 - (none)
 
 ## Next
-- Run navigation drift audit (packs/indexes match repo docs)
+- (none)
 
 ## Recently Completed
-- Added navigation index, packs, and obligations ledger
-- Added Guild-only restriction on credits/incentives/scoring
-- Full repo document compliance audit (headers + registry)
-- Old repo classification log filled (rule-based, full coverage)
-- Old repo classification process defined
-- Old repo migration: remainder processed by reference
-- Quarantine batch: features, context, manifesto, loops, scripts/tests
-- Phase 9 — Consistency check: no overlaps, restart determinism
-- Phase 8 — Cursor-first rebuild: promotion discipline in place
-- Phase 0 — Safety & baseline: old repo intact (`C:\Users\esacu\Desktop\Cutter Layers`)
-- Phase 1 — Clean root: sole authoritative workspace confirmed
-- Phase 6 — Architecture Memory: descriptive memory established
-- Phase 5 — Inbox: capture rules and usage confirmed
-- Phase 4 — Integrator Home: status surface discipline in place
-- Phase 7 — Bootstrap Pack: restart determinism verified
-- Phase 3 — Constitution: files and constraints verified
-- Phase 2 — Boot Contract: validated against requirements
-- Phase 1 — Clean root created
-- Phase 1 — Skeleton folders created
+- Enforced ops mode separation with explicit ops_mode, guard, isolation, and tests
+- Added `ops_layer/mode_seperation.md` spec and registered in `DIRECTORY.md`
+- Required boot contract read in `.cursorrules`
+- Generated project status reports in `reports/`
+- Ran navigation drift audit (packs/indexes match repo docs)
+- Added app entrypoint test and verified health endpoints
+- Guarded `scripts/loop1_ritual_demo.py` with test DB requirement
+- Populated INBOX feature ideas from repo
+- Reviewed legacy Docs for compatible elements; added schema reference + inbox ideas section
+- Archived legacy `Docs/_archive/**` into rebuild `archive/Docs/_archive`
 
 Notes:
 - Keep "Current" capped at 3 items.
