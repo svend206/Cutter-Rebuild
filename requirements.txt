@@ -1,0 +1,10 @@
+numpy>=1.24.0
+trimesh[easy]>=3.20.0
+mapbox-earcut>=1.1.0
+flask>=3.0.0
+flask-cors>=4.0.0
+reportlab>=4.0.0
+psutil>=5.9.0
+qrcode>=7.4.2
+pillow>=10.0.0
+

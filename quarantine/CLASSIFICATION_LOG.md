@@ -2,7 +2,7 @@
 doc_id: classification_log
 doc_type: context
 status: quarantined
-version: 1.1
+version: 1.8
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -31,6 +31,20 @@ Rules are applied top-to-bottom; first match wins. `source_path` may be a path o
 
 | source_path | file_type | disposition | reason | batch_id | status |
 | --- | --- | --- | --- | --- | --- |
+| `Docs/_archive/**` | doc | archive | Owner-approved legacy docs archive | batch-2026-01-19-archive-docs | done |
+| `estimator.py` | code | promote | Required by ops layer runtime | batch-2026-01-18-promote-root-core | done |
+| `vector_engine.py` | code | promote | Required by ops layer runtime | batch-2026-01-18-promote-root-core | done |
+| `query_override_events.py` | code | promote | Required by ledger query CLI | batch-2026-01-18-promote-root-core | done |
+| `verify_event_emission.py` | code | promote | Owner-approved verification utility | batch-2026-01-18-promote-root-optional | done |
+| `requirements.txt` | config | promote | Owner-approved dependency manifest | batch-2026-01-18-promote-root-optional | done |
+| `FEATURES_LIST.md` | doc | quarantine | Owner-requested quarantine placement | batch-2026-01-18-quarantine-features | done |
+| `app.py` | code | promote | Owner-approved core application entrypoint | batch-2026-01-18-promote-app | done |
+| `tests/**` | code | promote | Owner-approved test suite | batch-2026-01-18-promote-tests | done |
+| `migrations/**` | code | promote | Owner-approved DB migration history | batch-2026-01-18-promote-db | done |
+| `database.py` | code | promote | Owner-approved DB layer | batch-2026-01-18-promote-db | done |
+| `cutter.db` | data | promote | Owner-approved DB file | batch-2026-01-18-promote-db | done |
+| `data/**` | data | promote | Owner-approved DB data and backups | batch-2026-01-18-promote-db | done |
+| `scripts/**` | code | promote | Owner-approved DB scripts | batch-2026-01-18-promote-db | done |
 | `scaffold/**` | other | reject | Explicitly excluded by rule | batch-2026-01-18-full | done |
 | `.git/**` | other | reject | Git metadata excluded | batch-2026-01-18-full | done |
 | `**/__pycache__/**` | data | reject | Python cache artifacts | batch-2026-01-18-full | done |
@@ -41,6 +55,7 @@ Rules are applied top-to-bottom; first match wins. `source_path` may be a path o
 | `docs_for_page_purpose_spec_review/**` | doc | quarantine | Legacy review bundle | batch-2026-01-18-full | done |
 | `Docs/**` | doc | quarantine | Legacy docs bundle | batch-2026-01-18-full | done |
 | `canon/**` | doc | quarantine | Legacy canon docs | batch-2026-01-18-full | done |
+| `reports/latest_audit.md` | doc | reject | Explicitly rejected by owner | batch-2026-01-18-reject-report | done |
 | `reports/**` | doc | quarantine | Legacy reports | batch-2026-01-18-full | done |
 | `scripts/**` | code | quarantine | Legacy code; route to product intake | batch-2026-01-18-full | done |
 | `tests/**` | code | quarantine | Legacy tests; route to product intake | batch-2026-01-18-full | done |
@@ -48,7 +63,7 @@ Rules are applied top-to-bottom; first match wins. `source_path` may be a path o
 | `ops_layer/**` | code | quarantine | Legacy ops code; route to product intake | batch-2026-01-18-full | done |
 | `cutter_ledger/**` | code | quarantine | Legacy ledger code; route to product intake | batch-2026-01-18-full | done |
 | `state_ledger/**` | code | quarantine | Legacy ledger code; route to product intake | batch-2026-01-18-full | done |
-| `state_vault/**` | code | quarantine | Legacy vault code; route to product intake | batch-2026-01-18-full | done |
+| `state_vault/**` | code | reject | Explicitly rejected by owner | batch-2026-01-18-reject-state-vault | done |
 | `**/*.md` | doc | quarantine | Legacy docs pending review | batch-2026-01-18-full | done |
 | `**/*.txt` | doc | quarantine | Legacy text docs pending review | batch-2026-01-18-full | done |
 | `**/*.pdf` | asset | archive | Generated PDFs and artifacts | batch-2026-01-18-full | done |

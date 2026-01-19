@@ -2,7 +2,7 @@
 doc_id: decision_log
 doc_type: decision_log
 status: active
-version: 1.7
+version: 1.9
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -27,6 +27,18 @@ Each entry must include:
 - Supersedes (optional, list of prior decisions)
 
 ## Entries
+- Date: 2026-01-18
+  Decision: Made offline-first operation and SQLite WAL persistence constitutional constraints.
+  Scope: core system persistence and dependencies
+  Authority: Erik
+  Rationale: Preserve local sovereignty and durability as non-negotiable foundations.
+  Supersedes: none
+- Date: 2026-01-18
+  Decision: Added constitutional UX index to centralize UX boundary references.
+  Scope: UX constitution structure
+  Authority: Erik
+  Rationale: Improve discoverability without adding new UX doctrine.
+  Supersedes: none
 - Date: 2026-01-18
   Decision: Forbid credits/incentives/contribution scoring outside the Guild surface.
   Scope: Cutter–Guild boundary, UI/UX surfaces

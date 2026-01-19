@@ -2,7 +2,7 @@
 doc_id: navigation_index
 doc_type: context
 status: active
-version: 1.0
+version: 1.1
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -34,6 +34,9 @@ Non-binding guidance for limited-context navigation. This file is **context only
 - `packs/STATE.md`
 - `packs/GUILD.md`
 
+## Read If Doing UI/UX
+- `ux/UX_INDEX.md`
+
 ## Navigation Update Rule (Context Only)
 Any doc creation, move, or rename must update the relevant packs and indexes in the same change.
 
@@ -42,6 +45,9 @@ Any doc creation, move, or rename must update the relevant packs and indexes in 
 - Indexes updated (if affected)
 - `DIRECTORY.md` updated if authority changes
 - No duplicate authority created
+
+## Drift Reports (Context Only)
+- `architecture/NAVIGATION_DRIFT_REPORT.md`
 
 ## Obligations Boundary (Context Only)
 If `obligations/OBLIGATIONS.md` exists, it must never indicate priority, sequencing, or “what to do now.”

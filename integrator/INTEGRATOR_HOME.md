@@ -24,6 +24,7 @@ This is the single status surface.
 - (none)
 
 ## Recently Completed
+- Committed rebuild intake (excluding data + caches)
 - Enforced ops mode separation with explicit ops_mode, guard, isolation, and tests
 - Added `ops_layer/mode_seperation.md` spec and registered in `DIRECTORY.md`
 - Required boot contract read in `.cursorrules`

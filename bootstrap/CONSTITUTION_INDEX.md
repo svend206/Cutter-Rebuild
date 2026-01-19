@@ -2,7 +2,7 @@
 doc_id: constitution_index
 doc_type: spec
 status: active
-version: 1.1
+version: 1.2
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -20,6 +20,7 @@ Authoritative constitutional files:
 ## Core
 - `constitution/CONSTITUTION_AUTHORITY.md`
 - `constitution/CORE_DOC_GOVERNANCE.md`
+- `constitution/CORE_LOCAL_FIRST.md`
 - `constitution/CORE_INTERPRETATION_BOUNDARY.md`
 - `constitution/CORE_NON_COLLAPSING.md`
 - `constitution/CORE_QUERY_LAYER_RULES.md`
