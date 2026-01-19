@@ -22,10 +22,12 @@ This plan enumerates the work required to move from the current, evidenced state
 ## Scope
 
 Gaps requiring work (from current evidence):
-- MVP-5 — State continuity requires explicit reaffirmation (Partially Implemented)
-- MVP-6 — Evidence may be referenced but never evaluated (Not Implemented)
 - MVP-8 — Explicit, downstream-only Guild exhaust export (Partially Implemented)
-- MVP-10 — Absence of action is a preserved, inspectable fact (Not Implemented)
+
+Completed gaps:
+- MVP-10 — Absence of action is a preserved, inspectable fact
+- MVP-6 — Evidence may be referenced but never evaluated
+- MVP-5 — State continuity requires explicit reaffirmation
 
 Already implemented and out of scope:
 - MVP-1, MVP-2, MVP-3, MVP-4, MVP-7, MVP-9, MVP-11
@@ -34,28 +36,10 @@ Already implemented and out of scope:
 
 ## Workstreams and Deliverables
 
-### MVP-5 — Explicit reaffirmation continuity
-- Define and implement time-in-state persistence and display rules that prevent silence from implying continuity.
-- Add data/query support for time-in-state accumulation without reaffirmation.
-- Add tests that verify continuity rules and time-in-state behavior.
-- Update reports to capture evidence of enforcement and visibility.
-
-### MVP-6 — Evidence references are inert
-- Extend state declarations to allow optional references to Cutter Ledger records or Ops artifacts.
-- Ensure references are stored as inert metadata with no evaluation or derived logic.
-- Add tests that assert references do not alter system behavior.
-- Update reports to capture evidence of reference support and inert handling.
-
 ### MVP-8 — Guild exhaust export constraints
 - Validate export is raw, additive exhaust with preserved provenance and explicit human initiation.
 - Add tests or verification steps for export payload invariants and initiation semantics.
 - Update reports to capture evidence of raw, additive, downstream-only export behavior.
-
-### MVP-10 — Absence-of-action preservation
-- Define explicit surfacing of elapsed time without action as a durable, inspectable fact.
-- Add data/query mechanisms that expose absence-of-action without interpretation.
-- Add tests that confirm absence-of-action visibility without judgment.
-- Update reports to capture evidence of preserved absence-of-action facts.
 
 ---
 

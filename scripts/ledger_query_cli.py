@@ -16,6 +16,7 @@ Usage:
     python scripts/ledger_query_cli.py state ds1
     python scripts/ledger_query_cli.py state ds2
     python scripts/ledger_query_cli.py state ds5
+    python scripts/ledger_query_cli.py state time-in-state
     python scripts/ledger_query_cli.py cutter events --subject_ref quote:123
     python scripts/ledger_query_cli.py cutter overrides
 
@@ -140,6 +141,13 @@ def cmd_state_ds5(args):
     return 0
 
 
+def cmd_state_time_in_state(args):
+    """Query latest declarations with time-in-state visibility."""
+    entities = state_queries.query_time_in_state()
+    output_json(entities, pretty=args.pretty)
+    return 0
+
+
 def cmd_cutter_events(args):
     """Query Cutter Ledger events."""
     events = get_events(
@@ -199,6 +207,7 @@ Examples:
   %(prog)s state ds1
   %(prog)s state ds2
   %(prog)s state ds5
+  %(prog)s state time-in-state
   
   # Cutter Ledger
   %(prog)s cutter events --subject_ref quote:123
@@ -285,6 +294,13 @@ Environment:
         help='Query DS-5: Deferred Recognition (past cadence window)'
     )
     state_ds5.set_defaults(func=cmd_state_ds5)
+
+    # state time-in-state
+    state_time_in_state = state_subparsers.add_parser(
+        'time-in-state',
+        help='Query time-in-state visibility for latest declarations'
+    )
+    state_time_in_state.set_defaults(func=cmd_state_time_in_state)
     
     # ====== CUTTER LEDGER COMMANDS ======
     cutter_parser = subparsers.add_parser('cutter', help='Query Cutter Ledger')

@@ -2,7 +2,7 @@
 doc_id: mvp_gap_analysis
 doc_type: context
 status: active
-version: 1.1
+version: 1.4
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -71,21 +71,21 @@ State declarations are explicit, append-only, and tied to recognition owners. Te
 
 ## MVP-5 — State continuity requires explicit reaffirmation
 
-**Status:** Partially Implemented
+**Status:** Implemented
 
 **Evidence:**
-State schema and declaration mechanics exist, but reports do not demonstrate explicit enforcement or surfacing that silence never implies continuity or that time-in-state is visibly accumulating absent reaffirmation.
-(Reports 3, 4 — absence of explicit coverage)
+State declarations require explicit reaffirmation or reclassification, and time-in-state is visible via derived state views and test coverage.
+(Reports 1, 3, 4)
 
 ---
 
 ## MVP-6 — Evidence may be referenced but never evaluated
 
-**Status:** Not Implemented
+**Status:** Implemented
 
 **Evidence:**
-No report indicates support for attaching Cutter Ledger or Ops artifact references to state declarations, nor tests asserting inert handling of such references.
-(Reports 1–4 — absence of evidence)
+State declarations support inert evidence references with test coverage and schema support.
+(Reports 1, 3, 4)
 
 ---
 
@@ -121,11 +121,11 @@ Single boot contract, single status surface, single app entrypoint, and no dupli
 
 ## MVP-10 — Absence of action is a preserved, inspectable fact
 
-**Status:** Not Implemented
+**Status:** Implemented
 
 **Evidence:**
-While time is implicit in ledger ordering, no report indicates explicit surfacing, querying, or protection of elapsed time without action as a durable, inspectable fact distinct from interpreted outcomes.
-(Reports 1–4 — absence of evidence)
+Unclosed quotes expose elapsed time without outcomes, and state time-in-state exposes elapsed time since last declaration without inference.
+(Reports 1, 3, 4)
 
 ---
 
@@ -147,12 +147,12 @@ Ops enforces explicit ops_mode separation and strips planning-only signals durin
 | MVP-2 Cutter Ledger preserves reality    | Implemented           |
 | MVP-3 Cutter Ledger meaning-free         | Implemented           |
 | MVP-4 Explicit state recognition         | Implemented           |
-| MVP-5 Explicit reaffirmation required    | Partially Implemented |
-| MVP-6 Evidence references inert          | Not Implemented       |
+| MVP-5 Explicit reaffirmation required    | Implemented           |
+| MVP-6 Evidence references inert          | Implemented           |
 | MVP-7 Layer separation enforced          | Implemented           |
 | MVP-8 Guild exhaust export               | Partially Implemented |
 | MVP-9 Document-governed authority        | Implemented           |
-| MVP-10 Absence of action preserved       | Not Implemented       |
+| MVP-10 Absence of action preserved       | Implemented           |
 | MVP-11 Ops execution/planning separation | Implemented           |
 
 ---

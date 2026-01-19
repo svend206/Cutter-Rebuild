@@ -2,7 +2,7 @@
 doc_id: report_current_capability_inventory
 doc_type: context
 status: active
-version: 1.1
+version: 1.4
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -63,10 +63,16 @@ tags: [report, capability, context]
   Evidence: `ops_layer/app.py` (`/pending_exports`)
 - System can emit and query operational exhaust (internal/API).
   Evidence: `ops_layer/app.py` (`/ops/carrier_handoff`, `/api/cutter/dwell-vs-expectation`)
+- System can list unclosed quotes with elapsed time since creation.
+  Evidence: `database.py` (`get_unclosed_quotes`), `ops_layer/app.py` (`/api/unclosed_quotes`)
 - System can query State Ledger open deadlines (internal/API).
   Evidence: `ops_layer/app.py` (`/api/state/open-deadlines`)
 - System can query State Ledger open response deadlines (internal/API).
   Evidence: `ops_layer/app.py` (`/api/state/open-response-deadlines`)
+- System can query time-in-state for latest state declarations (internal/CLI).
+  Evidence: `state_ledger/queries.py` (`query_time_in_state`), `scripts/ledger_query_cli.py`
+- System can attach inert evidence references to state declarations (internal/API).
+  Evidence: `state_ledger/boundary.py` (`emit_state_declaration`), `tests/test_state_evidence_refs.py`
 - System can run database reset and bootstrap (internal/script).
   Evidence: `scripts/reset_db.py`
 - System can run ledger query CLI (internal/script).

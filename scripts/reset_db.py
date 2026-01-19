@@ -334,6 +334,7 @@ def create_fresh_db(db_path: Path):
                 declared_at TEXT NOT NULL DEFAULT (datetime('now')),
                 supersedes_declaration_id INTEGER,
                 cutter_evidence_ref TEXT,
+                evidence_refs_json TEXT DEFAULT '[]',
                 classification TEXT,
                 FOREIGN KEY (entity_ref) REFERENCES state__entities(entity_ref)
             )
@@ -431,6 +432,59 @@ def create_fresh_db(db_path: Path):
             HAVING COUNT(*) > 1
             ORDER BY consecutive_reaffirmations DESC, entity_ref
         """)
+
+        cursor.execute("""
+            CREATE VIEW IF NOT EXISTS view_ops_unclosed_quotes AS
+            SELECT 
+                q.id,
+                q.quote_id,
+                q.final_quoted_price,
+                q.lead_time_days,
+                q.payment_terms_days,
+                q.status,
+                q.created_at,
+                cu.name as customer_name,
+                CAST((JULIANDAY('now') - JULIANDAY(q.created_at)) AS INTEGER) AS age_days
+            FROM ops__quotes q
+            LEFT JOIN ops__customers cu ON q.customer_id = cu.id
+            LEFT JOIN ops__quote_outcome_events e ON q.id = e.quote_id AND e.outcome_type != 'NO_RESPONSE'
+            WHERE e.id IS NULL
+            ORDER BY q.created_at ASC
+        """)
+
+        cursor.execute("""
+            CREATE VIEW IF NOT EXISTS view_state_time_in_state AS
+            WITH latest AS (
+                SELECT
+                    entity_ref,
+                    scope_ref,
+                    MAX(declared_at) AS last_declared_at
+                FROM state__declarations
+                GROUP BY entity_ref, scope_ref
+            ),
+            latest_rows AS (
+                SELECT d.*
+                FROM state__declarations d
+                JOIN latest l
+                    ON d.entity_ref = l.entity_ref
+                    AND d.scope_ref = l.scope_ref
+                    AND d.declared_at = l.last_declared_at
+            )
+            SELECT
+                e.entity_ref,
+                e.entity_label,
+                e.cadence_days,
+                l.scope_ref,
+                l.state_text,
+                l.classification,
+                l.declaration_kind,
+                l.declared_by_actor_ref,
+                l.declared_at,
+                CAST((JULIANDAY('now') - JULIANDAY(l.declared_at)) AS INTEGER) AS days_since_declaration
+            FROM state__entities e
+            LEFT JOIN latest_rows l
+                ON e.entity_ref = l.entity_ref
+        """)
         
         print(f"[OK] State Ledger derived-state views created")
         
@@ -471,7 +525,9 @@ def verify_tables(db_path: Path) -> bool:
     required_views = [
         'view_ds1_persistent_continuity',
         'view_ds2_unowned_recognition',
-        'view_ds5_deferred_recognition'
+        'view_ds5_deferred_recognition',
+        'view_ops_unclosed_quotes',
+        'view_state_time_in_state'
     ]
     
     all_objects = []

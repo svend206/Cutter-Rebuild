@@ -2,7 +2,7 @@
 doc_id: report_test_runtime_status
 doc_type: context
 status: active
-version: 1.1
+version: 1.4
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -38,6 +38,12 @@ tags: [report, tests, runtime, context]
   Evidence: `tests/test_operational_events.py`, `tests/test_query_cli_readonly.py`
 - Ops mode execution guard.
   Evidence: `tests/test_ops_mode_guard.py`
+- State time-in-state view.
+  Evidence: `tests/test_state_time_in_state.py`
+- State evidence references.
+  Evidence: `tests/test_state_evidence_refs.py`
+- Unclosed quotes elapsed-time visibility.
+  Evidence: `tests/test_unclosed_quotes_age.py`
 - State ledger behaviors.
   Evidence: `tests/test_state_schema.py`, `tests/test_phase5_state_ledger.py`, `tests/test_phase5e_declaration_kind.py`
 - Integration and demo flows.

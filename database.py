@@ -652,19 +652,16 @@ def get_unclosed_quotes() -> List[Dict[str, Any]]:
         # Find quotes WITHOUT any outcome events OR with NO_RESPONSE (stays on exception list)
         cursor.execute("""
             SELECT 
-                q.id,
-                q.quote_id,
-                q.final_quoted_price,
-                q.lead_time_days,
-                q.payment_terms_days,
-                q.status,
-                q.created_at,
-                cu.name as customer_name
-            FROM ops__quotes q
-            LEFT JOIN ops__customers cu ON q.customer_id = cu.id
-            LEFT JOIN ops__quote_outcome_events e ON q.id = e.quote_id AND e.outcome_type != 'NO_RESPONSE'
-            WHERE e.id IS NULL
-            ORDER BY q.created_at ASC
+                id,
+                quote_id,
+                final_quoted_price,
+                lead_time_days,
+                payment_terms_days,
+                status,
+                created_at,
+                customer_name,
+                age_days
+            FROM view_ops_unclosed_quotes
         """)
         
         rows = cursor.fetchall()
@@ -672,10 +669,6 @@ def get_unclosed_quotes() -> List[Dict[str, Any]]:
         
         unclosed = []
         for row in rows:
-            # Calculate age in days
-            created = datetime.fromisoformat(row['created_at'])
-            age_days = (datetime.now() - created).days
-            
             unclosed.append({
                 'id': row['id'],
                 'quote_id': row['quote_id'],
@@ -683,7 +676,7 @@ def get_unclosed_quotes() -> List[Dict[str, Any]]:
                 'lead_time_days': row['lead_time_days'] or 0,
                 'payment_terms_days': row['payment_terms_days'] or 30,
                 'status': row['status'],
-                'age_days': age_days,
+                'age_days': row['age_days'],
                 'customer_name': row['customer_name'] or 'Unknown'
             })
         

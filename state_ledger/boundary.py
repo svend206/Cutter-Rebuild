@@ -22,6 +22,7 @@ CRITICAL: No other module should write to state__declarations directly.
 
 import os
 import sqlite3
+import json
 from pathlib import Path
 from typing import Optional, Dict, Any
 from datetime import datetime
@@ -194,6 +195,7 @@ def emit_state_declaration(
     actor_ref: str,
     declaration_kind: str,
     cutter_evidence_ref: Optional[str] = None,
+    evidence_refs: Optional[list] = None,
     supersedes_declaration_id: Optional[int] = None
 ) -> int:
     """
@@ -226,6 +228,7 @@ def emit_state_declaration(
         declaration_kind: REAFFIRMATION or RECLASSIFICATION (explicit, required)
         classification: Optional classification (minimal vocabulary)
         cutter_evidence_ref: Optional reference to Cutter Ledger event
+        evidence_refs: Optional list of evidence references (stored inert)
         supersedes_declaration_id: Optional pointer to previous declaration
     
     Returns:
@@ -260,6 +263,15 @@ def emit_state_declaration(
             "state_text must be one sentence (newlines not allowed). "
             "Constitutional requirement: explicit, atomic declarations."
         )
+
+    evidence_refs_json = None
+    if evidence_refs is not None:
+        if not isinstance(evidence_refs, list):
+            raise ValueError("evidence_refs must be a list when provided")
+        try:
+            evidence_refs_json = json.dumps(evidence_refs)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("evidence_refs must be JSON-serializable") from exc
     
     # Get current owner for entity
     current_owner = get_current_owner(entity_ref)
@@ -290,10 +302,10 @@ def emit_state_declaration(
         cursor.execute("""
             INSERT INTO state__declarations
             (entity_ref, scope_ref, state_text,
-             declared_by_actor_ref, declaration_kind, supersedes_declaration_id, cutter_evidence_ref)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+             declared_by_actor_ref, declaration_kind, supersedes_declaration_id, cutter_evidence_ref, evidence_refs_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """, (entity_ref, scope_ref, state_text,
-              actor_ref, declaration_kind, supersedes_declaration_id, cutter_evidence_ref))
+              actor_ref, declaration_kind, supersedes_declaration_id, cutter_evidence_ref, evidence_refs_json))
         
         declaration_id = cursor.lastrowid
         conn.commit()
@@ -331,7 +343,7 @@ def get_declarations(
         SELECT
             declaration_id, entity_ref, scope_ref, state_text,
             classification, declaration_kind, declared_by_actor_ref, declared_at,
-            supersedes_declaration_id, cutter_evidence_ref
+            supersedes_declaration_id, cutter_evidence_ref, evidence_refs_json
         FROM state__declarations
     """
     
@@ -372,7 +384,8 @@ def get_declarations(
             'declared_by_actor_ref': row['declared_by_actor_ref'],
             'declared_at': row['declared_at'],
             'supersedes_declaration_id': row['supersedes_declaration_id'],
-            'cutter_evidence_ref': row['cutter_evidence_ref']
+            'cutter_evidence_ref': row['cutter_evidence_ref'],
+            'evidence_refs_json': row['evidence_refs_json']
         })
     
     conn.close()

@@ -90,6 +90,36 @@ def query_persistent_continuity() -> List[Dict[str, Any]]:
     return entities
 
 
+def query_time_in_state() -> List[Dict[str, Any]]:
+    """
+    Query time-in-state visibility for latest declarations.
+
+    Returns raw data only (no inference, no recommendations).
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM view_state_time_in_state")
+
+    rows = []
+    for row in cursor.fetchall():
+        rows.append({
+            'entity_ref': row['entity_ref'],
+            'entity_label': row['entity_label'],
+            'cadence_days': row['cadence_days'],
+            'scope_ref': row['scope_ref'],
+            'state_text': row['state_text'],
+            'classification': row['classification'],
+            'declaration_kind': row['declaration_kind'],
+            'declared_by_actor_ref': row['declared_by_actor_ref'],
+            'declared_at': row['declared_at'],
+            'days_since_declaration': row['days_since_declaration']
+        })
+
+    conn.close()
+    return rows
+
+
 def get_latest_declarations(
     entity_ref: Optional[str] = None,
     scope_ref: Optional[str] = None,
