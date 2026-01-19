@@ -47,3 +47,8 @@ Descriptive system memory only. No authority.
 
 ## Key Decisions (Non-Constitutional)
 - Nodes are distinct UI surfaces (Ops, Cutter Ledger, State Ledger, Guild)
+
+## Planning (Non-Authoritative)
+- `bootstrap/MVP Capability Definition.md`
+- `architecture/MVP Gap Analysis.md`
+- `architecture/MVP Plan.md`

@@ -33,3 +33,4 @@ If it is not in this pack, it must not be assumed.
 
 ## Optional Checks
 - Run `bootstrap/CONSTITUTION_MISREAD_TEST.md`
+- Review MVP scope → `bootstrap/MVP Capability Definition.md`

@@ -2,7 +2,7 @@
 doc_id: report_system_surfaces_entrypoints
 doc_type: context
 status: active
-version: 1.0
+version: 1.1
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -30,7 +30,7 @@ tags: [report, entrypoints, context]
 - `/health` — health check.
   Evidence: `ops_layer/app.py` (`@app.route('/health')`)
 - `/api/system/health` — system telemetry.
-  Evidence: `ops_layer/app.py` (`@app.route('/api/system/health')`)
+  Evidence: `ops_layer/app.py` (`@app.route('/api/system/health')`, `require_ops_mode`)
 
 ## API Entrypoints (Representative Set)
 - Quote creation: `/quote`, `/manual_quote`, `/save_quote`.
@@ -44,7 +44,7 @@ tags: [report, entrypoints, context]
 - Tags: `/tags`, `/api/tags`, `/tags/new`, `/tags/<id>`.
   Evidence: `ops_layer/app.py`
 - Pattern suggestions: `/api/pattern_suggestions`.
-  Evidence: `ops_layer/app.py`
+  Evidence: `ops_layer/app.py` (blocked in execution mode)
 - Ledger queries: `/api/state/open-deadlines`, `/api/state/open-response-deadlines`, `/api/cutter/dwell-vs-expectation`.
   Evidence: `ops_layer/app.py`
 - Guild export: `/export_guild_packet`, `/pending_exports`.

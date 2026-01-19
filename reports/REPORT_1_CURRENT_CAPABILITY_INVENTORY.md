@@ -2,7 +2,7 @@
 doc_id: report_current_capability_inventory
 doc_type: context
 status: active
-version: 1.0
+version: 1.1
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -43,6 +43,8 @@ tags: [report, capability, context]
   Evidence: `ops_layer/app.py` (`/delete_quote/<id>`), `tests/test_soft_delete.py`
 - System can provide pattern suggestions from local history (user-visible).
   Evidence: `ops_layer/app.py` (`/api/pattern_suggestions`), `tests/test_integration.py`
+- System enforces explicit ops_mode separation for execution vs planning.
+  Evidence: `ops_layer/app.py` (`require_ops_mode`, `apply_execution_guard`), `tests/test_ops_mode_guard.py`
 - System can convert units and dimensions (internal/API).
   Evidence: `ops_layer/app.py` (`/api/convert_units`), `tests/test_unit_conversion.py`
 - System can manage customer records (user-visible/API).

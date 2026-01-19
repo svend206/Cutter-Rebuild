@@ -27,6 +27,7 @@ tags: [pack, architect]
 - Constitutional change → `decision_log/DECISIONS.md`
 - Guild boundary work → `constitution/CORE_GUILD_BOUNDARY.md` + `constitution/guild/*`
 - Ledger UX work → `constitution/CORE_LEDGER_UX.md` + `constitution/CORE_UX_LANGUAGE_BOUNDARY.md`
+- MVP scope definition → `bootstrap/MVP Capability Definition.md`
 
 ## Hard Prohibitions
 - No parallel authority documents.

@@ -2,7 +2,7 @@
 doc_id: report_test_runtime_status
 doc_type: context
 status: active
-version: 1.0
+version: 1.1
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -36,6 +36,8 @@ tags: [report, tests, runtime, context]
   Evidence: `tests/test_pdf_generation.py`
 - Operational event emission/query behavior.
   Evidence: `tests/test_operational_events.py`, `tests/test_query_cli_readonly.py`
+- Ops mode execution guard.
+  Evidence: `tests/test_ops_mode_guard.py`
 - State ledger behaviors.
   Evidence: `tests/test_state_schema.py`, `tests/test_phase5_state_ledger.py`, `tests/test_phase5e_declaration_kind.py`
 - Integration and demo flows.
@@ -54,5 +56,5 @@ tags: [report, tests, runtime, context]
 ## Boot + Health Endpoint Verification (Evidence = test)
 - `/health` returns `{status: "ok"}`.
   Evidence: `tests/test_app_entrypoint.py`, `ops_layer/app.py`
-- `/api/system/health` returns `{status: "healthy", ping: "pong", metrics, system_info}`.
-  Evidence: `tests/test_app_entrypoint.py`, `ops_layer/app.py`
+- `/api/system/health` requires ops_mode and strips metrics in execution mode.
+  Evidence: `tests/test_ops_mode_guard.py`, `ops_layer/app.py`

@@ -87,6 +87,7 @@ Authority lives in files, not in chat.
 - `bootstrap/BOOTSTRAP_INDEX.md`
 - `bootstrap/CONSTITUTION_INDEX.md`
 - `bootstrap/CONSTITUTION_MISREAD_TEST.md`
+- `bootstrap/MVP Capability Definition.md`
 - `integrator/INTEGRATOR_HOME.md`
 - `inbox/INBOX.md`
 - `obligations/OBLIGATIONS.md`
@@ -101,6 +102,8 @@ Authority lives in files, not in chat.
 - `context/STATE_LEDGER_MANIFESTO.md`
 - `context/CONSTITUTION_RULE_MAP.md`
 - `architecture/ARCHITECTURE_INDEX.md`
+- `architecture/MVP Gap Analysis.md`
+- `architecture/MVP Plan.md`
 - `architecture/SCHEMA_REFERENCE.md`
 - `architecture/NAVIGATION_INDEX.md`
 - `architecture/NAVIGATION_DRIFT_REPORT.md`
