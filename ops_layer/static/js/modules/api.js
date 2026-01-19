@@ -226,7 +226,15 @@ export async function updateQuoteStatus(payload) {
 }
 
 export async function exportGuildPacket() {
-    const response = await fetch('/export_guild_packet');
+    const actorRef = window.prompt('Enter actor ref for export (org:domain/actor:id)');
+    if (!actorRef) {
+        throw new Error('actor_ref is required for export');
+    }
+    const response = await fetch('/export_guild_packet', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ actor_ref: actorRef })
+    });
     if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);

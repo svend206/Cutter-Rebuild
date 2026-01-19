@@ -2,7 +2,7 @@
 doc_id: report_current_capability_inventory
 doc_type: context
 status: active
-version: 1.4
+version: 1.5
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -58,7 +58,7 @@ tags: [report, capability, context]
 - System can check quote ID availability (user-visible/API).
   Evidence: `ops_layer/app.py` (`/check_quote_id/<id>`)
 - System can export Guild packet (user-visible/API).
-  Evidence: `ops_layer/app.py` (`/export_guild_packet`), `tests/test_query_cli_readonly.py`
+  Evidence: `ops_layer/app.py` (`/export_guild_packet`), `tests/test_guild_export_payload.py`
 - System can report pending exports count (user-visible/API).
   Evidence: `ops_layer/app.py` (`/pending_exports`)
 - System can emit and query operational exhaust (internal/API).

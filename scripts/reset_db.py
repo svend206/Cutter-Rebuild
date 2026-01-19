@@ -132,10 +132,21 @@ def create_fresh_db(db_path: Path):
                 status TEXT DEFAULT 'Draft',
                 actual_runtime REAL,
                 is_guild_submission INTEGER DEFAULT 0,
+                submission_date TEXT,
+                exported_at TEXT,
+                is_compliant INTEGER DEFAULT 1,
+                is_deleted INTEGER DEFAULT 0,
                 timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
                 loss_reason TEXT,
                 win_notes TEXT,
-                closed_at TEXT
+                closed_at TEXT,
+                material TEXT,
+                genesis_hash TEXT,
+                process_routing TEXT,
+                source_type TEXT,
+                reference_image TEXT,
+                quote_id TEXT,
+                handling_time REAL
             )
         """)
         

@@ -1065,7 +1065,8 @@ def get_pending_exports() -> List[Dict[str, Any]]:
     cursor = conn.cursor()
     cursor.execute("""
         SELECT id, status, final_price, anchor_price, actual_runtime, 
-               setup_time, loss_reason, tag_weights, timestamp, material, genesis_hash, process_routing
+               setup_time, loss_reason, tag_weights, timestamp, material, genesis_hash, process_routing,
+               quote_id, source_type, reference_image, handling_time, submission_date
         FROM ops__quote_history 
         WHERE is_guild_submission = 1 AND status IN ('Won', 'Lost')
         AND exported_at IS NULL AND is_compliant = 1 AND is_deleted = 0
@@ -1076,23 +1077,27 @@ def get_pending_exports() -> List[Dict[str, Any]]:
     
     records = []
     for row in rows:
-        tag_weights = json.loads(row['tag_weights']) if row['tag_weights'] else {}
-        loss_reason = json.loads(row['loss_reason']) if row['loss_reason'] else row['loss_reason']
-        process_routing = json.loads(row['process_routing']) if row['process_routing'] else []
-        
         records.append({
-            'id': row['id'],
-            'status': row['status'],
-            'final_price': row['final_price'],
-            'anchor_price': row['anchor_price'],
-            'actual_runtime': row['actual_runtime'],
-            'setup_time': row['setup_time'],
-            'loss_reason': loss_reason,
-            'tag_weights': tag_weights,
-            'timestamp': row['timestamp'],
-            'material': row['material'] if row['material'] else 'Unknown',
-            'genesis_hash': row['genesis_hash'],
-            'process_routing': process_routing
+            'source_table': 'ops__quote_history',
+            'record': {
+                'id': row['id'],
+                'status': row['status'],
+                'final_price': row['final_price'],
+                'anchor_price': row['anchor_price'],
+                'actual_runtime': row['actual_runtime'],
+                'setup_time': row['setup_time'],
+                'loss_reason': row['loss_reason'],
+                'tag_weights': row['tag_weights'],
+                'timestamp': row['timestamp'],
+                'material': row['material'],
+                'genesis_hash': row['genesis_hash'],
+                'process_routing': row['process_routing'],
+                'quote_id': row['quote_id'],
+                'source_type': row['source_type'],
+                'reference_image': row['reference_image'],
+                'handling_time': row['handling_time'],
+                'submission_date': row['submission_date']
+            }
         })
     return records
 

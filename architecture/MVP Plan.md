@@ -22,9 +22,10 @@ This plan enumerates the work required to move from the current, evidenced state
 ## Scope
 
 Gaps requiring work (from current evidence):
-- MVP-8 — Explicit, downstream-only Guild exhaust export (Partially Implemented)
+- (none)
 
 Completed gaps:
+- MVP-8 — Explicit, downstream-only Guild exhaust export
 - MVP-10 — Absence of action is a preserved, inspectable fact
 - MVP-6 — Evidence may be referenced but never evaluated
 - MVP-5 — State continuity requires explicit reaffirmation
@@ -35,11 +36,6 @@ Already implemented and out of scope:
 ---
 
 ## Workstreams and Deliverables
-
-### MVP-8 — Guild exhaust export constraints
-- Validate export is raw, additive exhaust with preserved provenance and explicit human initiation.
-- Add tests or verification steps for export payload invariants and initiation semantics.
-- Update reports to capture evidence of raw, additive, downstream-only export behavior.
 
 ---
 

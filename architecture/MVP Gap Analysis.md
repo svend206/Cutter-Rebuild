@@ -2,7 +2,7 @@
 doc_id: mvp_gap_analysis
 doc_type: context
 status: active
-version: 1.4
+version: 1.5
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -101,11 +101,11 @@ Ops emits exhaust without declaring state; ledgers do not trigger Ops behavior o
 
 ## MVP-8 — Explicit, downstream-only Guild exhaust export
 
-**Status:** Partially Implemented
+**Status:** Implemented
 
 **Evidence:**
-Ops exposes endpoints for Guild export and pending exports, but reports do not confirm that exported data is strictly raw, additive exhaust with preserved Cutter provenance and explicit human initiation semantics.
-(Reports 1, 2 — limited detail)
+Exports require explicit actor_ref initiation and provide raw additive records with provenance metadata.
+(Reports 1, 2, 4)
 
 ---
 
@@ -150,7 +150,7 @@ Ops enforces explicit ops_mode separation and strips planning-only signals durin
 | MVP-5 Explicit reaffirmation required    | Implemented           |
 | MVP-6 Evidence references inert          | Implemented           |
 | MVP-7 Layer separation enforced          | Implemented           |
-| MVP-8 Guild exhaust export               | Partially Implemented |
+| MVP-8 Guild exhaust export               | Implemented           |
 | MVP-9 Document-governed authority        | Implemented           |
 | MVP-10 Absence of action preserved       | Implemented           |
 | MVP-11 Ops execution/planning separation | Implemented           |

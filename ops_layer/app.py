@@ -6,6 +6,7 @@ import time
 import base64
 import json
 import uuid
+import tempfile
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, List
@@ -23,6 +24,7 @@ from . import pdf_generator
 import vector_engine  # Cross-layer utility (remains at root)
 import database  # Cross-layer utility (remains at root)
 from cutter_ledger.boundary import emit_cutter_event
+from state_ledger import validation as state_validation
 from .ledger_events import emit_carrier_handoff
 from .query_a import get_query_a_open_deadlines
 from cutter_ledger.queries import query_dwell_vs_expectation, query_open_response_deadlines
@@ -171,7 +173,10 @@ def quote() -> Dict[str, Any]:
         
         # Save file
         filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        export_dir = app.config['UPLOAD_FOLDER']
+        if os.environ.get('TEST_DB_PATH'):
+            export_dir = tempfile.gettempdir()
+        filepath = os.path.join(export_dir, filename)
         
         print(f"[FILE] Saving file to: {filepath}")
         file.save(filepath)
@@ -2491,9 +2496,9 @@ def update_status() -> Dict[str, Any]:
 # Guild credit display in Ops violates firewall (Guild economics belong in Guild product)
 
 
-@app.route('/export_guild_packet', methods=['GET'])
+@app.route('/export_guild_packet', methods=['POST'])
 def export_guild_packet() -> Dict[str, Any]:
-    """GET /export_guild_packet endpoint - Export closed-loop data for external analysis.
+    """POST /export_guild_packet endpoint - Export closed-loop data for external analysis.
     
     PHASE 2 REMEDIATION: Endpoint preserved but semantics clarified.
     - Export is explicit and manual (not automatic)
@@ -2502,6 +2507,14 @@ def export_guild_packet() -> Dict[str, Any]:
     - Guild contribution evaluation happens in Guild product, not here
     """
     try:
+        payload = request.get_json(silent=True) or {}
+        actor_ref = payload.get('actor_ref')
+        if not actor_ref:
+            return jsonify({'error': 'actor_ref is required'}), 400
+        valid_actor, actor_error = state_validation.validate_actor_ref(actor_ref)
+        if not valid_actor:
+            return jsonify({'error': f'actor_ref invalid: {actor_error}'}), 400
+
         # Get pending exports
         pending_records = database.get_pending_exports()
         
@@ -2512,8 +2525,12 @@ def export_guild_packet() -> Dict[str, Any]:
             }), 400
         
         # Create sanitized export data
+        export_id = str(uuid.uuid4())
         export_data = {
+            'export_id': export_id,
             'export_date': datetime.now().isoformat(),
+            'initiated_by_actor_ref': actor_ref,
+            'source_system': 'ops_layer',
             'record_count': len(pending_records),
             'records': pending_records
         }
@@ -2529,7 +2546,7 @@ def export_guild_packet() -> Dict[str, Any]:
             json.dump(export_data, f, indent=2, ensure_ascii=False)
         
         # Mark records as exported
-        quote_ids = [record['id'] for record in pending_records]
+        quote_ids = [record['record']['id'] for record in pending_records]
         database.mark_as_exported(quote_ids)
         
         # Return file as download

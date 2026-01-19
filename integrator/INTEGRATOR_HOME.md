@@ -21,10 +21,10 @@ This is the single status surface.
 - (none)
 
 ## Next
-- Validate MVP-8 Guild export constraints
-- Refresh reports 1–4 and MVP gap analysis after each milestone
+- (none)
 
 ## Recently Completed
+- Implemented MVP-8 Guild export constraints
 - Implemented MVP-10 absence-of-action preservation
 - Implemented MVP-6 inert evidence references
 - Implemented MVP-5 explicit reaffirmation continuity

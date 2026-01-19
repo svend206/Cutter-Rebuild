@@ -2,7 +2,7 @@
 doc_id: report_system_surfaces_entrypoints
 doc_type: context
 status: active
-version: 1.1
+version: 1.2
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -47,7 +47,7 @@ tags: [report, entrypoints, context]
   Evidence: `ops_layer/app.py` (blocked in execution mode)
 - Ledger queries: `/api/state/open-deadlines`, `/api/state/open-response-deadlines`, `/api/cutter/dwell-vs-expectation`.
   Evidence: `ops_layer/app.py`
-- Guild export: `/export_guild_packet`, `/pending_exports`.
+- Guild export: `/export_guild_packet` (POST, actor_ref required), `/pending_exports`.
   Evidence: `ops_layer/app.py`
 
 ## Script Entrypoints

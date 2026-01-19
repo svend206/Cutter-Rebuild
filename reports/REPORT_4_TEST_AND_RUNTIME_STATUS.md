@@ -2,7 +2,7 @@
 doc_id: report_test_runtime_status
 doc_type: context
 status: active
-version: 1.4
+version: 1.5
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -44,6 +44,8 @@ tags: [report, tests, runtime, context]
   Evidence: `tests/test_state_evidence_refs.py`
 - Unclosed quotes elapsed-time visibility.
   Evidence: `tests/test_unclosed_quotes_age.py`
+- Guild export payload provenance.
+  Evidence: `tests/test_guild_export_payload.py`
 - State ledger behaviors.
   Evidence: `tests/test_state_schema.py`, `tests/test_phase5_state_ledger.py`, `tests/test_phase5e_declaration_kind.py`
 - Integration and demo flows.
