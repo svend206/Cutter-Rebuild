@@ -23,25 +23,6 @@ They are identity constraints.
 State Ledger is only useful if it remains narrow, austere, and resistant to expansion.
 Anything that violates these boundaries destroys its epistemic value.
 
----
-
-## State Ledger Will Never Become an ERP
-State Ledger does not manage operations.
-
-It does not:
-- schedule work
-- allocate resources
-- track inventory
-- manage finances
-- model processes
-
-Operational systems explain *how* work is done.
-State Ledger records *what reality has been acknowledged*.
-
-These roles must remain separate.
-
----
-
 ## State Ledger Will Never Become a Reporting Tool
 State Ledger is not designed to summarize, visualize, or communicate performance.
 

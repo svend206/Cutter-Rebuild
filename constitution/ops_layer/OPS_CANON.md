@@ -16,7 +16,7 @@ tags: [ops, canon]
 # Ops — Canon
 
 ## Purpose
-Ops exists to **perform work**.
+Ops exists to **perform work** as a light ERP for small to midsized manufacturing.
 
 It is the operating surface where plans are formed, decisions are executed,
 and actions occur. Ops exists to enable continuity of operation while producing
@@ -31,6 +31,7 @@ Ops exists to act.
 ## Scope
 Ops governs:
 - Planning, execution, and replanning of work
+- Enterprise resource planning for small to midsized manufacturing
 - User interaction required to operate the system
 - Workflow optimization for speed, clarity, and completion
 - Domain-specific concepts, language, and semantics

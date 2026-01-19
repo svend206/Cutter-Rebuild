@@ -1,8 +1,8 @@
 ---
-doc_id: clean_rebuild_execution_plan
-doc_type: spec
-status: active
-version: 1.1
+doc_id: clean_rebuild_execution_plan_archive_2026_01_18
+doc_type: archive
+status: archived
+version: 1.0
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -10,11 +10,13 @@ supersedes: []
 superseded_by: []
 authoritative_sources: []
 conflicts_with: []
-tags: [rebuild, governance, bootstrap]
+tags: [rebuild, governance, bootstrap, archive]
 ---
 
-# CLEAN REBUILD EXECUTION PLAN
+# CLEAN REBUILD EXECUTION PLAN (Archived)
 *(Pre-Scaffold Reset → Minimal Governance Core)*
+
+Archived after completion of all phases.
 
 ## Purpose
 Rebuild the project from a clean root using a **minimal, internally consistent governance set**:

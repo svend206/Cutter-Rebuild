@@ -2,7 +2,7 @@
 doc_id: directory
 doc_type: spec
 status: active
-version: 1.2
+version: 1.8
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -24,10 +24,10 @@ Authority lives in files, not in chat.
 
 ## Authority Hierarchy
 1. Constitution
-2. Decision Log (none yet)
+2. Decision Log
 3. Specs
 4. Context (non-authoritative)
-5. Archive (none yet)
+5. Archive
 
 ---
 
@@ -75,20 +75,33 @@ Authority lives in files, not in chat.
 
 ---
 
-## B. Specs (Authoritative)
+## B. Decision Log (Authoritative)
+- `decision_log/DECISIONS.md`
+
+---
+
+## C. Specs (Authoritative)
 - `boot/BOOT_CONTRACT.md`
 - `bootstrap/BOOTSTRAP_INDEX.md`
 - `bootstrap/CONSTITUTION_INDEX.md`
-- `bootstrap/CLEAN_REBUILD_EXECUTION_PLAN.md`
 - `bootstrap/CONSTITUTION_MISREAD_TEST.md`
 - `integrator/INTEGRATOR_HOME.md`
 - `inbox/INBOX.md`
 
 ---
 
-## C. Context (Non-Authoritative)
+## D. Context (Non-Authoritative)
 - `context/STATE_LEDGER_MANIFESTO.md`
 - `context/CONSTITUTION_RULE_MAP.md`
+- `architecture/ARCHITECTURE_INDEX.md`
+- `architecture/PROMOTION_CHECKLIST.md`
+- `quarantine/QUARANTINE_INDEX.md`
+
+---
+
+## E. Archive (Non-Authoritative)
+- `archive/DECISION_LOG.md`
+- `archive/CLEAN_REBUILD_EXECUTION_PLAN.md`
 
 ---
 
