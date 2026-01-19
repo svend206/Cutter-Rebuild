@@ -2,7 +2,7 @@
 doc_id: core_guild_boundary
 doc_type: constitution
 status: locked
-version: 1.1
+version: 1.2
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -30,6 +30,16 @@ Therefore:
 - Guild intelligence must never appear in Ops
 - must never appear in Cutter Ledger UX
 - must never influence State Ledger recognition
+
+---
+
+## Incentives & Scoring Boundary (Repo-Wide)
+Outside the Guild surface, the system must not display or imply:
+- credits
+- incentives
+- contribution quality scoring
+
+These signals are Guild-only and forbidden in Ops, Cutter Ledger UX, and State Ledger UX.
 
 ---
 

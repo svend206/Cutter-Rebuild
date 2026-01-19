@@ -2,7 +2,7 @@
 doc_id: promotion_checklist
 doc_type: context
 status: active
-version: 1.0
+version: 1.1
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -16,6 +16,17 @@ tags: [promotion, checklist, context]
 # Promotion Checklist (Old Repo → New Repo)
 
 Use this checklist before promoting any artifact from `Cutter Layers`.
+
+## 0) Inventory scope
+- [ ] Enumerate all files in the old repo
+- [ ] Exclude `scaffold/**` entirely (reject by rule)
+- [ ] Process remaining files in batches with a recorded log entry per file
+
+## 0a) Classification log (required)
+- [ ] Record every file in `quarantine/CLASSIFICATION_LOG.md`
+- [ ] Include: source_path (path or glob), file_type, disposition, reason, batch_id, status
+- [ ] If using glob rules, apply top-to-bottom and mark as done
+- [ ] Non-doc artifacts (code, data, assets) still get logged and routed to product intake
 
 ## 1) Classify the document
 - [ ] Constitution / Decision Log / Spec / Context / Archive / Quarantine

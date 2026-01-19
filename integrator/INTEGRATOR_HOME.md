@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 1.2
+version: 1.8
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -21,9 +21,14 @@ This is the single status surface.
 - (none)
 
 ## Next
-- (none)
+- Run navigation drift audit (packs/indexes match repo docs)
 
 ## Recently Completed
+- Added navigation index, packs, and obligations ledger
+- Added Guild-only restriction on credits/incentives/scoring
+- Full repo document compliance audit (headers + registry)
+- Old repo classification log filled (rule-based, full coverage)
+- Old repo classification process defined
 - Old repo migration: remainder processed by reference
 - Quarantine batch: features, context, manifesto, loops, scripts/tests
 - Phase 9 — Consistency check: no overlaps, restart determinism

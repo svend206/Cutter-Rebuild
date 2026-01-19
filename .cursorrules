@@ -1,2 +1,4 @@
 When starting a session and after any material change, update `integrator/INTEGRATOR_HOME.md` (Current, Next, Recently Completed) to reflect the latest plan/status before proceeding.
 Treat `C:\Users\esacu\Desktop\Cutter Layers` as read-only; promote legacy artifacts only on explicit instruction.
+Any document created or imported must comply with `constitution/CORE_DOC_GOVERNANCE.md` before it exists here (YAML header, correct folder by class, and `DIRECTORY.md` registration; if constitutional, also add a decision log entry in the same change).
+After any doc change, update relevant packs/indexes and verify `DIRECTORY.md` if authority changed.

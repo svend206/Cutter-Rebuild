@@ -2,7 +2,7 @@
 doc_id: decision_log
 doc_type: decision_log
 status: active
-version: 1.6
+version: 1.7
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -27,6 +27,12 @@ Each entry must include:
 - Supersedes (optional, list of prior decisions)
 
 ## Entries
+- Date: 2026-01-18
+  Decision: Forbid credits/incentives/contribution scoring outside the Guild surface.
+  Scope: Cutter–Guild boundary, UI/UX surfaces
+  Authority: Erik
+  Rationale: Prevent Guild economics from leaking into Ops/Cutter/State behavior.
+  Supersedes: none
 - Date: 2026-01-18
   Decision: Established decision log at `decision_log/DECISIONS.md` and archived the prior root log.
   Scope: governance documentation

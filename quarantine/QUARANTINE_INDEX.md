@@ -2,7 +2,7 @@
 doc_id: quarantine_index
 doc_type: context
 status: active
-version: 1.2
+version: 1.3
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -34,3 +34,4 @@ Use quarantine for items that may be valuable but are not yet compatible or clea
 - `scripts/README.md`
 - `tests/README.md`
 - `REMAINDER_MANIFEST.md`
+- `CLASSIFICATION_LOG.md`

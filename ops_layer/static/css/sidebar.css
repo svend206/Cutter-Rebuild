@@ -1,0 +1,257 @@
+/* ===== SIDEBAR STYLES (Phase 4: The Cockpit) ===== */
+/* Per UI Design Constraints: Spacing palette 4/8/12/16/24/32/48 */
+/* Node 1 (Desktop) accent: Orange (#ff6600) */
+
+:root {
+    --sidebar-width: 240px;
+    --sidebar-collapsed-width: 64px;
+    --sidebar-transition: 300ms ease;
+}
+
+/* App Shell Container */
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Main Sidebar (Fixed Left) */
+#main-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background-color: #1a1a1a;
+    border-right: 1px solid #444444;
+    display: flex;
+    flex-direction: column;
+    transition: width var(--sidebar-transition), height 0.3s ease-in-out;
+    z-index: 1000;
+    overflow-x: hidden; /* Per UI Constraints: Prevent horizontal scroll */
+    overflow-y: auto; /* Allow vertical scroll for nav items */
+}
+
+/* When HUD is visible, adjust sidebar height to stop above it */
+body.hud-visible #main-sidebar {
+    height: calc(100vh - 70px); /* 70px = HUD min-height */
+}
+
+/* Collapsed State */
+#main-sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    padding: 24px 16px; /* Per UI Constraints: 24px from palette */
+    border-bottom: 1px solid #444444;
+    min-height: 80px; /* Functional constraint */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-logo {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #ff6600;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: opacity var(--sidebar-transition);
+}
+
+#main-sidebar.collapsed .sidebar-logo {
+    opacity: 0;
+}
+
+/* Navigation Items */
+.sidebar-nav {
+    flex-shrink: 0; /* Don't shrink nav items */
+    padding: 16px 0; /* Per UI Constraints: 16px from palette */
+    overflow-x: hidden; /* Prevent horizontal scroll from nav items */
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px; /* Per UI Constraints: 12px, 16px from palette */
+    margin: 4px 8px; /* Per UI Constraints: 4px, 8px from palette */
+    color: #cccccc;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.nav-item:hover {
+    background-color: #2a2a2a;
+    color: #ffffff;
+}
+
+.nav-item.active {
+    background-color: #ff6600;
+    color: #1a1a1a;
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px; /* Prevent collapse */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.nav-label {
+    margin-left: 12px; /* Per UI Constraints: 12px from palette */
+    font-size: 0.95em;
+    transition: opacity var(--sidebar-transition);
+}
+
+#main-sidebar.collapsed .nav-label {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Quote History Section - Fill remaining space */
+.sidebar-section {
+    flex: 1; /* Grow to fill available space */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent section itself from scrolling */
+    min-height: 0; /* Allow flex item to shrink below content size */
+}
+
+.section-header {
+    flex-shrink: 0; /* Header doesn't shrink */
+    cursor: pointer;
+    padding: 12px 16px; /* Per UI Constraints: 12px, 16px from palette */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffaa00;
+    font-weight: bold;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-top: 1px solid #333;
+    transition: background-color 0.2s ease;
+}
+
+.section-header:hover {
+    background-color: #2a2a2a;
+}
+
+#sidebar-history-list {
+    flex: 1; /* Grow to fill remaining space in section */
+    overflow-y: auto; /* Scroll when content exceeds available space */
+    overflow-x: hidden;
+    padding: 8px;
+}
+
+/* Custom scrollbar for quote history (matches table scrollbars) */
+#sidebar-history-list {
+    scrollbar-width: thin;
+    scrollbar-color: #ffaa00 #1a1a1a;
+}
+
+#sidebar-history-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+#sidebar-history-list::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+#sidebar-history-list::-webkit-scrollbar-thumb {
+    background: #ffaa00;
+    border-radius: 4px;
+}
+
+#sidebar-history-list::-webkit-scrollbar-thumb:hover {
+    background: #ff9900;
+}
+
+/* Sidebar Footer (Collapse Toggle) */
+.sidebar-footer {
+    padding: 16px; /* Per UI Constraints: 16px from palette */
+    border-top: 1px solid #444444;
+}
+
+.collapse-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px; /* Per UI Constraints: 12px from palette */
+    background-color: #2a2a2a;
+    border: none;
+    border-radius: 4px;
+    color: #cccccc;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    min-height: 48px; /* Per UI Constraints: Touch target ≥44px */
+}
+
+.collapse-toggle:hover {
+    background-color: #3a3a3a;
+}
+
+/* SVG Icon directly (no wrapper constraints) */
+.collapse-toggle svg {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+    transition: transform var(--sidebar-transition);
+}
+
+/* When collapsed, rotate the SVG */
+#main-sidebar.collapsed .collapse-toggle svg {
+    transform: rotate(180deg);
+}
+
+/* Content Wrapper (Main Area) */
+.content-wrapper {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    min-height: 100vh;
+    padding: 16px; /* Per UI Constraints: 16px from palette */
+    padding-bottom: 120px; /* Prevent Sticky HUD overlap */
+    box-sizing: border-box; /* Include padding in width calculation */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    transition: margin-left var(--sidebar-transition), width var(--sidebar-transition);
+}
+
+#main-sidebar.collapsed ~ .content-wrapper {
+    margin-left: var(--sidebar-collapsed-width);
+    width: calc(100% - var(--sidebar-collapsed-width));
+}
+
+/* Mobile: Hide Sidebar (Node 2 Protection) */
+/* Breakpoint: 600px allows split-screen desktop while hiding on phones */
+@media (max-width: 600px) {
+    #main-sidebar {
+        display: none !important; /* CRITICAL: Node 2 must not have sidebar */
+    }
+    
+    .content-wrapper {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+}
+
+/* Accessibility: Focus States */
+.nav-item:focus,
+.collapse-toggle:focus {
+    outline: 2px solid #ff6600;
+    outline-offset: 2px;
+}
+

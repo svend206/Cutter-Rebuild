@@ -1,0 +1,1768 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Cutter - Quote Calculator</title>
+    <script src="{{ url_for('static', filename='js/vendor/three.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/OrbitControls.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/STLLoader.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+</head>
+<body>
+    <!-- Phase 4: App Shell Architecture (Node 1 - Desktop Only) -->
+    <div class="app-shell">
+        <!-- Main Sidebar (Hidden on mobile < 768px) -->
+        <nav id="main-sidebar">
+            <!-- Sidebar Header -->
+            <div class="sidebar-header">
+                <div class="sidebar-logo">THE CUTTER</div>
+            </div>
+            
+            <!-- Navigation Items -->
+            <div class="sidebar-nav">
+                <!-- Dashboard (Active by default - shows on page load) -->
+                <a href="#" class="nav-item active" data-view="home">
+                    <div class="nav-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                        </svg>
+                    </div>
+                    <span class="nav-label">Dashboard</span>
+                </a>
+                
+                <!-- New Quote -->
+                <a href="#" class="nav-item" data-view="quote">
+                    <div class="nav-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                        </svg>
+                    </div>
+                    <span class="nav-label">New Quote</span>
+                </a>
+                
+                <!-- Parts Library -->
+                <a href="#" class="nav-item" data-view="parts">
+                    <div class="nav-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>
+                        </svg>
+                    </div>
+                    <span class="nav-label">Parts Library</span>
+                </a>
+                
+                <!-- Customers -->
+                <a href="#" class="nav-item" data-view="customers">
+                    <div class="nav-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                        </svg>
+                    </div>
+                    <span class="nav-label">Customers</span>
+                </a>
+                
+                <!-- Configuration -->
+                <a href="#" class="nav-item" data-view="config">
+                    <div class="nav-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+                        </svg>
+                    </div>
+                    <span class="nav-label">Configuration</span>
+                </a>
+            </div>
+            
+            <!-- Quote History Panel -->
+            <div class="sidebar-section">
+                <div class="section-header" id="history-toggle">
+                    <span>📋 Recent Quotes</span>
+                    <span id="history-toggle-icon">▼</span>
+                </div>
+                <div id="sidebar-history-list">
+                    <div style="padding: 12px; text-align: center; color: #888; font-size: 0.85em;">
+                        Loading quotes...
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar Footer (Collapse Toggle) -->
+            <div class="sidebar-footer">
+                <button class="collapse-toggle" aria-label="Toggle sidebar">
+                    <span class="collapse-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Content Wrapper (Existing Content) -->
+        <main class="content-wrapper">
+    <div class="container">
+        <h1>Project Cutter</h1>
+        
+        <!-- Viewer moved to Physics section in Napkin Mode, remains here for File Mode -->
+        
+        <!-- LANDING SCREEN: Decision Fork (Shown by default) -->
+        <div id="landing-screen" class="landing-screen">
+            <div class="landing-buttons" style="display: flex; flex-direction: column; align-items: center; gap: 16px;">
+                <button class="button landing-choice" id="file-mode-choice-btn">
+                    <span class="choice-icon">📁</span>
+                    <span class="choice-text">I Have a 3D File</span>
+                    <span class="choice-subtext">Upload STL or STEP file</span>
+                </button>
+                
+                <button class="button landing-choice" id="manual-mode-choice-btn">
+                    <span class="choice-icon">✍️</span>
+                    <span class="choice-text">Manual Entry</span>
+                    <span class="choice-subtext">Napkin Mode (No 3D file needed)</span>
+                </button>
+            </div>
+            
+            <!-- Unclosed Quotes Exception List -->
+            <div id="unclosed-quotes-section" style="margin-top: 48px; display: none;">
+                <h3 style="color: #ffaa00; margin-bottom: 16px; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px;">
+                    ⚠️ Unclosed Quotes (<span id="unclosed-count">0</span>)
+                </h3>
+                <p style="color: #aaa; font-size: 0.9em; margin-bottom: 16px;">
+                    These quotes are awaiting outcome. Mark them Won or Lost to close the loop.
+                </p>
+                
+                <!-- Scrollable container: Shows 7 rows max (52px header + 47px/row × 7 = ~380px) -->
+                <div id="unclosed-quotes-scroll-container" style="max-height: 380px; overflow-y: auto; border-radius: 4px;">
+                    <table id="unclosed-quotes-table" style="width: 100%; background-color: #2a2a2a; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background-color: #1a1a1a; color: #ffaa00; text-align: left;">
+                                <th style="padding: 12px; font-weight: bold; font-size: 0.9em;">Quote ID</th>
+                                <th style="padding: 12px; font-weight: bold; font-size: 0.9em;">Age (days)</th>
+                                <th style="padding: 12px; font-weight: bold; font-size: 0.9em;">Customer</th>
+                                <th style="padding: 12px; font-weight: bold; font-size: 0.9em; text-align: right;">Price</th>
+                                <th style="padding: 12px; font-weight: bold; font-size: 0.9em; text-align: center;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="unclosed-quotes-tbody">
+                            <!-- Rows populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BACK TO HOME BUTTON: REMOVED (Phase 5 - Replaced by sidebar navigation) -->
+        
+        <!-- FILE MODE UI (Hidden by default) -->
+        <div class="upload-zone" id="upload-zone" style="display: none;">
+            <div class="upload-icon">📁</div>
+            <p class="upload-main-text">Drag & Drop your STL or STEP file here</p>
+            <p class="upload-divider">— or —</p>
+            <p class="upload-secondary-text">Click anywhere to browse files</p>
+            <p class="file-name" id="file-name"></p>
+        </div>
+        
+        <input type="file" id="file-input" accept=".stl,.step,.stp">
+        
+        <div class="button-center">
+            <button class="button" id="calculate-btn" disabled style="display: none;">Calculate Quote</button>
+        </div>
+        
+        <div class="loading" id="loading">Processing...</div>
+        
+        <div class="error-message" id="error-message"></div>
+        
+        <div class="result-card" id="result-card">
+            
+            <!-- ========== PHASE 4: 4-STAGE FLOW REFACTOR ========== -->
+            
+            <!-- ========== EVIDENCE LOCKER (Napkin Mode - Reference Images) ========== -->
+            <div id="evidence-locker" style="display: none; margin-bottom: 24px; padding: 16px; background-color: #2a2a2a; border: 2px dashed #ff6600; border-radius: 4px; position: relative; text-align: center;">
+                <div id="evidence-locker-content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 120px;">
+                    <div id="evidence-locker-placeholder" style="color: #888; font-size: 0.95em;">
+                        <p style="margin: 8px 0; font-weight: bold; color: #ff6600;">📸 Evidence Locker</p>
+                        <p style="margin: 4px 0;">Drag & Drop or Paste (Ctrl+V) a JPG/PNG image</p>
+                        <p style="margin: 4px 0; font-size: 0.85em; color: #aaa;">Reference images for manual quotes</p>
+                    </div>
+                    <img id="evidence-locker-image" src="" alt="Reference Image" style="max-width: 100%; max-height: 350px; display: none; border-radius: 4px; border: 1px solid #444;">
+                    <button id="evidence-locker-remove" style="display: none; margin-top: 10px; padding: 8px 16px; background-color: #ff6600; color: #1a1a1a; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Remove Image</button>
+                </div>
+            </div>
+            
+            <!-- ========== SECTION 1: CONTEXT (The "Who") ========== -->
+            <div id="quote-metadata" class="flow-section context" style="display: none;">
+                <h2 class="flow-section-header">📋 Context: Who Is This Quote For?</h2>
+                <p class="flow-section-description">Anchor this quote to a customer and contact before defining technical details.</p>
+                
+                <!-- Customer Search -->
+                <div style="margin-bottom: 16px;">
+                    <label for="customer-input" style="display: block; margin-bottom: 8px; color: #ffaa00; font-weight: bold;">Customer / Company</label>
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="customer-input" placeholder="Start typing to search..." 
+                               style="width: 100%; padding: 8px; background-color: #2d2d2d; border: 1px solid #444444; color: #ffffff; border-radius: 4px;">
+                        <div id="customer-results" class="autocomplete-results" style="display: none;"></div>
+                    </div>
+                    <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                        🏢 Start typing to find existing customers. New company? Just type the name.
+                    </div>
+                </div>
+                
+                <!-- Contact Search -->
+                <div style="margin-bottom: 16px;">
+                    <label for="contact-input" style="display: block; margin-bottom: 8px; color: #ffaa00; font-weight: bold;">Contact Name</label>
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="contact-input" placeholder="Select customer first..." disabled
+                               style="width: 100%; padding: 8px; background-color: #2d2d2d; border: 1px solid #444444; color: #ffffff; border-radius: 4px;">
+                        <div id="contact-results" class="autocomplete-results" style="display: none;"></div>
+                    </div>
+                    <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                        👤 The person you're quoting to. Search by name or email.
+                    </div>
+                </div>
+                
+                <!-- Reference Name -->
+                <div style="margin-bottom: 16px;">
+                    <label for="reference-name-input" style="display: block; margin-bottom: 8px; color: #ffaa00; font-weight: bold;">Quote Reference / Part Name</label>
+                    <input type="text" id="reference-name-input" placeholder="e.g., Acme Corp - Mounting Bracket" 
+                           style="width: 100%; padding: 8px; background-color: #1a1a1a; border: 1px solid #444444; color: #ffffff; border-radius: 4px; font-family: 'Courier New', monospace;">
+                    <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                        🧠 What you'll call it. Helps you remember what this job was.
+                    </div>
+                </div>
+                
+                <!-- Quote ID (Read-Only Display) -->
+                <div style="margin-bottom: 24px;">
+                    <label for="quote-id-input" style="display: block; margin-bottom: 8px; color: #ffaa00; font-weight: bold;">Quote ID</label>
+                    <input type="text" id="quote-id-input" placeholder="Q-20250124-001 [Auto-generated]" 
+                           style="width: 100%; padding: 8px; background-color: #1a1a1a; border: 1px solid #444444; color: #ffffff; border-radius: 4px; font-family: 'Courier New', monospace; font-weight: bold;">
+                    <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                        📁 Your filing cabinet number. Leave blank for auto-generation (Q-YYYYMMDD-###)
+                    </div>
+                </div>
+                
+                <!-- ===== RFQ DETAILS (MOVED FROM PHYSICS) ===== -->
+                <div style="border-top: 2px solid #444444; padding-top: 24px; margin-top: 24px;">
+                    <h3 style="color: #ffaa00; margin-bottom: 16px; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px;">
+                        📋 RFQ Details
+                    </h3>
+                    <p style="color: #aaaaaa; font-size: 0.9em; margin-bottom: 16px;">
+                        Enter the technical requirements from the customer's RFQ before calculating price.
+                    </p>
+                    
+                    <!-- Material Selection (MOVED from Physics section) -->
+                    <div style="margin-bottom: 16px;">
+                        <label for="material-select" style="display: block; margin-bottom: 8px; color: #ffaa00; font-weight: bold;">Material *</label>
+                        <select id="material-select" 
+                               style="width: 100%; padding: 10px; background-color: #1a1a1a; color: #ffffff; border: 2px solid #ffaa00; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 1em;">
+                            <option value="">Select Material...</option>
+                            <!-- Options will be populated dynamically by loadMaterials() -->
+                        </select>
+                        <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                            ⚗️ Material specified in the RFQ. Required to calculate anchor price.
+                        </div>
+                    </div>
+                    
+                    <!-- Quantity -->
+                    <div style="margin-bottom: 16px;">
+                        <label for="quantity-input" style="display: block; margin-bottom: 8px; color: #ffaa00; font-weight: bold;">Quantity *</label>
+                        <input type="number" id="quantity-input" step="1" min="1" value="1" 
+                               style="width: 100%; padding: 10px; background-color: #1a1a1a; border: 2px solid #ffaa00; color: #ffaa00; border-radius: 4px; font-weight: bold; font-size: 1.1em;">
+                        <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                            🔢 Number of units requested in the RFQ. Required to calculate anchor price.
+                        </div>
+                    </div>
+                    
+                    <!-- Lead Time (Date Picker) -->
+                    <div style="margin-bottom: 16px;">
+                        <label for="lead-time-date" style="display: block; margin-bottom: 8px; color: #ffaa00; font-weight: bold;">Lead Time / Target Date *</label>
+                        <input type="date" id="lead-time-date" 
+                               style="width: 100%; padding: 10px; background-color: #1a1a1a; border: 2px solid #ffaa00; color: #ffffff; border-radius: 4px; font-size: 1em;">
+                        <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                            📅 Customer's requested delivery date. <span id="lead-time-days-display" style="color: #ffaa00; font-weight: bold;"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Terms (Net Days) -->
+                    <div style="margin-bottom: 16px;">
+                        <label for="payment-terms-input" style="display: block; margin-bottom: 8px; color: #ffaa00; font-weight: bold;">Payment Terms (Net Days)</label>
+                        <input type="number" id="payment-terms-input" step="1" min="0" value="30" 
+                               style="width: 100%; padding: 10px; background-color: #1a1a1a; border: 1px solid #444444; color: #ffffff; border-radius: 4px; font-size: 1em;">
+                        <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                            💰 Payment due X days after delivery. Default: Net 30. Adjust if customer requires different terms.
+                        </div>
+                    </div>
+                    
+                    <!-- Price Breaks (Checkbox + Tags) -->
+                    <div style="margin-bottom: 16px; padding: 16px; background-color: #1a1a1a; border-radius: 4px;">
+                        <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 12px;">
+                            <input type="checkbox" id="price-breaks-checkbox" style="width: 20px; height: 20px; margin-right: 12px; cursor: pointer;">
+                            <span style="color: #ffaa00; font-weight: bold; font-size: 1em;">Customer Wants Price Breaks</span>
+                        </label>
+                        <div id="price-breaks-container" style="display: none;">
+                            <p style="color: #aaaaaa; font-size: 0.85em; margin-bottom: 12px;">
+                                Specify quantities for price break tiers. Click a tag to edit quantity, click × to remove.
+                            </p>
+                            <div id="price-breaks-tags" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+                                <!-- Tags will be added here dynamically -->
+                            </div>
+                            <button id="add-price-break-btn" type="button" style="padding: 8px 16px; background-color: #2a2a2a; border: 2px solid #ffaa00; color: #ffaa00; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                                + Add Price Break
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Target Price (Optional) -->
+                    <div style="margin-bottom: 16px;">
+                        <label for="target-price-input" style="display: block; margin-bottom: 8px; color: #ffaa00; font-weight: bold;">Target Price (Optional)</label>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="color: #aaaaaa; font-size: 1.2em;">$</span>
+                            <input type="number" id="target-price-input" step="0.01" min="0" placeholder="0.00"
+                                   style="flex: 1; padding: 10px; background-color: #1a1a1a; border: 1px solid #444444; color: #ffffff; border-radius: 4px; font-size: 1em;">
+                            <span style="color: #aaaaaa; font-size: 0.9em;">per unit</span>
+                        </div>
+                        <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                            💰 Customer's budget hint (if provided). Helps gauge competitiveness.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ===== RFQ REQUIREMENTS (COLLAPSIBLE) ===== -->
+                <div style="border-top: 2px solid #444444; padding-top: 24px; margin-top: 24px; margin-bottom: 0;">
+                    <div id="rfq-requirements-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 12px; background-color: #1a1a1a; border-radius: 4px; margin-bottom: 16px;">
+                        <h3 style="color: #ffaa00; margin: 0; font-size: 1em; text-transform: uppercase; letter-spacing: 1px;">
+                            🔧 RFQ Requirements (Optional)
+                        </h3>
+                        <span id="rfq-requirements-toggle" style="color: #ffaa00; font-size: 1.5em; font-weight: bold;">▼</span>
+                    </div>
+                    
+                    <div id="rfq-requirements-content" style="display: none;">
+                        <!-- Outside Processing -->
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 8px; color: #ffaa00; font-weight: bold;">Outside Processing</label>
+                            <div id="outside-processing-badges" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+                                <!-- Badges will be populated dynamically -->
+                            </div>
+                            <div style="font-size: 0.85em; color: #aaaaaa; font-style: italic;">
+                                🏭 Select required outside operations (Anodize, Heat Treat, Plating, etc.)
+                            </div>
+                        </div>
+                        
+                        <!-- Quality/Inspection Requirements -->
+                        <div style="margin-bottom: 16px; padding: 16px; background-color: #1a1a1a; border-radius: 4px;">
+                            <label style="display: block; margin-bottom: 12px; color: #ffaa00; font-weight: bold;">Quality / Inspection Requirements</label>
+                            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="checkbox" id="quality-cmm" style="width: 18px; height: 18px; margin-right: 10px; cursor: pointer;">
+                                    <span style="color: #cccccc;">CMM Report</span>
+                                </label>
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="checkbox" id="quality-as9102" style="width: 18px; height: 18px; margin-right: 10px; cursor: pointer;">
+                                    <span style="color: #cccccc;">First Article Inspection (AS9102)</span>
+                                </label>
+                                <label style="display: flex; align-items: center; cursor: pointer;">
+                                    <input type="checkbox" id="quality-material-certs" style="width: 18px; height: 18px; margin-right: 10px; cursor: pointer;">
+                                    <span style="color: #cccccc;">Material Certifications</span>
+                                </label>
+                            </div>
+                            <label style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Additional Notes:</label>
+                            <textarea id="quality-notes" rows="2" placeholder="e.g., Specific tolerance callouts, special inspection requirements..."
+                                      style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #444444; color: #ffffff; border-radius: 4px; font-family: inherit; resize: vertical;"></textarea>
+                        </div>
+                        
+                        <!-- Part Marking -->
+                        <div style="margin-bottom: 0;">
+                            <label style="display: block; margin-bottom: 8px; color: #ffaa00; font-weight: bold;">Part Marking</label>
+                            <select id="part-marking-type" style="width: 100%; padding: 8px; background-color: #1a1a1a; color: #ffffff; border: 1px solid #444444; border-radius: 4px; margin-bottom: 8px;">
+                                <option value="">None</option>
+                                <option value="laser-etch">Laser Etch</option>
+                                <option value="ink-stamp">Ink Stamp</option>
+                                <option value="bag-tag">Bag & Tag</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="text" id="part-marking-content" placeholder="Marking content (e.g., PART-12345-REV-A)" disabled
+                                   style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #444444; color: #ffffff; border-radius: 4px; font-family: 'Courier New', monospace;">
+                            <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                                🏷️ Part identification marking requirements
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ========== SECTION 2: PHYSICS (The "What") ========== -->
+            <div id="physics-section" class="flow-section physics" style="display: none;">
+                <!-- Mode-Specific Content (File vs Napkin) -->
+                
+                <!-- File Mode Guide (3D File Mode Instructions) - Shown in file mode -->
+                <div id="file-mode-guide" style="display: none; margin-bottom: 24px; padding: 16px; background-color: #2a2a2a; border-left: 4px solid #00aaff; border-radius: 4px;">
+                    <h3 style="color: #00aaff; margin-top: 0; margin-bottom: 16px; font-size: 1.1em; text-transform: uppercase;">🎯 3D File Mode Guide</h3>
+                <div style="color: #cccccc; line-height: 1.8;">
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #00aaff;">Filename:</strong> <span id="file-mode-filename" style="color: #ffffff; font-family: 'Courier New', monospace;"></span>
+                    </div>
+                    <div style="margin-bottom: 8px;"><strong style="color: #00aaff;">✓</strong> Geometry calculated from 3D model (Part Volume is read-only)</div>
+                    <div style="margin-bottom: 8px;"><strong style="color: #00aaff;">✓</strong> Stock dimensions can be adjusted if needed</div>
+                    <div style="margin-bottom: 8px;"><strong style="color: #00aaff;">✓</strong> Price updates automatically as you change inputs</div>
+                    <div style="margin-top: 12px; font-size: 0.9em; color: #aaaaaa; font-style: italic;">
+                        💡 Smart Unit Detection: Automatically converts meters, inches, or millimeters to inches
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bob Guide removed in Phase 5.5 - No longer needed with visual shape selector -->
+            
+            <!-- Market Radar (Phase 2.5 - Cluster Intelligence Visualization) -->
+            <div id="market-radar" class="market-radar" style="display: none;">
+                <div class="radar-header">
+                    <span class="radar-title">🧠 MARKET INTELLIGENCE</span>
+                    <button id="market-help-btn" class="help-btn" title="What does this mean?">?</button>
+                    <span class="radar-badge" id="radar-status-badge">SAFE</span>
+                </div>
+                <div class="radar-content">
+                    <div class="radar-metric">
+                        <span class="label">Similar Parts</span>
+                        <span class="value" id="radar-count">-</span>
+                    </div>
+                    <div class="radar-metric">
+                        <span class="label">Median Price</span>
+                        <span class="value" id="radar-median">-</span>
+                    </div>
+                    <div class="radar-metric">
+                        <span class="label">Variance</span>
+                        <span class="value" id="radar-variance">-</span>
+                    </div>
+                </div>
+                <div class="radar-range-bar">
+                    <div class="range-labels">
+                        <span id="radar-min">Min</span>
+                        <span id="radar-max">Max</span>
+                    </div>
+                    <div class="range-track">
+                        <div id="radar-marker" class="range-marker"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Market Intelligence Help Modal -->
+            <div id="market-help-modal" class="modal" style="display: none;">
+                <div class="modal-content" style="max-width: 600px;">
+                    <div class="modal-header">
+                        <h3 style="margin: 0; color: #00aaff;">🎯 Market Intelligence Quick Guide</h3>
+                        <button class="close-modal" id="close-market-help">&times;</button>
+                    </div>
+                    <div class="modal-body" style="color: #cccccc; line-height: 1.8;">
+                        <p style="font-size: 1.1em; color: #ffffff; font-weight: bold; margin-bottom: 15px;">
+                            "How does my current quote compare to similar parts I've quoted before?"
+                        </p>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: #ff6600; margin-bottom: 10px;">📊 What Each Number Means</h4>
+                            <div style="margin-left: 15px;">
+                                <p><strong style="color: #00aaff;">Similar Parts:</strong> How many parts in your history look like this one.</p>
+                                <p><strong style="color: #00aaff;">Median Price:</strong> What you <strong>typically</strong> charge for parts like this.</p>
+                                <p><strong style="color: #00aaff;">Variance:</strong> How different your current quote is from the median.</p>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: #ff6600; margin-bottom: 10px;">🚦 The Three Signals</h4>
+                            
+                            <div style="background-color: #1a3a1a; padding: 12px; margin-bottom: 10px; border-left: 4px solid #00ff00; border-radius: 4px;">
+                                <p style="margin: 0 0 5px 0;"><strong style="color: #00ff00;">🟢 SAFE</strong> (-15% to +15%)</p>
+                                <p style="margin: 0; font-size: 0.95em;">"You're consistent with your past quotes. <strong>Send it with confidence.</strong>"</p>
+                            </div>
+                            
+                            <div style="background-color: #3a1a1a; padding: 12px; margin-bottom: 10px; border-left: 4px solid #ff4444; border-radius: 4px;">
+                                <p style="margin: 0 0 5px 0;"><strong style="color: #ff4444;">🔴 HIGH</strong> (More than +15%)</p>
+                                <p style="margin: 0; font-size: 0.95em;">"You're quoting higher than usual. <strong>Double-check inputs</strong> or justify the premium."</p>
+                            </div>
+                            
+                            <div style="background-color: #1a2a3a; padding: 12px; margin-bottom: 10px; border-left: 4px solid #4499ff; border-radius: 4px;">
+                                <p style="margin: 0 0 5px 0;"><strong style="color: #4499ff;">🔵 LOW</strong> (Less than -15%)</p>
+                                <p style="margin: 0; font-size: 0.95em;">"You're quoting lower than usual. <strong>Confirm this is strategic</strong>, not a mistake."</p>
+                            </div>
+                        </div>
+                        
+                        <div style="background-color: #2a2a2a; padding: 15px; border-radius: 4px; border: 1px solid #444444;">
+                            <p style="margin: 0; font-size: 0.95em; font-style: italic; color: #aaaaaa;">
+                                💡 <strong>Remember:</strong> The Cutter doesn't tell you what to charge. 
+                                It tells you what you <strong>usually</strong> charge, so you can decide if <strong>this time</strong> is different.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ========== 3D VIEWER (Napkin Mode Position) ========== -->
+            <div class="viewer-section" id="viewer-section" style="margin-bottom: 24px; padding: 20px; background-color: #1a1a1a; border: 2px solid #ff6600; border-radius: 8px; display: none;">
+                <h3 style="color: #ff6600; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; font-size: 1.1em;">
+                    3D Model Viewer
+                </h3>
+                <div id="stl-viewer" style="width: 100%; min-height: 400px; background-color: #2a2a2a; border: 1px solid #444444; border-radius: 4px; position: relative;">
+                </div>
+                <p style="color: #aaaaaa; font-size: 0.85em; margin-top: 10px; text-align: center;">
+                    Click and drag to rotate • Scroll to zoom • Right-click and drag to pan
+                </p>
+            </div>
+            
+            <!-- ========== EXTRACTED GEOMETRY (File Mode Only - Phase 5.6 Unit Verification) ========== -->
+            <div id="extracted-geometry-section" class="extracted-geometry" style="display: none;">
+                <h3 class="section-header" style="color: #00aaff; margin: 0 0 16px 0; text-transform: uppercase; letter-spacing: 1px; font-size: 1em;">
+                    Extracted Geometry
+                </h3>
+                
+                <!-- Bounding Box Dimensions (Primary verification method) -->
+                <div class="geometry-row" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                    <label style="min-width: 110px; font-weight: bold; color: #cccccc;">Bounding Box:</label>
+                    <span id="bbox-display" class="bbox-value" style="font-size: 1.1em; font-weight: bold; color: #ffffff; font-family: 'Courier New', monospace;">-- × -- × --</span>
+                    <span id="unit-warning" class="warning-icon" style="display: none; font-size: 20px; color: #ff9800; cursor: help; margin-left: 8px;" title="Dimensions seem unusual. Verify units are correct.">⚠️</span>
+                </div>
+                
+                <!-- Volume (Secondary) -->
+                <div class="geometry-row" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                    <label style="min-width: 110px; font-weight: bold; color: #cccccc;">Part Volume:</label>
+                    <span id="part-volume-display" class="volume-value" style="font-size: 1.1em; font-weight: bold; color: #00aaff; font-family: 'Courier New', monospace;">--</span>
+                </div>
+                
+                <!-- Quick-Fix Buttons -->
+                <div class="geometry-row" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                    <label style="min-width: 110px; font-weight: bold; color: #cccccc;">If incorrect:</label>
+                    <button id="quick-convert-mm" class="quick-fix-btn" type="button" style="padding: 6px 12px; background-color: #2a2a2a; border: 1px solid #00aaff; border-radius: 4px; color: #00aaff; font-size: 14px; cursor: pointer; transition: all 0.2s;">
+                        Convert to mm
+                    </button>
+                    <button id="quick-convert-in" class="quick-fix-btn" type="button" style="padding: 6px 12px; background-color: #2a2a2a; border: 1px solid #00aaff; border-radius: 4px; color: #00aaff; font-size: 14px; cursor: pointer; transition: all 0.2s;">
+                        Convert to in
+                    </button>
+                </div>
+                
+                <p class="help-text" style="margin-top: 8px; margin-bottom: 0; font-size: 0.85em; color: #aaaaaa; line-height: 1.4;">
+                    💡 Verify dimensions match your CAD file. Click button above to correct units if needed.
+                </p>
+            </div>
+            
+            <!-- Stock Definition (Part of Physics Section) -->
+            <div class="stock-definition-section" style="margin-bottom: 24px; padding: 16px; background-color: #2a2a2a; border: 1px solid #00aaff; border-radius: 4px;">
+                <h3 style="color: #00aaff; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; font-size: 1em;">
+                    Part & Stock Geometry
+                </h3>
+                <p style="color: #aaaaaa; font-size: 0.9em; margin-bottom: 15px;">
+                    Define the part first, then the stock. The order matters: Part → Stock.
+                </p>
+                
+                <!-- PARAMETRIC SHAPE CONFIGURATOR (Phase 5.5 - Napkin Mode) -->
+                <div id="shape-configurator" style="margin-bottom: 24px; padding: 16px; background-color: #1a1a1a; border-left: 4px solid #00aaff; border-radius: 4px;">
+                    <!-- Visual Shape Selector -->
+                    <h4 style="color: #00aaff; margin-bottom: 16px; font-size: 1.05em; text-transform: uppercase; letter-spacing: 1px;">
+                        Select Part Shape
+                    </h4>
+                    
+                    <div id="shape-card-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 16px;">
+                        <!-- Block Card -->
+                        <div class="shape-card" data-shape="block" style="cursor: pointer; padding: 16px; background-color: #2a2a2a; border: 2px solid #444444; border-radius: 8px; text-align: center; transition: all 0.2s;">
+                            <svg viewBox="0 0 100 100" style="width: 80px; height: 80px; margin: 0 auto 8px;">
+                                <rect x="20" y="30" width="60" height="40" fill="none" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="20" y1="30" x2="30" y2="20" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="80" y1="30" x2="90" y2="20" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="80" y1="70" x2="90" y2="60" stroke="#00aaff" stroke-width="2"/>
+                                <rect x="30" y="20" width="60" height="40" fill="none" stroke="#00aaff" stroke-width="2"/>
+                            </svg>
+                            <div style="color: #ffffff; font-weight: bold; font-size: 0.95em;">Block</div>
+                            <div style="color: #888888; font-size: 0.8em; margin-top: 4px;">Prismatic</div>
+                        </div>
+                        
+                        <!-- Cylinder Card -->
+                        <div class="shape-card" data-shape="cylinder" style="cursor: pointer; padding: 16px; background-color: #2a2a2a; border: 2px solid #444444; border-radius: 8px; text-align: center; transition: all 0.2s;">
+                            <svg viewBox="0 0 100 100" style="width: 80px; height: 80px; margin: 0 auto 8px;">
+                                <ellipse cx="50" cy="30" rx="25" ry="8" fill="none" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="25" y1="30" x2="25" y2="70" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="75" y1="30" x2="75" y2="70" stroke="#00aaff" stroke-width="2"/>
+                                <ellipse cx="50" cy="70" rx="25" ry="8" fill="none" stroke="#00aaff" stroke-width="2"/>
+                            </svg>
+                            <div style="color: #ffffff; font-weight: bold; font-size: 0.95em;">Cylinder</div>
+                            <div style="color: #888888; font-size: 0.8em; margin-top: 4px;">Turned Solid</div>
+                        </div>
+                        
+                        <!-- Tube Card -->
+                        <div class="shape-card" data-shape="tube" style="cursor: pointer; padding: 16px; background-color: #2a2a2a; border: 2px solid #444444; border-radius: 8px; text-align: center; transition: all 0.2s;">
+                            <svg viewBox="0 0 100 100" style="width: 80px; height: 80px; margin: 0 auto 8px;">
+                                <ellipse cx="50" cy="30" rx="25" ry="8" fill="none" stroke="#00aaff" stroke-width="2"/>
+                                <ellipse cx="50" cy="30" rx="15" ry="5" fill="none" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="25" y1="30" x2="25" y2="70" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="75" y1="30" x2="75" y2="70" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="35" y1="30" x2="35" y2="70" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="65" y1="30" x2="65" y2="70" stroke="#00aaff" stroke-width="2"/>
+                                <ellipse cx="50" cy="70" rx="25" ry="8" fill="none" stroke="#00aaff" stroke-width="2"/>
+                                <ellipse cx="50" cy="70" rx="15" ry="5" fill="none" stroke="#00aaff" stroke-width="2"/>
+                            </svg>
+                            <div style="color: #ffffff; font-weight: bold; font-size: 0.95em;">Tube</div>
+                            <div style="color: #888888; font-size: 0.8em; margin-top: 4px;">Hollow</div>
+                        </div>
+                        
+                        <!-- L-Bracket Card -->
+                        <div class="shape-card" data-shape="l-bracket" style="cursor: pointer; padding: 16px; background-color: #2a2a2a; border: 2px solid #444444; border-radius: 8px; text-align: center; transition: all 0.2s;">
+                            <svg viewBox="0 0 100 100" style="width: 80px; height: 80px; margin: 0 auto 8px;">
+                                <path d="M 30 25 L 70 25 L 70 40 L 45 40 L 45 75 L 30 75 Z" fill="none" stroke="#00aaff" stroke-width="2"/>
+                                <path d="M 35 25 L 75 25 L 75 40 L 50 40 L 50 75 L 35 75 Z" fill="none" stroke="#00aaff" stroke-width="2" opacity="0.5"/>
+                            </svg>
+                            <div style="color: #ffffff; font-weight: bold; font-size: 0.95em;">L-Bracket</div>
+                            <div style="color: #888888; font-size: 0.8em; margin-top: 4px;">Structural</div>
+                        </div>
+                        
+                        <!-- Plate Card -->
+                        <div class="shape-card" data-shape="plate" style="cursor: pointer; padding: 16px; background-color: #2a2a2a; border: 2px solid #444444; border-radius: 8px; text-align: center; transition: all 0.2s;">
+                            <svg viewBox="0 0 100 100" style="width: 80px; height: 80px; margin: 0 auto 8px;">
+                                <rect x="15" y="40" width="70" height="8" fill="none" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="15" y1="40" x2="20" y2="35" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="85" y1="40" x2="90" y2="35" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="85" y1="48" x2="90" y2="43" stroke="#00aaff" stroke-width="2"/>
+                                <rect x="20" y="35" width="70" height="8" fill="none" stroke="#00aaff" stroke-width="2"/>
+                            </svg>
+                            <div style="color: #ffffff; font-weight: bold; font-size: 0.95em;">Plate</div>
+                            <div style="color: #888888; font-size: 0.8em; margin-top: 4px;">Flat Stock</div>
+                        </div>
+                        
+                        <!-- Cone Card -->
+                        <div class="shape-card" data-shape="cone" style="cursor: pointer; padding: 16px; background-color: #2a2a2a; border: 2px solid #444444; border-radius: 8px; text-align: center; transition: all 0.2s;">
+                            <svg viewBox="0 0 100 100" style="width: 80px; height: 80px; margin: 0 auto 8px;">
+                                <ellipse cx="50" cy="75" rx="30" ry="10" fill="none" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="50" y1="20" x2="20" y2="75" stroke="#00aaff" stroke-width="2"/>
+                                <line x1="50" y1="20" x2="80" y2="75" stroke="#00aaff" stroke-width="2"/>
+                                <circle cx="50" cy="20" r="2" fill="#00aaff"/>
+                            </svg>
+                            <div style="color: #ffffff; font-weight: bold; font-size: 0.95em;">Cone</div>
+                            <div style="color: #888888; font-size: 0.8em; margin-top: 4px;">Tapered</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden dropdown for backward compatibility with JS -->
+                    <select id="shape-selector" style="display: none;">
+                        <option value="">-- Select Shape --</option>
+                        <option value="block">Block (Prismatic)</option>
+                        <option value="cylinder">Cylinder (Turned Solid)</option>
+                        <option value="tube">Tube (Turned Hollow)</option>
+                        <option value="l-bracket">L-Bracket (Structural)</option>
+                        <option value="plate">Plate (Flat Stock)</option>
+                        <option value="cone">Cone (Tapered)</option>
+                    </select>
+                    
+                    <!-- Dynamic Dimension Inputs -->
+                    <div id="dimension-inputs" style="display: none;">
+                        <!-- Block / Plate Dimensions -->
+                        <div id="dims-block" class="dimension-set" style="display: none;">
+                            <h4 style="color: #00aaff; margin-bottom: 12px; font-size: 0.95em; text-transform: uppercase; letter-spacing: 1px;">
+                                Part Dimensions
+                            </h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                                <div>
+                                    <label for="dim-block-x" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Length (X) in</label>
+                                    <input type="number" id="dim-block-x" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="block" data-dim="x"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                                <div>
+                                    <label for="dim-block-y" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Width (Y) in</label>
+                                    <input type="number" id="dim-block-y" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="block" data-dim="y"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                                <div>
+                                    <label for="dim-block-z" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Height (Z) in</label>
+                                    <input type="number" id="dim-block-z" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="block" data-dim="z"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Cylinder Dimensions -->
+                        <div id="dims-cylinder" class="dimension-set" style="display: none;">
+                            <h4 style="color: #00aaff; margin-bottom: 12px; font-size: 0.95em; text-transform: uppercase; letter-spacing: 1px;">
+                                Cylinder Dimensions
+                            </h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <div>
+                                    <label for="dim-cyl-diameter" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Diameter (in)</label>
+                                    <input type="number" id="dim-cyl-diameter" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="cylinder" data-dim="diameter"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                                <div>
+                                    <label for="dim-cyl-length" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Length (in)</label>
+                                    <input type="number" id="dim-cyl-length" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="cylinder" data-dim="length"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tube Dimensions -->
+                        <div id="dims-tube" class="dimension-set" style="display: none;">
+                            <h4 style="color: #00aaff; margin-bottom: 12px; font-size: 0.95em; text-transform: uppercase; letter-spacing: 1px;">
+                                Tube Dimensions
+                            </h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                                <div>
+                                    <label for="dim-tube-od" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Outer Diameter (in)</label>
+                                    <input type="number" id="dim-tube-od" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="tube" data-dim="od"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                                <div>
+                                    <label for="dim-tube-id" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Inner Diameter (in)</label>
+                                    <input type="number" id="dim-tube-id" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="tube" data-dim="id"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                                <div>
+                                    <label for="dim-tube-length" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Length (in)</label>
+                                    <input type="number" id="dim-tube-length" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="tube" data-dim="length"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- L-Bracket Dimensions -->
+                        <div id="dims-l-bracket" class="dimension-set" style="display: none;">
+                            <h4 style="color: #00aaff; margin-bottom: 12px; font-size: 0.95em; text-transform: uppercase; letter-spacing: 1px;">
+                                L-Bracket Dimensions
+                            </h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                <div>
+                                    <label for="dim-bracket-leg1" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Leg 1 Length (in)</label>
+                                    <input type="number" id="dim-bracket-leg1" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="l-bracket" data-dim="leg1"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                                <div>
+                                    <label for="dim-bracket-leg2" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Leg 2 Length (in)</label>
+                                    <input type="number" id="dim-bracket-leg2" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="l-bracket" data-dim="leg2"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <div>
+                                    <label for="dim-bracket-width" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Width (in)</label>
+                                    <input type="number" id="dim-bracket-width" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="l-bracket" data-dim="width"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                                <div>
+                                    <label for="dim-bracket-thickness" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Thickness (in)</label>
+                                    <input type="number" id="dim-bracket-thickness" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="l-bracket" data-dim="thickness"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Cone Dimensions -->
+                        <div id="dims-cone" class="dimension-set" style="display: none;">
+                            <h4 style="color: #00aaff; margin-bottom: 12px; font-size: 0.95em; text-transform: uppercase; letter-spacing: 1px;">
+                                Cone Dimensions
+                            </h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <div>
+                                    <label for="dim-cone-diameter" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Base Diameter (in)</label>
+                                    <input type="number" id="dim-cone-diameter" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="cone" data-dim="diameter"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                                <div>
+                                    <label for="dim-cone-height" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Height (in)</label>
+                                    <input type="number" id="dim-cone-height" step="0.001" min="0" value="0" 
+                                           class="dimension-input" data-shape="cone" data-dim="height"
+                                           style="width: 100%; padding: 8px; background-color: #2a2a2a; border: 1px solid #00aaff; color: #ffffff; border-radius: 4px;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Calculated Part Volume Display -->
+                        <div style="margin-top: 16px; padding: 12px; background-color: #0a2a3a; border-radius: 4px; border: 1px solid #00aaff;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="color: #00aaff; font-size: 0.95em; font-weight: bold;">Part Volume (Calculated):</span>
+                                <span id="calculated-part-volume" style="font-weight: bold; color: #00aaff; font-size: 1.15em;">0.000 in³</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="part-volume-error" style="color: #ff3333; font-size: 0.85em; display: none; font-weight: bold; margin-top: 8px;">
+                        ⚠️ Part volume exceeds stock volume!
+                    </div>
+                </div>
+                
+                <!-- STOCK DIMENSIONS (Auto-Calculated from Part + Padding, User Override Allowed) -->
+                <div style="margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h4 style="color: #ff6600; margin: 0; font-size: 1em; text-transform: uppercase; letter-spacing: 1px;">
+                            Stock Dimensions
+                        </h4>
+                        <button id="stock-auto-calc-btn" style="padding: 6px 12px; background-color: #ff6600; color: #1a1a1a; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85em;">
+                            🔄 Auto-Calculate
+                        </button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label for="stock-x" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">X (in)</label>
+                            <input type="number" id="stock-x" step="0.001" min="0" value="0" 
+                                   style="width: 100%; padding: 8px; background-color: #1a1a1a; border: 1px solid #ff6600; color: #ffffff; border-radius: 4px;">
+                        </div>
+                        <div>
+                            <label for="stock-y" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Y (in)</label>
+                            <input type="number" id="stock-y" step="0.001" min="0" value="0" 
+                                   style="width: 100%; padding: 8px; background-color: #1a1a1a; border: 1px solid #ff6600; color: #ffffff; border-radius: 4px;">
+                        </div>
+                        <div>
+                            <label for="stock-z" style="display: block; margin-bottom: 6px; color: #aaaaaa; font-size: 0.9em;">Z (in)</label>
+                            <input type="number" id="stock-z" step="0.001" min="0" value="0" 
+                                   style="width: 100%; padding: 8px; background-color: #1a1a1a; border: 1px solid #ff6600; color: #ffffff; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px; padding: 12px; background-color: #1a1a1a; border-radius: 4px; border: 1px solid #ff6600;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="color: #aaaaaa; font-size: 0.9em;">Stock Volume:</span>
+                            <span id="stock-volume" style="font-weight: bold; color: #ff6600; font-size: 1.05em;">-</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #aaaaaa; font-size: 0.9em;">Removal Volume:</span>
+                            <span id="removal-volume" style="font-weight: bold; color: #ff6600; font-size: 1.05em;">-</span>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                        💡 Stock auto-calculates as Part Dims + 0.125" padding. You can override manually.
+                    </div>
+                </div>
+                
+                <!-- Material Selection: MOVED TO CONTEXT SECTION (RFQ Details) -->
+            </div>
+            
+            </div> <!-- Close Section 2: PHYSICS -->
+            
+            <!-- ========== SECTION 3: CONFIGURATION (The "How") ========== -->
+            <div id="configuration-section" class="flow-section configuration" style="display: none;">
+                <h2 class="flow-section-header">🔧 Configuration: Execution Details</h2>
+                <p class="flow-section-description">Define quantity, complexity, and shop-specific parameters for this job.</p>
+                
+                <!-- Quantity: MOVED TO CONTEXT SECTION (RFQ Details) -->
+                
+                <!-- Complexity Slider: REMOVED (Phase 5 - Glass Box Integrity)
+                     Rationale: Complexity should be explained via variance tags, not baked into anchor.
+                     The anchor price must be pure physics. Bob's intuition goes in variance attribution.
+                -->
+                
+                <!-- Setup Time -->
+                <div style="margin-bottom: 16px;">
+                    <label for="setup-time" style="display: block; margin-bottom: 8px; color: #ff6600; font-weight: bold;">Setup Time (minutes)</label>
+                    <input type="number" id="setup-time" step="1" min="0" value="60" 
+                           style="width: 100%; padding: 8px; background-color: #1a1a1a; border: 1px solid #444444; color: #ffffff; border-radius: 4px; font-size: 1em;">
+                    <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                        ⏱️ Time to set up tooling, fixtures, and program
+                    </div>
+                </div>
+                
+                <!-- Handling Time -->
+                <div style="margin-bottom: 16px;">
+                    <label for="handling-time" style="display: block; margin-bottom: 8px; color: #ff6600; font-weight: bold;">Load/Unload Time (minutes)</label>
+                    <input type="number" id="handling-time" step="0.1" min="0" value="0.5" 
+                           style="width: 100%; padding: 8px; background-color: #1a1a1a; border: 1px solid #444444; color: #ffffff; border-radius: 4px; font-size: 1em;"
+                           title="Time to swap parts between cycles (load, close vise, press go, open, unload)">
+                    <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                        🔄 Time per part to load/unload (not including spindle time)
+                    </div>
+                </div>
+                
+                <!-- Shop Rate -->
+                <div style="margin-bottom: 16px;">
+                    <label for="shop-rate" style="display: block; margin-bottom: 8px; color: #ff6600; font-weight: bold;">Shop Rate ($/hour)</label>
+                    <input type="number" id="shop-rate" step="1" min="0" value="75" 
+                           style="width: 100%; padding: 8px; background-color: #1a1a1a; border: 1px solid #444444; color: #ffffff; border-radius: 4px; font-size: 1em;">
+                    <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                        💵 Your blended hourly rate (labor + overhead + machine depreciation)
+                    </div>
+                </div>
+                
+                <!-- Total Runtime (Read-Only Display) -->
+                <div style="margin-bottom: 24px; padding: 12px; background-color: #2a2a2a; border: 1px solid #ff6600; border-radius: 4px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #aaaaaa; font-weight: bold;">Total Runtime:</span>
+                        <span id="runtime" style="color: #ff6600; font-weight: bold; font-size: 1.1em;">-</span>
+                    </div>
+                </div>
+            
+            <!-- 3D Viewer / Evidence Locker MOVED TO TOP OF PAGE (below "Project Cutter" header) -->
+            
+            <div class="price-breaks-section" id="price-breaks-section" style="margin-top: 30px; padding: 20px; background-color: #1a1a1a; border: 2px solid #ff6600; border-radius: 8px; display: none;">
+                <h3 style="color: #ff6600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; font-size: 1.1em;">
+                    Quantity Price Breaks
+                </h3>
+                <p style="color: #aaaaaa; font-size: 0.85em; margin-bottom: 15px;">
+                    <span style="color: #ff6600;">ℹ️</span> Includes setup scrap (1 unit for qty &lt; 10, 2% scrap for qty ≥ 10)
+                </p>
+                <table class="result-table" style="margin-top: 10px;">
+                    <thead>
+                        <tr>
+                            <th>Qty</th>
+                            <th>1</th>
+                            <th>5</th>
+                            <th>25</th>
+                            <th>100</th>
+                            <th>250</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="label">Total Price</td>
+                            <td class="value" id="price-break-1">-</td>
+                            <td class="value" id="price-break-5">-</td>
+                            <td class="value" id="price-break-25">-</td>
+                            <td class="value" id="price-break-100">-</td>
+                            <td class="value" id="price-break-250">-</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Per Unit</td>
+                            <td class="value" id="price-per-unit-1">-</td>
+                            <td class="value" id="price-per-unit-5">-</td>
+                            <td class="value" id="price-per-unit-25">-</td>
+                            <td class="value" id="price-per-unit-100">-</td>
+                            <td class="value" id="price-per-unit-250">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Traveler Zone (Process Routing) - Part of Configuration -->
+            <div id="traveler-zone" style="margin-top: 24px; padding: 16px; background-color: #2a2a2a; border: 1px solid #ff6600; border-radius: 4px;">
+                <h3 style="color: #ff6600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; font-size: 1em;">
+                    🛠️ Process Routing (Traveler Tags)
+                </h3>
+                <p style="color: #aaaaaa; font-size: 0.9em; margin-bottom: 16px; line-height: 1.6;">
+                    Select the manufacturing processes required for this part. This data is captured for historical reference and does not affect pricing.
+                </p>
+                <div class="traveler-badges" id="traveler-badges" style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                    <!-- Badges will be populated by JavaScript -->
+                </div>
+                <!-- Tag Management Buttons -->
+                <div style="display: flex; gap: 12px; justify-content: flex-end; border-top: 1px solid #444444; padding-top: 12px;">
+                    <button class="new-tag-button" id="new-tag-button">[+] New Traveler Tag</button>
+                    <button class="new-tag-button" id="manage-tags-button">[⚙] Manage All Tags</button>
+                </div>
+            </div>
+            
+            </div> <!-- Close Section 3: CONFIGURATION -->
+            
+            <!-- ========== SECTION 4: ECONOMICS (The "Decision") - THE PRICE STACK ========== -->
+            <div id="economics-section" class="flow-section economics" style="display: none;">
+                <h2 class="flow-section-header">💰 Economics: The Price Stack</h2>
+                <p class="flow-section-description">Review the system's calculation, attribute any variance, and set your final price.</p>
+                
+                <!-- ===== TED VIEW: PATTERN DETECTION BANNER ===== -->
+                <div id="ted-view-banner" style="display: none; margin-bottom: 24px; padding: 16px; background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%); border-left: 4px solid #00ff00; border-radius: 4px; box-shadow: 0 4px 12px rgba(0, 255, 0, 0.2);">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <span style="font-size: 1.5em;">🧠</span>
+                        <h3 style="color: #00ff00; margin: 0; font-size: 1.1em; text-transform: uppercase; letter-spacing: 1px;">
+                            Pattern Detected (Guild Intelligence)
+                        </h3>
+                    </div>
+                    <p style="color: #cccccc; margin-bottom: 16px; line-height: 1.6;">
+                        The following pattern has been detected based on historical quotes:
+                    </p>
+                    <div id="ted-view-suggestions" style="display: flex; flex-direction: column; gap: 12px;">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+                
+                <!-- THE PRICE STACK: Receipt-Style Vertical Layout -->
+                <div id="price-stack" style="max-width: 600px; margin: 0 auto; padding: 24px; background-color: #2a2a2a; border: 2px solid #00aaff; border-radius: 8px;">
+                    
+                    <!-- LAYER 1: SYSTEM ANCHOR (Read-Only) -->
+                    <div style="margin-bottom: 24px; padding: 16px; background-color: #1a1a1a; border-left: 4px solid #00ff00; border-radius: 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <h3 style="color: #00ff00; margin: 0; font-size: 1em; text-transform: uppercase; letter-spacing: 1px;">
+                                🤖 System Anchor
+                            </h3>
+                            <span id="system-anchor" style="color: #00ff00; font-size: 1.5em; font-weight: bold;">$0.00</span>
+                        </div>
+                        <div style="font-size: 0.85em; color: #aaaaaa; margin-bottom: 12px; font-style: italic;">
+                            Physics-based calculation (per unit)
+                        </div>
+                        
+                        <!-- Cost Breakdown (Sub-Rows) -->
+                        <div style="padding-left: 16px; border-left: 2px solid #444444; margin-top: 12px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                <span style="color: #aaaaaa; font-size: 0.9em;">Material Cost:</span>
+                                <span id="material-cost" style="color: #cccccc; font-size: 0.9em;">$0.00</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                <span style="color: #aaaaaa; font-size: 0.9em;">Labor Cost:</span>
+                                <span id="labor-cost" style="color: #cccccc; font-size: 0.9em;">$0.00</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: #aaaaaa; font-size: 0.9em;">Setup Cost:</span>
+                                <span id="setup-cost" style="color: #cccccc; font-size: 0.9em;">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- LAYER 2: VARIANCE / ADJUSTMENTS (Interactive) -->
+                    <div id="variance-section" style="display: none; margin-bottom: 24px; padding: 16px; background-color: #1a1a1a; border-left: 4px solid #ffaa00; border-radius: 4px;">
+                        <div id="variance-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; cursor: pointer;">
+                            <h3 style="color: #ffaa00; margin: 0; font-size: 1em; text-transform: uppercase; letter-spacing: 1px;">
+                                📊 Variance Attribution
+                            </h3>
+                            <span id="variance-total-display" style="color: #ffaa00; font-size: 1.3em; font-weight: bold;">$0.00</span>
+                        </div>
+                        <div style="font-size: 0.85em; color: #aaaaaa; margin-bottom: 12px; font-style: italic;">
+                            Click to expand and explain the price delta
+                        </div>
+                        
+                        <!-- Variance Details (Collapsible) -->
+                        <div id="variance-details" class="hidden" style="margin-top: 16px;">
+                            <!-- Variance Attribution Sliders -->
+                            <div style="padding: 16px; background-color: #2a2a2a; border-radius: 4px; margin-bottom: 12px;">
+                                <p style="color: #aaaaaa; margin-bottom: 12px; font-size: 0.85em; font-style: italic;">
+                                    Use sliders to attribute variance. They must sum to exactly 100%.
+                                </p>
+                                
+                                <!-- Sliders Container -->
+                                <div id="slider-container"></div>
+                                
+                                <!-- Total Row -->
+                                <div style="margin-top: 14px; padding-top: 12px; border-top: 2px solid #444444; display: flex; justify-content: space-between; align-items: center;">
+                                    <strong style="color: #ffffff; font-size: 1em;">Total:</strong>
+                                    <span id="slider-total" style="font-size: 1.2em; font-weight: bold; color: #00ff00;">0%</span>
+                                </div>
+                                <div id="slider-warning" style="display: none; margin-top: 8px; padding: 8px; background-color: #ff6600; color: #ffffff; border-radius: 4px; font-weight: bold; text-align: center; font-size: 0.9em;">
+                                    ⚠️ Sliders must sum to exactly 100% before saving
+                                </div>
+                            </div>
+                            
+                            <!-- Unexplained Variance Row -->
+                            <div id="unexplained-variance-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background-color: #2a2a2a; border-left: 4px solid #ffaa00; border-radius: 4px;">
+                                <span style="color: #ffaa00; font-weight: bold;">Unexplained Variance:</span>
+                                <span id="unexplained-variance" style="color: #ffaa00; font-size: 1.1em; font-weight: bold;">$0.00</span>
+                            </div>
+                            <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic;">
+                                💡 The difference between your final price and the sum of anchor + explained variance.
+                            </div>
+                            
+                            <!-- Pricing Tag Management Buttons -->
+                            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; padding-top: 16px; border-top: 1px solid #444444;">
+                                <button class="new-tag-button" onclick="document.getElementById('new-tag-button').click()">[+] New Pricing Tag</button>
+                                <button class="new-tag-button" onclick="document.getElementById('manage-tags-button').click()">[⚙] Manage Pricing Tags</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- LAYER 3: FINAL PRICE (Editable) -->
+                    <div style="margin-bottom: 24px; padding: 16px; background-color: #1a1a1a; border-left: 4px solid #ff6600; border-radius: 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <label for="final-price-input" style="color: #ff6600; font-size: 1em; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin: 0;">
+                                ✏️ Your Final Price (per unit)
+                            </label>
+                            <button id="reset-price-btn" style="padding: 8px 16px; background-color: #2a2a2a; border: 2px solid #ffaa00; color: #ffaa00; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.9em; display: none;">
+                                🔄 Reset to Anchor
+                            </button>
+                        </div>
+                        <input type="number" id="final-price-input" step="0.01" min="0" 
+                               style="width: 100%; padding: 16px; background-color: #2a2a2a; border: 3px solid #ff6600; color: #ffffff; border-radius: 6px; font-size: 1.8em; font-weight: bold; text-align: center;">
+                        <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; font-style: italic; text-align: center;">
+                            This is the price you'll quote to the customer
+                        </div>
+                    </div>
+                    
+                    <!-- Total Price Display (Quantity × Per-Unit) -->
+                    <div style="padding: 16px; background-color: #1a1a1a; border: 2px solid #00ff00; border-radius: 4px; margin-bottom: 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #aaaaaa; font-size: 1.1em; font-weight: bold;">Total Quote:</span>
+                            <span id="total-price" style="color: #00ff00; font-size: 1.5em; font-weight: bold;">$0.00</span>
+                        </div>
+                        <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 8px; text-align: right; font-style: italic;">
+                            Calculated: <span id="quantity-display">1</span> units × $<span id="per-unit-display">0.00</span>/ea
+                        </div>
+                    </div>
+                    
+                    <!-- Price Breaks Table (Conditional) -->
+                    <div id="price-breaks-table-container" style="display: none; margin-bottom: 24px; padding: 16px; background-color: #1a1a1a; border-radius: 4px;">
+                        <h3 style="color: #ffaa00; margin-bottom: 12px; font-size: 1em; text-transform: uppercase; letter-spacing: 1px;">
+                            📊 Price Break Tiers
+                        </h3>
+                        <table id="price-breaks-table" style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #444444;">
+                                    <th style="padding: 8px; text-align: left; color: #aaaaaa; font-size: 0.9em;">Quantity</th>
+                                    <th style="padding: 8px; text-align: right; color: #aaaaaa; font-size: 0.9em;">Per Unit</th>
+                                    <th style="padding: 8px; text-align: right; color: #aaaaaa; font-size: 0.9em;">Total</th>
+                                    <th style="padding: 8px; text-align: right; color: #aaaaaa; font-size: 0.9em;">Savings</th>
+                                </tr>
+                            </thead>
+                            <tbody id="price-breaks-table-body">
+                                <!-- Rows will be populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Save Quote Button -->
+                    <div style="text-align: center;">
+                        <button class="save-button" id="save-button" style="width: 100%; padding: 20px; font-size: 1.3em; font-weight: bold; background-color: #00ff00; color: #1a1a1a; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;">
+                            💾 SAVE QUOTE
+                        </button>
+                        <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 12px; font-style: italic;">
+                            Save this quote to your history and optionally submit to the Guild network
+                        </div>
+                    </div>
+                </div> <!-- Close price-stack -->
+            </div> <!-- Close Economics Section -->
+            
+            <!-- Legacy tag-zone container (kept for JS compatibility, hidden) -->
+            <div class="tag-zone" id="tag-zone" style="display: none;">
+                <div class="tag-badges" id="tag-badges"></div>
+            </div>
+            
+            <!-- SAVE CONFIRMATION MODAL -->
+            <div id="save-confirm-modal" class="modal" style="display: none;">
+                <div class="modal-content" style="max-width: 500px;">
+                    <div class="modal-header">
+                        <h3 style="margin: 0; color: #00aaff;">💾 Save Quote</h3>
+                        <button class="close-modal" id="close-save-confirm">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="save-confirm-message" style="margin-bottom: 20px; color: #cccccc; line-height: 1.6;">
+                            <!-- Message will be dynamically inserted -->
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label for="save-confirm-quote-id" style="display: block; color: #ffffff; font-weight: bold; margin-bottom: 8px;">
+                                Quote ID / Reference:
+                            </label>
+                            <input type="text" id="save-confirm-quote-id" 
+                                   style="width: 100%; padding: 10px; background-color: #1a1a1a; border: 2px solid #00aaff; color: #ffffff; border-radius: 4px; font-size: 1em;">
+                            <div id="save-confirm-quote-id-hint" style="font-size: 0.85em; color: #aaaaaa; margin-top: 5px; font-style: italic;">
+                                <!-- Hint text will be dynamically inserted -->
+                            </div>
+                        </div>
+                        
+                        <div id="save-confirm-actions" class="button-center" style="gap: 12px; flex-direction: row; justify-content: flex-end;">
+                            <!-- Action buttons will be dynamically inserted -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUOTE HISTORY TABLE: REMOVED (Phase 5 - Moved to sidebar)
+                 Quote history is now in the sidebar for better UX.
+                 Click a quote in the sidebar to load and edit it.
+            -->
+            
+            <!-- PHASE 1 REMEDIATION: Guild Status Bar removed -->
+            <!-- Guild credits/progress display violates firewall (Guild economics in Ops UI) -->
+            <!-- Export capability preserved separately (see Phase 2) -->
+
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Saved!</div>
+
+    <!-- Sticky HUD for price visibility -->
+    <div id="sticky-hud" class="sticky-hud">
+        <div class="hud-label">ESTIMATED PRICE</div>
+        <div class="hud-value" id="hud-price">$0.00</div>
+    </div>
+
+    <!-- Manage Tags Modal -->
+    <div class="modal" id="manage-tags-modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <h3>Manage Tags</h3>
+            <div id="manage-tags-list" style="max-height: 60vh; overflow-y: auto;">
+                <!-- Tag list will be populated here -->
+            </div>
+            <div class="modal-buttons" style="margin-top: 20px;">
+                <button type="button" class="modal-button secondary" id="close-manage-tags-button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Tag Modal -->
+    <div class="modal" id="tag-modal">
+        <div class="modal-content">
+            <h3 id="tag-modal-title">Create New Tag</h3>
+            <form id="tag-form">
+                <label for="tag-name">Name:</label>
+                <input type="text" id="tag-name" required>
+                
+                <label for="tag-category">Category:</label>
+                <select id="tag-category" required>
+                    <option value="General">General</option>
+                    <option value="Market">Market (Time/Money)</option>
+                    <option value="Risk">Risk (Scrap/Liability)</option>
+                    <option value="Geometry">Geometry (Tolerances/Fixturing)</option>
+                    <option value="Material">Material (Stock/Hardness)</option>
+                    <option value="Finish">Finish (Deburr/Post-Process)</option>
+                    <option value="Strategy">Strategy (Pricing Psychology)</option>
+                </select>
+                
+                <label for="tag-effect">Impact Rule:</label>
+                <select id="tag-effect" required>
+                    <option value="none">None</option>
+                    <option value="add_setup_minutes">Add Setup Mins</option>
+                    <option value="set_shop_rate">Set Shop Rate</option>
+                    <option value="price_markup_percent">Markup %</option>
+                </select>
+                
+                <label for="tag-value">Value:</label>
+                <input type="number" id="tag-value" step="0.01" min="0" value="0" required onfocus="this.select()">
+                <div id="tag-value-helper" style="font-size: 0.85em; color: #aaaaaa; margin-top: -10px; margin-bottom: 15px; font-style: italic;"></div>
+                
+                <div class="modal-buttons">
+                    <button type="button" class="modal-button secondary" id="cancel-tag-button">Cancel</button>
+                    <button type="submit" class="modal-button primary">Create Tag</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Close Loop Modal (Partner Mode) -->
+    <div class="modal" id="close-loop-modal">
+        <div class="modal-content">
+            <h3>Mark Job as WON</h3>
+            <form id="close-loop-form">
+                <input type="hidden" id="close-loop-quote-id" value="">
+                
+                <label for="actual-runtime">Ground Truth Runtime (Minutes):</label>
+                <input type="number" id="actual-runtime" step="0.1" min="0" required>
+                
+                <!-- PHASE 1 REMEDIATION: Guild submission checkbox removed -->
+                <!-- Inline submission with credit display violates firewall -->
+                <!-- Export capability preserved separately (see Phase 2) -->
+                
+                <div class="modal-buttons">
+                    <button type="button" class="modal-button secondary" id="cancel-close-loop-button">Cancel</button>
+                    <button type="submit" class="modal-button primary">Confirm Win</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loss Analysis Modal (Partner Mode) -->
+    <div class="modal" id="loss-analysis-modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <h3>Job Lost: What happened?</h3>
+            <div class="loss-reason-grid" id="loss-reason-grid">
+                <button type="button" class="loss-reason-btn" data-reason="Price">
+                    <span class="loss-reason-icon">💰</span>
+                    <span class="loss-reason-text">Price</span>
+                    <span class="loss-reason-subtitle">Too Expensive</span>
+                </button>
+                <button type="button" class="loss-reason-btn" data-reason="Lead Time">
+                    <span class="loss-reason-icon">⏱️</span>
+                    <span class="loss-reason-text">Lead Time</span>
+                    <span class="loss-reason-subtitle">Too Slow</span>
+                </button>
+                <button type="button" class="loss-reason-btn" data-reason="Vendor">
+                    <span class="loss-reason-icon">🚚</span>
+                    <span class="loss-reason-text">Vendor / OSP</span>
+                    <span class="loss-reason-subtitle">Plating/Heat Treat Issues</span>
+                </button>
+                <button type="button" class="loss-reason-btn" data-reason="No Capacity">
+                    <span class="loss-reason-icon">🏭</span>
+                    <span class="loss-reason-text">No Capacity</span>
+                    <span class="loss-reason-subtitle">No Bid / Too Busy</span>
+                </button>
+                <button type="button" class="loss-reason-btn" data-reason="Capability">
+                    <span class="loss-reason-icon">⚠️</span>
+                    <span class="loss-reason-text">Capability</span>
+                    <span class="loss-reason-subtitle">Cannot Make</span>
+                </button>
+            </div>
+            
+            <!-- PHASE 1 REMEDIATION: Guild submission checkbox removed -->
+            <!-- Inline submission with credit display violates firewall -->
+            
+            <div class="modal-buttons">
+                <button type="button" class="modal-button secondary" id="cancel-loss-analysis-button">Cancel</button>
+                <button type="button" class="modal-button primary" id="confirm-loss-btn" disabled>Confirm Loss</button>
+            </div>
+            <input type="hidden" id="loss-analysis-quote-id" value="">
+        </div>
+    </div>
+
+    <!-- Fix Material Modal (Janitor Protocol) -->
+    <div class="modal" id="fix-material-modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <h3 style="color: #ff6600; margin-bottom: 10px;">⚠️ Fix Data Validity</h3>
+            
+            <p style="color: #cccccc; font-size: 0.9em; margin-bottom: 20px; line-height: 1.4;">
+                This record uses a <strong>Custom Material</strong> ("<span id="fix-modal-current-material" style="color: #fff;"></span>").
+                <br><br>
+                To unlock Guild Export eligibility for this job, please map it to a <strong>Standard Material</strong> below. 
+                <span style="font-style: italic; color: #888;">(This will not change your historical quoted price).</span>
+            </p>
+
+            <form id="fix-material-form">
+                <input type="hidden" id="fix-material-quote-id" value="">
+                
+                <label for="fix-material-input" style="display: block; margin-bottom: 8px; color: #aaaaaa;">Map to Standard Material:</label>
+                <input type="text" id="fix-material-input" list="fix-material-options" placeholder="Select Standard Material..." 
+                       style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #444; color: white; border-radius: 4px; margin-bottom: 20px; font-family: 'Courier New', monospace; font-size: 1em;">
+                <datalist id="fix-material-options">
+                    <option value="Aluminum 6061">
+                    <option value="Steel 1018">
+                    <option value="Stainless 304">
+                    <option value="Customer Supplied">
+                </datalist>
+                
+                <div class="modal-buttons">
+                    <button type="button" class="modal-button secondary" id="cancel-fix-button">Cancel</button>
+                    <button type="button" class="modal-button primary" id="save-fix-button">Confirm Fix</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="unit-modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <h3>⚠️ Unit Confirmation Required</h3>
+            <p style="color: #ff6600; margin-bottom: 20px;">
+                The geometry could be interpreted in multiple ways. Please select the correct unit interpretation:
+            </p>
+            
+            <div id="unit-options-container" style="display: flex; gap: 20px; margin-bottom: 20px;">
+                <div class="unit-option" id="unit-option-1" style="flex: 1; border: 2px solid #444; padding: 15px; border-radius: 5px; cursor: pointer; background: #222;">
+                    <h4 style="margin-top: 0; color: #ff6600;">Option 1: INCHES</h4>
+                    <p style="font-size: 0.9em; color: #aaa; margin-bottom: 10px;">Raw values are in INCHES</p>
+                    <div id="unit-option-1-dims" style="font-family: monospace; font-size: 0.85em;">
+                        </div>
+                    <div id="unit-option-1-warning" style="margin-top: 10px; font-size: 0.85em; color: #ff6600;">
+                        </div>
+                </div>
+                
+                <div class="unit-option" id="unit-option-2" style="flex: 1; border: 2px solid #444; padding: 15px; border-radius: 5px; cursor: pointer; background: #222;">
+                    <h4 style="margin-top: 0; color: #ff6600;">Option 2: MM</h4>
+                    <p style="font-size: 0.9em; color: #aaa; margin-bottom: 10px;">Raw values are in MM (converted to inches)</p>
+                    <div id="unit-option-2-dims" style="font-family: monospace; font-size: 0.85em;">
+                        </div>
+                    <div id="unit-option-2-warning" style="margin-top: 10px; font-size: 0.85em; color: #ff6600;">
+                        </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button type="button" class="modal-button primary" id="confirm-unit-button" disabled>Confirm Selection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Edit Modal (Unlock/Revert to Draft) -->
+    <div class="modal" id="status-edit-modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <h3 style="color: #ff6600;">Update Status</h3>
+            <p style="color: #ccc; margin-bottom: 20px;">Current Status: <span id="current-status-display" style="font-weight: bold; color: #fff;"></span></p>
+            <input type="hidden" id="status-edit-quote-id">
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="modal-button secondary" onclick="setStatus('Draft')">↺ Revert to Draft (Unlock)</button>
+                <button class="modal-button win" onclick="setStatus('Won')">✅ Mark Won</button>
+                <button class="modal-button loss" onclick="setStatus('Lost')">❌ Mark Lost</button>
+            </div>
+            
+            <div style="margin-top: 20px; border-top: 1px solid #444; padding-top: 15px;">
+                <button class="modal-button secondary" onclick="closeStatusModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- The "Deal Closer" Modal (Win/Loss Data Capture) -->
+    <div class="modal" id="deal-closer-modal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3 style="margin: 0; color: #ff6600;">📊 Close Quote</h3>
+                <button class="close-modal" onclick="closeStatusModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 20px; padding: 12px; background-color: #2a2a2a; border-radius: 4px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #aaaaaa; font-size: 0.9em;">Current Status:</span>
+                        <span id="current-status-display" style="font-weight: bold; color: #ffffff; font-size: 1.1em;">Draft</span>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+                    <button onclick="handleStatusAction('won')" style="
+                        padding: 16px;
+                        background-color: #1a3a1a;
+                        border: 2px solid #00ff00;
+                        color: #00ff00;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-weight: bold;
+                        font-size: 1.1em;
+                        transition: all 0.2s;
+                    " onmouseenter="this.style.backgroundColor='#2a4a2a'" onmouseleave="this.style.backgroundColor='#1a3a1a'">
+                        ✅ Mark Won
+                    </button>
+                    
+                    <button onclick="handleStatusAction('lost')" style="
+                        padding: 16px;
+                        background-color: #3a1a1a;
+                        border: 2px solid #ff4444;
+                        color: #ff4444;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-weight: bold;
+                        font-size: 1.1em;
+                        transition: all 0.2s;
+                    " onmouseenter="this.style.backgroundColor='#4a2a2a'" onmouseleave="this.style.backgroundColor='#3a1a1a'">
+                        ❌ Mark Lost
+                    </button>
+                    
+                    <button onclick="handleStatusAction('draft')" style="
+                        padding: 12px;
+                        background-color: #2a2a2a;
+                        border: 1px solid #888888;
+                        color: #888888;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-weight: bold;
+                        font-size: 0.9em;
+                        transition: all 0.2s;
+                    " onmouseenter="this.style.backgroundColor='#333333'" onmouseleave="this.style.backgroundColor='#2a2a2a'">
+                        ↺ Revert to Draft (Unlock)
+                    </button>
+                </div>
+                
+                <!-- Won Section (Hidden by default) -->
+                <div id="won-section" style="display: none; padding: 16px; background-color: #1a3a1a; border: 2px solid #00ff00; border-radius: 6px; margin-bottom: 16px;">
+                    <h4 style="color: #00ff00; margin-top: 0; margin-bottom: 16px;">🎉 Congratulations!</h4>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label for="final-agreed-price-input" style="display: block; margin-bottom: 8px; color: #cccccc; font-weight: bold;">
+                            Final Agreed Price (Optional)
+                        </label>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="color: #00ff00; font-size: 1.2em;">$</span>
+                            <input type="number" id="final-agreed-price-input" step="0.01" min="0" placeholder="0.00"
+                                   style="flex: 1; padding: 10px; background-color: #2a2a2a; border: 1px solid #00ff00; color: #ffffff; border-radius: 4px; font-size: 1em;">
+                        </div>
+                        <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 6px; font-style: italic;">
+                            If negotiated, enter the final price. Leave blank to keep quoted price.
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label for="win-notes-input" style="display: block; margin-bottom: 8px; color: #cccccc; font-weight: bold;">
+                            Notes (Optional)
+                        </label>
+                        <textarea id="win-notes-input" rows="3" placeholder="e.g., Strong relationship, matched competitor price, etc."
+                                  style="width: 100%; padding: 10px; background-color: #2a2a2a; border: 1px solid #00ff00; color: #ffffff; border-radius: 4px; font-family: inherit; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <button onclick="confirmWon()" style="
+                        width: 100%;
+                        padding: 14px;
+                        background-color: #00ff00;
+                        border: none;
+                        color: #1a1a1a;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-weight: bold;
+                        font-size: 1.1em;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    ">
+                        Confirm Win
+                    </button>
+                </div>
+                
+                <!-- Lost Section (Hidden by default) -->
+                <div id="lost-section" style="display: none; padding: 16px; background-color: #3a1a1a; border: 2px solid #ff4444; border-radius: 6px; margin-bottom: 16px;">
+                    <h4 style="color: #ff4444; margin-top: 0; margin-bottom: 16px;">📉 What Happened?</h4>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label for="loss-reason-select" style="display: block; margin-bottom: 8px; color: #cccccc; font-weight: bold;">
+                            Loss Reason *
+                        </label>
+                        <select id="loss-reason-select" 
+                               style="width: 100%; padding: 10px; background-color: #2a2a2a; border: 1px solid #ff4444; color: #ffffff; border-radius: 4px; font-size: 1em;">
+                            <option value="">-- Select Reason --</option>
+                            <option value="Price">💰 Price (Too Expensive)</option>
+                            <option value="Lead Time">⏱️ Lead Time (Too Slow)</option>
+                            <option value="Ghosted">👻 Ghosted (No Response)</option>
+                            <option value="Capability">⚠️ Capability (Cannot Make)</option>
+                            <option value="Vendor/OSP">🚚 Vendor/OSP Issues</option>
+                            <option value="No Capacity">🏭 No Capacity (Too Busy)</option>
+                            <option value="Other">❓ Other</option>
+                        </select>
+                        <div style="font-size: 0.85em; color: #aaaaaa; margin-top: 6px; font-style: italic;">
+                            Select the primary reason for losing this quote.
+                        </div>
+                    </div>
+                    
+                    <button onclick="confirmLost()" style="
+                        width: 100%;
+                        padding: 14px;
+                        background-color: #ff4444;
+                        border: none;
+                        color: #ffffff;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-weight: bold;
+                        font-size: 1.1em;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    ">
+                        Confirm Loss
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOMERS VIEW (Phase 5.6) -->
+    <div id="customers-view" class="page-view" style="display: none;">
+        <div class="container">
+            <div class="page-header">
+                <h1>Customers</h1>
+                <button id="add-customer-btn" class="button primary">
+                    Add Customer
+                </button>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="search-bar" style="margin-bottom: 24px;">
+                <input 
+                    type="text" 
+                    id="customer-search" 
+                    placeholder="Search by company, contact, or part..." 
+                    style="width: 100%; padding: 12px; font-size: 16px; border: 1px solid #444; border-radius: 4px; background-color: #2d2d2d; color: #fff;"
+                >
+            </div>
+            
+            <!-- Customer Table -->
+            <div id="customer-table-container" style="overflow-x: auto; overflow-y: auto; max-height: 500px;">
+                <table id="customer-table" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Parts</th>
+                            <th>Contacts</th>
+                            <th>Quotes</th>
+                            <th>Jobs</th>
+                            <th>Last Active</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customer-table-body">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <!-- Empty State -->
+                <div id="customer-empty-state" style="display: none; text-align: center; padding: 48px; color: #888;">
+                    <p style="font-size: 18px; margin-bottom: 16px;">No customers yet.</p>
+                    <p>They'll appear here after your first quote.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </main> <!-- Close content-wrapper -->
+    </div> <!-- Close app-shell -->
+
+    <!-- Add/Edit Customer Modal -->
+    <div id="customer-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 id="customer-modal-title">Add Customer</h2>
+                <button class="modal-close" onclick="closeCustomerModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="customer-form">
+                    <input type="hidden" id="customer-modal-id">
+                    
+                    <div class="form-group">
+                        <label for="customer-modal-company">Company Name *</label>
+                        <input 
+                            type="text" 
+                            id="customer-modal-company" 
+                            required 
+                            placeholder="e.g., SpaceX"
+                            style="width: 100%; padding: 12px; border: 1px solid #444; border-radius: 4px; background-color: #2d2d2d; color: #fff;"
+                        >
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 16px;">
+                        <label for="customer-modal-domain">Domain (Optional)</label>
+                        <input 
+                            type="text" 
+                            id="customer-modal-domain" 
+                            placeholder="e.g., spacex.com"
+                            style="width: 100%; padding: 12px; border: 1px solid #444; border-radius: 4px; background-color: #2d2d2d; color: #fff;"
+                        >
+                    </div>
+                    
+                    <div class="modal-actions" style="margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end;">
+                        <button type="button" class="button secondary" onclick="closeCustomerModal()">Cancel</button>
+                        <button type="submit" class="button primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Contact Modal -->
+    <div id="contact-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 id="contact-modal-title">Add Contact</h2>
+                <button class="modal-close" onclick="closeContactModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="contact-form">
+                    <input type="hidden" id="contact-modal-id">
+                    <input type="hidden" id="contact-modal-customer-id">
+                    
+                    <div class="form-group">
+                        <label for="contact-modal-name">Contact Name *</label>
+                        <input 
+                            type="text" 
+                            id="contact-modal-name" 
+                            required 
+                            placeholder="e.g., Bob Smith"
+                            style="width: 100%; padding: 12px; border: 1px solid #444; border-radius: 4px; background-color: #2d2d2d; color: #fff;"
+                        >
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 16px;">
+                        <label for="contact-modal-email">Email</label>
+                        <input 
+                            type="email" 
+                            id="contact-modal-email" 
+                            placeholder="bob@spacex.com"
+                            style="width: 100%; padding: 12px; border: 1px solid #444; border-radius: 4px; background-color: #2d2d2d; color: #fff;"
+                        >
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 16px;">
+                        <label for="contact-modal-phone">Phone</label>
+                        <input 
+                            type="tel" 
+                            id="contact-modal-phone" 
+                            placeholder="(555) 123-4567"
+                            style="width: 100%; padding: 12px; border: 1px solid #444; border-radius: 4px; background-color: #2d2d2d; color: #fff;"
+                        >
+                    </div>
+                    
+                    <div class="modal-actions" style="margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end;">
+                        <button type="button" class="button secondary" onclick="closeContactModal()">Cancel</button>
+                        <button type="submit" class="button primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outcome Wizard Modal (Multi-Page - Progressive Auto-Save) -->
+    <div id="outcome-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 9999; align-items: center; justify-content: center;">
+        <div id="outcome-modal-content" style="background-color: #1a1a1a; border: 2px solid #ffaa00; border-radius: 8px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; padding: 24px;">
+            <!-- Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h2 id="outcome-modal-title" style="color: #ffaa00; margin: 0; font-size: 1.3em;">Quote Outcome</h2>
+                <button onclick="closeWizard()" style="background: none; border: none; color: #aaa; font-size: 1.5em; cursor: pointer; padding: 0; line-height: 1;">&times;</button>
+            </div>
+            
+            <!-- Quote Info -->
+            <div id="outcome-quote-info" style="padding: 12px; background-color: #2a2a2a; border-left: 4px solid #ffaa00; border-radius: 4px; margin-bottom: 24px;">
+                <div style="color: #ffaa00; font-weight: bold; margin-bottom: 4px;">Quote: <span id="outcome-quote-id"></span></div>
+                <div style="color: #ccc; font-size: 0.9em;">Price: $<span id="outcome-quote-price"></span> | Lead: <span id="outcome-quote-leadtime"></span> days | Terms: Net <span id="outcome-quote-terms"></span></div>
+            </div>
+            
+            <!-- PAGE 0: What happened? (Auto-saves immediately) -->
+            <div id="wizard-page-0" style="display: block;">
+                <p style="color: #ccc; margin-bottom: 16px; font-weight: bold;">What happened with this quote?</p>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                    <button onclick="selectOutcome('WON')" style="padding: 20px 12px; background-color: #2a4a2a; border: 2px solid #44ff44; color: #44ff44; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.2s;">
+                        Won
+                    </button>
+                    <button onclick="selectOutcome('LOST')" style="padding: 20px 12px; background-color: #4a2a2a; border: 2px solid #ff4444; color: #ff4444; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.2s;">
+                        Lost
+                    </button>
+                    <button onclick="selectOutcome('NO_RESPONSE')" style="padding: 20px 12px; background-color: #2a2a2a; border: 2px solid #888; color: #888; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.2s;">
+                        No Response
+                    </button>
+                </div>
+            </div>
+            
+            <!-- PAGE 1: Price (Did price need to change?) -->
+            <div id="wizard-page-1" style="display: none;">
+                <p style="color: #ccc; margin-bottom: 16px; font-weight: bold;" id="wizard-p1-question">Did anything need to change in order to win this quote?</p>
+                <div style="margin-bottom: 16px;">
+                    <label for="wizard-price-input" style="display: block; margin-bottom: 8px; color: #ffaa00;">Price:</label>
+                    <input type="number" id="wizard-price-input" step="0.01" min="0"
+                           style="width: 100%; padding: 12px; background-color: #2a2a2a; border: 2px solid #ffaa00; color: #ffffff; border-radius: 4px; font-size: 1.1em; font-weight: bold;">
+                    <div style="font-size: 0.85em; color: #aaa; margin-top: 8px;">
+                        Original quote price pre-filled. If unchanged, we know price stayed the same.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PAGE 2: Lead Time (Did lead time need to change?) -->
+            <div id="wizard-page-2" style="display: none;">
+                <p style="color: #ccc; margin-bottom: 16px; font-weight: bold;">Did the lead time need to change?</p>
+                <div style="margin-bottom: 16px;">
+                    <label for="wizard-leadtime-input" style="display: block; margin-bottom: 8px; color: #ffaa00;">Lead Time (days):</label>
+                    <input type="number" id="wizard-leadtime-input" step="1" min="0"
+                           style="width: 100%; padding: 12px; background-color: #2a2a2a; border: 2px solid #ffaa00; color: #ffffff; border-radius: 4px; font-size: 1.1em; font-weight: bold;">
+                    <div style="font-size: 0.85em; color: #aaa; margin-top: 8px;">
+                        Original lead time pre-filled. If unchanged, we know lead time stayed the same.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PAGE 3: Terms (Did payment terms need to change?) -->
+            <div id="wizard-page-3" style="display: none;">
+                <p style="color: #ccc; margin-bottom: 16px; font-weight: bold;">Did the terms need to change?</p>
+                <div style="margin-bottom: 16px;">
+                    <label for="wizard-terms-input" style="display: block; margin-bottom: 8px; color: #ffaa00;">Payment Terms (Net Days):</label>
+                    <input type="number" id="wizard-terms-input" step="1" min="0"
+                           style="width: 100%; padding: 12px; background-color: #2a2a2a; border: 2px solid #ffaa00; color: #ffffff; border-radius: 4px; font-size: 1.1em; font-weight: bold;">
+                    <div style="font-size: 0.85em; color: #aaa; margin-top: 8px;">
+                        Original payment terms pre-filled. If unchanged, we know terms stayed the same.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PAGE 4: Other Notes -->
+            <div id="wizard-page-4" style="display: none;">
+                <p style="color: #ccc; margin-bottom: 16px; font-weight: bold;">Other notes (optional):</p>
+                <div style="margin-bottom: 16px;">
+                    <textarea id="wizard-other-input" placeholder="Any additional context..."
+                              style="width: 100%; padding: 12px; background-color: #2a2a2a; border: 1px solid #444; color: #ffffff; border-radius: 4px; font-size: 1em; min-height: 100px; font-family: inherit;"></textarea>
+                    <div style="font-size: 0.85em; color: #aaa; margin-top: 8px;">
+                        Completely optional. Helps train the system and owner.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Buttons (Pages 1-4) -->
+            <div id="wizard-nav" style="display: none; margin-top: 24px; border-top: 1px solid #333; padding-top: 24px;">
+                <div style="display: flex; gap: 12px;">
+                    <button id="wizard-back-btn" onclick="wizardBack()" style="flex: 1; padding: 12px; background-color: transparent; border: 1px solid #888; color: #ccc; border-radius: 4px; cursor: pointer; font-size: 1em;">
+                        ← Back
+                    </button>
+                    <button id="wizard-skip-btn" onclick="wizardSkip()" style="flex: 1; padding: 12px; background-color: transparent; border: 1px solid #888; color: #888; border-radius: 4px; cursor: pointer; font-size: 1em;">
+                        Skip
+                    </button>
+                    <button id="wizard-next-btn" onclick="wizardNext()" style="flex: 2; padding: 12px; background-color: #ffaa00; border: none; color: #1a1a1a; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1em;">
+                        Next →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+
+```

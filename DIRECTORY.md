@@ -2,7 +2,7 @@
 doc_id: directory
 doc_type: spec
 status: active
-version: 1.8
+version: 2.0
 date: 2026-01-18
 owner: Erik
 authoring_agent: cursor
@@ -87,6 +87,7 @@ Authority lives in files, not in chat.
 - `bootstrap/CONSTITUTION_MISREAD_TEST.md`
 - `integrator/INTEGRATOR_HOME.md`
 - `inbox/INBOX.md`
+- `obligations/OBLIGATIONS.md`
 
 ---
 
@@ -94,8 +95,18 @@ Authority lives in files, not in chat.
 - `context/STATE_LEDGER_MANIFESTO.md`
 - `context/CONSTITUTION_RULE_MAP.md`
 - `architecture/ARCHITECTURE_INDEX.md`
+- `architecture/NAVIGATION_INDEX.md`
 - `architecture/PROMOTION_CHECKLIST.md`
+- `packs/ARCHITECT.md`
+- `packs/BUILDER.md`
+- `packs/UI_UX.md`
+- `packs/OPS.md`
+- `packs/CUTTER.md`
+- `packs/STATE.md`
+- `packs/GUILD.md`
 - `quarantine/QUARANTINE_INDEX.md`
+- `quarantine/CLASSIFICATION_LOG.md`
+- `quarantine/REMAINDER_MANIFEST.md`
 
 ---
 
