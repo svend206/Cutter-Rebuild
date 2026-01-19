@@ -2,7 +2,7 @@
 doc_id: report_data_schema_facts
 doc_type: context
 status: active
-version: 1.3
+version: 1.4
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -36,6 +36,8 @@ tags: [report, schema, context]
   Evidence: `database.py` (`get_connection` uses `PRAGMA journal_mode=WAL`)
 - Append-only enforcement for `cutter__events` and `state__declarations` via triggers.
   Evidence: `scripts/reset_db.py` (CREATE TRIGGER statements), `ops_layer/preflight.py` (required trigger checks)
+- Guild export bookkeeping stored in ops quote history only.
+  Evidence: `database.py` (`ops__quote_history` columns, `mark_as_exported`), `scripts/reset_db.py`
 - Preflight fails if required tables or triggers are missing.
   Evidence: `ops_layer/preflight.py` (`REQUIRED_TABLES`, `REQUIRED_TRIGGERS`)
 - Evidence references are stored as inert metadata.

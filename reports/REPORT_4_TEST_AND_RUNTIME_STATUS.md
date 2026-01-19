@@ -2,7 +2,7 @@
 doc_id: report_test_runtime_status
 doc_type: context
 status: active
-version: 1.5
+version: 1.6
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -36,12 +36,18 @@ tags: [report, tests, runtime, context]
   Evidence: `tests/test_pdf_generation.py`
 - Operational event emission/query behavior.
   Evidence: `tests/test_operational_events.py`, `tests/test_query_cli_readonly.py`
+- Cutter Ledger boundary rejects evaluative event types.
+  Evidence: `tests/test_cutter_boundary.py`
+- Ledger query CLI read-only enforcement.
+  Evidence: `tests/test_query_cli_readonly.py`
 - Ops mode execution guard.
   Evidence: `tests/test_ops_mode_guard.py`
 - State time-in-state view.
   Evidence: `tests/test_state_time_in_state.py`
 - State evidence references.
   Evidence: `tests/test_state_evidence_refs.py`
+- State ledger ownership + refusals.
+  Evidence: `tests/test_phase5_state_ledger.py`
 - Unclosed quotes elapsed-time visibility.
   Evidence: `tests/test_unclosed_quotes_age.py`
 - Guild export payload provenance.

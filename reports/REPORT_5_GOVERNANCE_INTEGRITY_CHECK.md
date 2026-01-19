@@ -2,7 +2,7 @@
 doc_id: report_governance_integrity_check
 doc_type: context
 status: active
-version: 1.0
+version: 1.1
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -39,6 +39,12 @@ tags: [report, governance, context]
 ## Navigation/Index Docs Are Pointers (Context Only)
 - Navigation index explicitly states non-binding guidance.
   Evidence: `architecture/NAVIGATION_INDEX.md`
+
+## Authority Registry and Context Boundaries
+- `DIRECTORY.md` is the authority registry and load order for all authoritative docs.
+  Evidence: `DIRECTORY.md`
+- Context documents are non-authoritative and do not govern behavior.
+  Evidence: `constitution/CORE_DOC_GOVERNANCE.md`, `DIRECTORY.md`
 
 ## Violations
 - None found in repository artifacts reviewed for this report.

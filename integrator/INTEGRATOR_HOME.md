@@ -24,6 +24,7 @@ This is the single status surface.
 - (none)
 
 ## Recently Completed
+- Updated reports to cover MVP-3/7/8/9
 - Implemented MVP-8 Guild export constraints
 - Implemented MVP-10 absence-of-action preservation
 - Implemented MVP-6 inert evidence references
@@ -33,10 +34,6 @@ This is the single status surface.
 - Added MVP gap analysis context
 - Added MVP capability definition spec
 - Committed rebuild intake (excluding data + caches)
-- Enforced ops mode separation with explicit ops_mode, guard, isolation, and tests
-- Added `ops_layer/mode_seperation.md` spec and registered in `DIRECTORY.md`
-- Required boot contract read in `.cursorrules`
-- Generated project status reports in `reports/`
 
 Notes:
 - Keep "Current" capped at 3 items.

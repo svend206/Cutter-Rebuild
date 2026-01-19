@@ -2,7 +2,7 @@
 doc_id: report_current_capability_inventory
 doc_type: context
 status: active
-version: 1.5
+version: 1.6
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -61,8 +61,14 @@ tags: [report, capability, context]
   Evidence: `ops_layer/app.py` (`/export_guild_packet`), `tests/test_guild_export_payload.py`
 - System can report pending exports count (user-visible/API).
   Evidence: `ops_layer/app.py` (`/pending_exports`)
+- Guild export records are written as a file and export bookkeeping only.
+  Evidence: `ops_layer/app.py` (`/export_guild_packet`), `database.py` (`mark_as_exported`)
 - System can emit and query operational exhaust (internal/API).
   Evidence: `ops_layer/app.py` (`/ops/carrier_handoff`, `/api/cutter/dwell-vs-expectation`)
+- Cutter Ledger refuses evaluative event types (no meaning assignment).
+  Evidence: `cutter_ledger/boundary.py`, `tests/test_cutter_boundary.py`
+- Ledger query CLI is read-only and returns raw JSON.
+  Evidence: `scripts/ledger_query_cli.py`, `tests/test_query_cli_readonly.py`
 - System can list unclosed quotes with elapsed time since creation.
   Evidence: `database.py` (`get_unclosed_quotes`), `ops_layer/app.py` (`/api/unclosed_quotes`)
 - System can query State Ledger open deadlines (internal/API).
@@ -73,6 +79,8 @@ tags: [report, capability, context]
   Evidence: `state_ledger/queries.py` (`query_time_in_state`), `scripts/ledger_query_cli.py`
 - System can attach inert evidence references to state declarations (internal/API).
   Evidence: `state_ledger/boundary.py` (`emit_state_declaration`), `tests/test_state_evidence_refs.py`
+- State ledger refuses auto-generated declarations and silent continuity.
+  Evidence: `state_ledger/boundary.py`, `tests/test_phase5_state_ledger.py`
 - System can run database reset and bootstrap (internal/script).
   Evidence: `scripts/reset_db.py`
 - System can run ledger query CLI (internal/script).
