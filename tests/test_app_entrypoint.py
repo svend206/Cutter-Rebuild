@@ -26,7 +26,7 @@ class AppEntrypointTests(unittest.TestCase):
         self.assertEqual(payload.get("status"), "ok")
 
     def test_system_health_endpoint(self) -> None:
-        response = self.client.get("/api/system/health")
+        response = self.client.get("/api/system/health", headers={"X-Ops-Mode": "planning"})
         self.assertEqual(response.status_code, 200)
         payload = response.get_json()
         self.assertIsNotNone(payload)

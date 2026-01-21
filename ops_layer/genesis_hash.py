@@ -54,6 +54,23 @@ def generate_genesis_hash(volume: float, dimensions: Tuple[float, float, float])
     return genesis_hash
 
 
+def validate_genesis_hash(value: str) -> bool:
+    """
+    Validate a Genesis Hash string.
+
+    Must be 64 hex characters.
+    """
+    if not isinstance(value, str):
+        return False
+    if len(value) != 64:
+        return False
+    try:
+        int(value, 16)
+    except ValueError:
+        return False
+    return True
+
+
 def generate_from_trimesh(mesh) -> Tuple[str, float, Tuple[float, float, float]]:
     """
     Generate Genesis Hash from a trimesh object (File Mode).

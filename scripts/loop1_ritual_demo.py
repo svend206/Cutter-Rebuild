@@ -17,7 +17,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from state_ledger import queries as state_queries
 from ops_layer.ledger_events import emit_carrier_handoff
-import database
 
 
 def reset_demo_db(db_path: Path) -> None:
@@ -61,6 +60,11 @@ def main() -> int:
         db_path = Path(temp_dir) / "test_loop1_ritual_demo.db"
 
     os.environ["TEST_DB_PATH"] = str(db_path)
+    import contextlib
+    with contextlib.redirect_stdout(sys.stderr):
+        import database
+        import importlib
+        importlib.reload(database)
     database.require_test_db("loop1_ritual_demo")
 
     reset_demo_db(db_path)

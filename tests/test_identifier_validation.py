@@ -242,6 +242,7 @@ class TestBoundaryIntegration(unittest.TestCase):
                 declaration_kind TEXT NOT NULL CHECK (declaration_kind IN ('REAFFIRMATION','RECLASSIFICATION')),
                 supersedes_declaration_id INTEGER,
                 cutter_evidence_ref TEXT,
+                evidence_refs_json TEXT DEFAULT '[]',
                 FOREIGN KEY (entity_ref) REFERENCES state__entities(entity_ref)
             );
             
@@ -453,6 +454,7 @@ class TestMultiGuildScenario(unittest.TestCase):
                 declaration_kind TEXT NOT NULL CHECK (declaration_kind IN ('REAFFIRMATION','RECLASSIFICATION')),
                 supersedes_declaration_id INTEGER,
                 cutter_evidence_ref TEXT,
+                evidence_refs_json TEXT DEFAULT '[]',
                 FOREIGN KEY (entity_ref) REFERENCES state__entities(entity_ref)
             );
         """)

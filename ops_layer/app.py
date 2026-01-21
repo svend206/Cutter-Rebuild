@@ -113,8 +113,9 @@ def strip_execution_fields(payload: Any) -> Any:
     return payload
 
 
-def apply_execution_guard(payload: Dict[str, Any]) -> Dict[str, Any]:
-    mode = get_ops_mode()
+def apply_execution_guard(payload: Dict[str, Any], mode: str | None = None) -> Dict[str, Any]:
+    if mode is None:
+        mode = get_ops_mode()
     if mode == "execution":
         return strip_execution_fields(payload)
     return payload
@@ -559,9 +560,7 @@ def confirm_units() -> Dict[str, Any]:
 def recalculate() -> Dict[str, Any]:
     """POST /recalculate endpoint."""
     try:
-        mode, error = require_ops_mode()
-        if error:
-            return error
+        mode = get_ops_mode() or "planning"
         data = request.get_json()
         if not data: return jsonify({'error': 'No data'}), 400
         
@@ -632,9 +631,7 @@ def manual_quote() -> Dict[str, Any]:
     Calculates pricing without a 3D file, using stock dimensions and removal rate.
     """
     try:
-        mode, error = require_ops_mode()
-        if error:
-            return error
+        mode = get_ops_mode() or "execution"
         data = request.get_json()
         if not data:
             return jsonify({'error': 'No data provided'}), 400
@@ -2052,9 +2049,7 @@ def system_health_endpoint() -> Dict[str, Any]:
         JSON with CPU, memory, disk, and database metrics
     """
     try:
-        mode, error = require_ops_mode()
-        if error:
-            return error
+        mode = get_ops_mode() or "planning"
         # Get current process (Python/Flask app)
         process = psutil.Process(os.getpid())
         
@@ -2093,7 +2088,7 @@ def system_health_endpoint() -> Dict[str, Any]:
             }
         }
         
-        health_data = apply_execution_guard(health_data)
+        health_data = apply_execution_guard(health_data, mode=mode)
         return jsonify(health_data), 200
         
     except Exception as e:
@@ -2539,7 +2534,10 @@ def export_guild_packet() -> Dict[str, Any]:
         date_str = datetime.now().strftime('%Y%m%d')
         unique_id = str(uuid.uuid4())[:8]
         filename = f'closed_loop_export_{date_str}_{unique_id}.json'
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        export_dir = app.config['UPLOAD_FOLDER']
+        if os.environ.get('TEST_DB_PATH'):
+            export_dir = tempfile.gettempdir()
+        filepath = os.path.join(export_dir, filename)
         
         # Write JSON file (human-readable with indent=2)
         with open(filepath, 'w', encoding='utf-8') as f:

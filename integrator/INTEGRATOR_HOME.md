@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 4.7
+version: 4.9
 date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
@@ -24,16 +24,16 @@ This is the single status surface.
 - (none)
 
 ## Recently Completed
-- Created MVP v2.0 rebaseline declaration
-- Created MVP v2.0 coverage assertion table
-- Updated plan inputs gap map for MVP v2.0
-- Updated MVP verification gap analysis for MVP v2.0
-- Updated UI sufficiency matrix for MVP v2.0
-- Added MVP-12/13/14/15 UI verification specs
-- Added MVP-15 refusal surface verification
-- Updated locked MVP definition to v2.0
-- Revised UI verification spec for MVP-1
-- Added UI verification loop checklist
+- Completed ops_mode default constitutional compat check
+- Published ops_mode default compat report
+- Audit gate + tests pass post-remediation
+- Remediated audit gate + tests post-rebaseline
+- Audit gate passed (audit-2026-01-21)
+- Published audit gate remediation plan
+- Published test remediation log
+- Published repo green status report
+- Completed post-rebaseline validation and gate pass
+- Published doc integrity report (post-rebaseline)
 
 Notes:
 - Keep "Current" capped at 3 items.

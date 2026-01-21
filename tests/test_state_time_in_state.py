@@ -38,6 +38,7 @@ class TestStateTimeInState(unittest.TestCase):
                 extra.unlink()
 
     def test_time_in_state_returns_latest_declaration(self):
+        os.environ["TEST_DB_PATH"] = str(self.test_db_path)
         entity_ref = "org:acme/entity:project:alpha"
         scope_ref = "org:acme/scope:weekly"
         actor_ref = "org:acme/actor:owner"

@@ -79,6 +79,7 @@ class TestQueryCLIReadOnly(unittest.TestCase):
                 declared_at TEXT NOT NULL DEFAULT (datetime('now')),
                 supersedes_declaration_id INTEGER,
                 cutter_evidence_ref TEXT,
+                evidence_refs_json TEXT DEFAULT '[]',
                 classification TEXT
             )
         """)

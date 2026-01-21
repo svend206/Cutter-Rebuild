@@ -13,12 +13,13 @@ from typing import Optional, List, Dict, Any
 
 
 # Support TEST_DB_PATH for hermetic testing
-DB_PATH = Path(os.environ.get("TEST_DB_PATH", "cutter.db"))
+def resolve_db_path() -> Path:
+    return Path(os.environ.get("TEST_DB_PATH", "cutter.db"))
 
 
 def get_connection() -> sqlite3.Connection:
     """Get database connection with row factory."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(resolve_db_path())
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON;")
     return conn

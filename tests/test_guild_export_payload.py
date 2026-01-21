@@ -19,6 +19,7 @@ from ops_layer import app as app_module
 class GuildExportPayloadTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        os.environ["TEST_DB_PATH"] = str(TEST_DB_PATH)
         cls.client = app_module.app.test_client()
 
     def test_export_requires_actor_ref(self) -> None:
@@ -26,6 +27,7 @@ class GuildExportPayloadTests(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_export_payload_includes_provenance(self) -> None:
+        os.environ["TEST_DB_PATH"] = str(TEST_DB_PATH)
         conn = sqlite3.connect(str(TEST_DB_PATH))
         cursor = conn.cursor()
         cursor.execute("""

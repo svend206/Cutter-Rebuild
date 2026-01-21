@@ -2,7 +2,7 @@
 doc_id: directory
 doc_type: spec
 status: active
-version: 3.5
+version: 3.8
 date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
@@ -129,6 +129,13 @@ Authority lives in files, not in chat.
 - `reports/REPORT_3_DATA_AND_SCHEMA_FACTS.md`
 - `reports/REPORT_4_TEST_AND_RUNTIME_STATUS.md`
 - `reports/REPORT_5_GOVERNANCE_INTEGRITY_CHECK.md`
+- `reports/REPORT_6_DOC_INTEGRITY_POST_REBASELINE_20260121_141758.md`
+- `reports/REPORT_7_GATE_TEST_POST_REBASELINE_20260121_141758.md`
+- `reports/REPORT_8_READY_TO_IMPLEMENT_READOUT_20260121_141758.md`
+- `reports/REPORT_9_AUDIT_GATE_REMEDIATION_PLAN_20260121_142350.md`
+- `reports/REPORT_10_TEST_REMEDIATION_LOG_20260121_142350.md`
+- `reports/REPORT_11_REPO_GREEN_STATUS_20260121_144518.md`
+- `reports/REPORT_12_OPS_MODE_DEFAULT_COMPAT_CHECK_20260121_145011.md`
 - `scripts/README.md`
 - `tests/README.md`
 - `packs/ARCHITECT.md`

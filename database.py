@@ -75,7 +75,7 @@ def resolve_db_path() -> Path:
     return DB_PATH
 
 def get_connection() -> sqlite3.Connection:
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(resolve_db_path())
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL;")  # CRITICAL: Constitution Rule #2
     return conn
@@ -328,6 +328,9 @@ def initialize_database() -> None:
     add_column_safe('ops__quote_history', 'handling_time', 'REAL')
     add_column_safe('ops__quote_history', 'win_notes', 'TEXT')
     add_column_safe('ops__quote_history', 'closed_at', 'TEXT')
+
+    # Migrate State Ledger declarations (if table exists)
+    add_column_safe('state__declarations', 'evidence_refs_json', "TEXT DEFAULT '[]'")
 
     conn.commit()
     conn.close()

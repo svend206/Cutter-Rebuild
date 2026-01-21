@@ -86,6 +86,17 @@ def create_fresh_db(db_path: Path):
     
     # Ensure parent directory exists
     db_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Remove existing test DB to guarantee clean slate
+    path_str = str(db_path).lower()
+    if db_path.exists() and ("test" in path_str or "tests" in db_path.parts):
+        db_path.unlink()
+        wal_path = Path(str(db_path) + "-wal")
+        shm_path = Path(str(db_path) + "-shm")
+        if wal_path.exists():
+            wal_path.unlink()
+        if shm_path.exists():
+            shm_path.unlink()
     
     # Create all tables directly - more reliable than module reloading
     import sqlite3
