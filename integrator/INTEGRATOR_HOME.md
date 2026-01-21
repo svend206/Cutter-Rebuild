@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 4.9
+version: 5.1
 date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
@@ -24,6 +24,9 @@ This is the single status surface.
 - (none)
 
 ## Recently Completed
+- Implemented MVP-12 reconciliation (loop 1)
+- Published MVP-12 verification evidence report
+- Published MVP-12 minimal delta definition
 - Completed ops_mode default constitutional compat check
 - Published ops_mode default compat report
 - Audit gate + tests pass post-remediation
@@ -31,9 +34,6 @@ This is the single status surface.
 - Audit gate passed (audit-2026-01-21)
 - Published audit gate remediation plan
 - Published test remediation log
-- Published repo green status report
-- Completed post-rebaseline validation and gate pass
-- Published doc integrity report (post-rebaseline)
 
 Notes:
 - Keep "Current" capped at 3 items.

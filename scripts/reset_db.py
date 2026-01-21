@@ -280,6 +280,18 @@ def create_fresh_db(db_path: Path):
                 category TEXT DEFAULT 'General'
             )
         """)
+
+        # ops__reconciliations (MVP-12)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS ops__reconciliations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                scope_ref TEXT NOT NULL,
+                scope_kind TEXT NOT NULL CHECK (scope_kind IN ('query', 'report')),
+                predicate_text TEXT NOT NULL,
+                actor_ref TEXT NOT NULL,
+                reconciled_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
         
         # Create Cutter Ledger tables (reuse connection)
         if conn is None or not hasattr(conn, 'cursor'):

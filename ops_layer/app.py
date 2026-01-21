@@ -2102,6 +2102,54 @@ def system_health_endpoint() -> Dict[str, Any]:
         }), 500
 
 
+# --- MVP-12: Explicit, Query-Scoped Reconciliation ---
+@app.route('/api/reconcile', methods=['POST'])
+def reconcile_scope() -> Dict[str, Any]:
+    """
+    POST /api/reconcile
+
+    Records an explicit, query-scoped reconciliation (MVP-12).
+    """
+    try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
+        if mode != "planning":
+            return jsonify({'error': 'reconciliation requires ops_mode planning'}), 400
+
+        payload = request.get_json(silent=True) or {}
+        scope_ref = payload.get('scope_ref')
+        scope_kind = payload.get('scope_kind')
+        predicate_text = payload.get('predicate_text')
+        actor_ref = payload.get('actor_ref')
+
+        if not scope_ref or not scope_kind or not predicate_text or not actor_ref:
+            return jsonify({'error': 'scope_ref, scope_kind, predicate_text, and actor_ref are required'}), 400
+        if scope_kind not in {"query", "report"}:
+            return jsonify({'error': 'scope_kind must be query or report'}), 400
+
+        scope_valid, scope_error = state_validation.validate_scope_ref(scope_ref)
+        if not scope_valid:
+            return jsonify({'error': f'scope_ref invalid: {scope_error}'}), 400
+
+        actor_valid, actor_error = state_validation.validate_actor_ref(actor_ref)
+        if not actor_valid:
+            return jsonify({'error': f'actor_ref invalid: {actor_error}'}), 400
+
+        record = database.record_reconciliation(
+            scope_ref=scope_ref,
+            scope_kind=scope_kind,
+            predicate_text=predicate_text,
+            actor_ref=actor_ref
+        )
+        return jsonify({
+            'success': True,
+            'reconciliation': record
+        }), 200
+    except Exception as e:
+        return jsonify({'error': f'Failed to record reconciliation: {str(e)}'}), 500
+
+
 # --- IDENTITY INTEGRATION (PHASE 4 - CUSTOMER & CONTACT MANAGEMENT) ---
 # PHASE 1 REMEDIATION: "Guild Intelligence" label removed - this is Ops functionality
 

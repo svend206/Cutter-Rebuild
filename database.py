@@ -275,6 +275,18 @@ def initialize_database() -> None:
             category TEXT DEFAULT 'General'
         )
     ''')
+
+    # 10. Query-scoped reconciliation records (MVP-12)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS ops__reconciliations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            scope_ref TEXT NOT NULL,
+            scope_kind TEXT NOT NULL CHECK (scope_kind IN ('query', 'report')),
+            predicate_text TEXT NOT NULL,
+            actor_ref TEXT NOT NULL,
+            reconciled_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
     
     # --- MIGRATIONS (Ensure columns exist on legacy/existing DBs) ---
     
@@ -979,6 +991,34 @@ def get_all_tags() -> List[Dict[str, Any]]:
         tag_dict['default_markup'] = tag_dict.get('impact_value', 0) if tag_dict.get('impact_type') == 'price_markup_percent' else 0
         tags.append(tag_dict)
     return tags
+
+
+def record_reconciliation(
+    scope_ref: str,
+    scope_kind: str,
+    predicate_text: str,
+    actor_ref: str
+) -> Dict[str, Any]:
+    """
+    Record an explicit, query-scoped reconciliation entry (MVP-12).
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO ops__reconciliations
+        (scope_ref, scope_kind, predicate_text, actor_ref)
+        VALUES (?, ?, ?, ?)
+    """, (scope_ref, scope_kind, predicate_text, actor_ref))
+    reconciliation_id = cursor.lastrowid
+    cursor.execute("""
+        SELECT id, scope_ref, scope_kind, predicate_text, actor_ref, reconciled_at
+        FROM ops__reconciliations
+        WHERE id = ?
+    """, (reconciliation_id,))
+    row = cursor.fetchone()
+    conn.commit()
+    conn.close()
+    return dict(row) if row else {}
 
 def create_custom_tag(name: str, impact_type: str, impact_value: float, persistence_type: str = 'transient', category: str = 'General') -> int:
     conn = get_connection()
