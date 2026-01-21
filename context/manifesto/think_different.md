@@ -1,19 +1,17 @@
 ---
-doc_id: quarantine_think_different
+doc_id: cutter_layers_think_different
 doc_type: context
-status: quarantined
+status: active
 version: 1.0
-date: 2026-01-18
+date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
 supersedes: []
 superseded_by: []
 authoritative_sources: []
 conflicts_with: []
-tags: [quarantine]
+tags: [manifesto, context]
 ---
-
-Source: Cutter Layers/canon/manifesto/think_different.md
 
 # Cutter Layers — Think Different
 

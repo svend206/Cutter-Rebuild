@@ -1,8 +1,8 @@
 ---
 doc_id: mvp_gap_analysis
-doc_type: context
-status: active
-version: 1.5
+doc_type: archive
+status: archived
+version: 1.6
 date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
@@ -10,10 +10,12 @@ supersedes: []
 superseded_by: []
 authoritative_sources: [reports/REPORT_1_CURRENT_CAPABILITY_INVENTORY.md, reports/REPORT_2_SYSTEM_SURFACES_AND_ENTRYPOINTS.md, reports/REPORT_3_DATA_AND_SCHEMA_FACTS.md, reports/REPORT_4_TEST_AND_RUNTIME_STATUS.md, reports/REPORT_5_GOVERNANCE_INTEGRITY_CHECK.md]
 conflicts_with: []
-tags: [mvp, gap, planning, context]
+tags: [mvp, gap, planning, context, archive]
 ---
 
 # MVP Gap Analysis — Current State vs Locked MVP
+
+Archived from `architecture/MVP Gap Analysis.md` on 2026-01-19.
 
 **Status:** Active
 

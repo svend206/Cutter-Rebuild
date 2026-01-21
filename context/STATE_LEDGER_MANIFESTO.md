@@ -2,8 +2,8 @@
 doc_id: state_ledger_manifesto
 doc_type: context
 status: active
-version: 1.0
-date: 2026-01-18
+version: 1.2
+date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
 supersedes: []

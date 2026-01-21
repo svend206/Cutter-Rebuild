@@ -2,8 +2,8 @@
 doc_id: core_ledger_ux
 doc_type: constitution
 status: locked
-version: 1.1
-date: 2026-01-18
+version: 1.2
+date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
 supersedes: []
@@ -36,6 +36,8 @@ Must not show:
 Recognition must be ceremonial.  
 Checkboxes are forbidden.
 
+When judgment is involved, stability (pinned reality) is preferred over twitching freshness. <!-- Invariant 6 -->
+
 ---
 
 ## Cutter Ledger UX
@@ -67,3 +69,8 @@ If a user can say:
 The UX has violated the constitution.
 
 Boundary directionality is defined in `constitution/CORE_LEDGER_BOUNDARY.md`.
+
+---
+
+## Summary of Amendments
+- Added stability-over-freshness rule for judgment surfaces (Invariant 6).

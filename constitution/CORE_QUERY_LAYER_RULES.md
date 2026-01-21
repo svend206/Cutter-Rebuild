@@ -2,8 +2,8 @@
 doc_id: core_query_layer_rules
 doc_type: constitution
 status: locked
-version: 1.1
-date: 2026-01-18
+version: 1.2
+date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
 supersedes: []
@@ -47,6 +47,11 @@ Examples of allowed predicates:
 - `timestamp within range R`
 
 The query layer may never invent predicates.
+
+---
+
+## Reconciliation Scope
+Reconciliation is a query-scoped operation bound to its predicate. The system must not maintain or present a global reconciliation state. <!-- Invariant 1 -->
 
 ---
 
@@ -111,3 +116,8 @@ If yes, the feature violates this constitution.
 ## Final Constraint
 The query layer exists to preserve epistemic integrity.
 Convenience must never override consequence-bound interpretation.
+
+---
+
+## Summary of Amendments
+- Added reconciliation scope rule (Invariant 1).

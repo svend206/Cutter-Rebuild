@@ -2,8 +2,8 @@
 doc_id: directory
 doc_type: spec
 status: active
-version: 2.9
-date: 2026-01-18
+version: 3.5
+date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
 supersedes: []
@@ -101,9 +101,25 @@ Authority lives in files, not in chat.
 ## D. Context (Non-Authoritative)
 - `context/STATE_LEDGER_MANIFESTO.md`
 - `context/CONSTITUTION_RULE_MAP.md`
+- `context/MVP_CAPABILITIES_LOCKED.md`
+- `context/MVP_V2_REBASELINE_DECLARATION.md`
+- `context/MVP_V2_COVERAGE_ASSERTION_TABLE.md`
+- `context/UI_REALITY_REPORT.md`
+- `context/UI_SUFFICIENCY_MATRIX_FOR_MVP.md`
+- `context/PLAN_INPUTS_GAP_MAP.md`
+- `context/MVP_VERIFICATION_GAP_ANALYSIS.md`
+- `context/UI_Verification_Loop_Checklist.md`
+- `context/UI_VERIFICATION_SPEC_MVP-1.md`
+- `context/UI_VERIFICATION_SPEC_MVP-12.md`
+- `context/UI_VERIFICATION_SPEC_MVP-13.md`
+- `context/UI_VERIFICATION_SPEC_MVP-14.md`
+- `context/UI_VERIFICATION_SPEC_MVP-15.md`
+- `context/MVP_15_REFUSAL_SURFACE_VERIFICATION.md`
+- `context/manifesto/CORE_MANIFESTO.md`
+- `context/manifesto/# Cannot Outsource Risk.md`
+- `context/manifesto/think_different.md`
+- `context/manifesto/Why Cutter.md`
 - `architecture/ARCHITECTURE_INDEX.md`
-- `architecture/MVP Gap Analysis.md`
-- `architecture/MVP Plan.md`
 - `architecture/SCHEMA_REFERENCE.md`
 - `architecture/NAVIGATION_INDEX.md`
 - `architecture/NAVIGATION_DRIFT_REPORT.md`
@@ -122,15 +138,15 @@ Authority lives in files, not in chat.
 - `packs/CUTTER.md`
 - `packs/STATE.md`
 - `packs/GUILD.md`
-- `quarantine/QUARANTINE_INDEX.md`
-- `quarantine/CLASSIFICATION_LOG.md`
-- `quarantine/REMAINDER_MANIFEST.md`
 
 ---
 
 ## E. Archive (Non-Authoritative)
 - `archive/DECISION_LOG.md`
 - `archive/CLEAN_REBUILD_EXECUTION_PLAN.md`
+- `archive/MVP Gap Analysis.md`
+- `archive/MVP Plan.md`
+- `archive/mvp-to-mvp-plan_c1dc08dc.plan.md`
 - `archive/Docs/_archive/Constitution/Cutter — Canon.md`
 - `archive/Docs/_archive/Constitution/Cutter — Exclusions.md`
 - `archive/Docs/_archive/Constitution/Cutter — Normal Operating Conditions.md`

@@ -2,8 +2,8 @@
 doc_id: guild_allowed_questions_and_exhaust_map
 doc_type: constitution
 status: locked
-version: 1.1
-date: 2026-01-18
+version: 1.2
+date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
 supersedes: []
@@ -98,6 +98,8 @@ Effort signals must be coarse (time buckets, revision counts)
 - Quoted vs actual runtime variance
 - Promised vs delivered variance
 - Where execution risk is highest
+
+Risk here refers to variance distributions by category, not shop scoring, blame, or performance evaluation. <!-- Ambiguity resolved: no implicit scoring/blame -->
 
 ---
 

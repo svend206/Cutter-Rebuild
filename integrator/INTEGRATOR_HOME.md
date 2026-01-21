@@ -2,8 +2,8 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 3.7
-date: 2026-01-18
+version: 4.7
+date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
 supersedes: []
@@ -24,16 +24,16 @@ This is the single status surface.
 - (none)
 
 ## Recently Completed
-- Updated reports to cover MVP-3/7/8/9
-- Implemented MVP-8 Guild export constraints
-- Implemented MVP-10 absence-of-action preservation
-- Implemented MVP-6 inert evidence references
-- Implemented MVP-5 explicit reaffirmation continuity
-- Refreshed reports and updated MVP gap analysis
-- Added MVP plan context document
-- Added MVP gap analysis context
-- Added MVP capability definition spec
-- Committed rebuild intake (excluding data + caches)
+- Created MVP v2.0 rebaseline declaration
+- Created MVP v2.0 coverage assertion table
+- Updated plan inputs gap map for MVP v2.0
+- Updated MVP verification gap analysis for MVP v2.0
+- Updated UI sufficiency matrix for MVP v2.0
+- Added MVP-12/13/14/15 UI verification specs
+- Added MVP-15 refusal surface verification
+- Updated locked MVP definition to v2.0
+- Revised UI verification spec for MVP-1
+- Added UI verification loop checklist
 
 Notes:
 - Keep "Current" capped at 3 items.

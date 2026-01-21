@@ -2,8 +2,8 @@
 doc_id: ops_canon
 doc_type: constitution
 status: locked
-version: 1.0
-date: 2026-01-18
+version: 1.2
+date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
 supersedes: []
@@ -65,6 +65,8 @@ Immutable records emitted by Ops representing:
 - role identity
 - non-occurrence where applicable
 
+Capture is a byproduct of work, never an explanation of it. <!-- Invariant 3 -->
+
 **Domain Meaning**  
 Industry- or context-specific semantics required to perform work.
 
@@ -123,6 +125,21 @@ or avoidance of accumulated discomfort.
 
 ---
 
+### O6 — Execution and Planning Are Separate
+Execution and planning are distinct cognitive modes and must be structurally separated. <!-- Invariant 5 -->
+
+---
+
+### O7 — Execution Does Not Wait
+Execution must never wait for reconciliation, analysis, or settlement. <!-- Ambiguity resolved: no blocking on settlement -->
+
+---
+
+### O8 — No Explanation Gate
+Execution may not be gated on required explanation. <!-- Ambiguity resolved: no required explanation during execution -->
+
+---
+
 ## Failure Conditions
 Ops is constitutionally failed if it:
 - Allows action without emitting exhaust
@@ -178,3 +195,11 @@ without continuity of narrative.
 Ops exists to keep work moving.
 It is constitutionally forbidden
 from deciding what that movement means.
+
+---
+
+## Summary of Amendments
+- Stated capture as a byproduct of work (Invariant 3).
+- Added execution/planning separation constraint (Invariant 5).
+- Added non-blocking execution constraint (Invariant 2).
+- Clarified no blocking on settlement and no explanation gate.

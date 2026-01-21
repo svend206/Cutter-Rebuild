@@ -1,19 +1,17 @@
 ---
-doc_id: quarantine_cannot_outsource_risk
+doc_id: cannot_outsource_risk
 doc_type: context
-status: quarantined
+status: active
 version: 1.0
-date: 2026-01-18
+date: 2026-01-19
 owner: Erik
 authoring_agent: cursor
 supersedes: []
 superseded_by: []
 authoritative_sources: []
 conflicts_with: []
-tags: [quarantine]
+tags: [manifesto, context]
 ---
-
-Source: Cutter Layers/canon/manifesto/# Cannot Outsource Risk.md
 
 # Cannot Outsource Risk
 
