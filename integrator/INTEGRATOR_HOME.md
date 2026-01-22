@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 6.0
+version: 6.1
 date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
@@ -18,12 +18,14 @@ tags: [integrator, status]
 This is the single status surface.
 
 ## Current
-- Harden MVP-15 refusal + checkpoint
+- (none)
 
 ## Next
 - (none)
 
 ## Recently Completed
+- Published MVP-15 hardened checkpoint report
+- Hardened MVP-15 refusal boundary + tests
 - Published MVP-15 verification evidence report
 - Defined MVP-15 minimal refusal surface (report)
 - Implemented MVP-15 refusal endpoint + tests
