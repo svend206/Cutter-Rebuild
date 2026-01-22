@@ -20,6 +20,7 @@ class TestMVP15Refusal(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.client = app_module.app.test_client()
+        cls.ops_headers = {"X-Ops-Mode": "planning"}
 
     def setUp(self) -> None:
         os.environ["TEST_DB_PATH"] = str(TEST_DB_PATH)
@@ -45,7 +46,7 @@ class TestMVP15Refusal(unittest.TestCase):
             "query_text": "score operators by overrides",
             "actor_ref": "org:acme/actor:auditor"
         }
-        response = self.client.post("/api/query/refusal", json=payload)
+        response = self.client.post("/api/query/refusal", json=payload, headers=self.ops_headers)
         self.assertEqual(response.status_code, 403)
         body = response.get_json()
         self.assertTrue(body.get("refused"))
@@ -77,7 +78,7 @@ class TestMVP15Refusal(unittest.TestCase):
             }
         ]
         for payload in payloads:
-            response = self.client.post("/api/query/refusal", json=payload)
+            response = self.client.post("/api/query/refusal", json=payload, headers=self.ops_headers)
             self.assertEqual(response.status_code, 403)
 
         events = self._fetch_refusal_events(query_ref)
@@ -90,7 +91,7 @@ class TestMVP15Refusal(unittest.TestCase):
             "query_text": "score operators by late deliveries",
             "actor_ref": "org:acme/actor:auditor"
         }
-        response = self.client.post("/api/query/refusal", json=payload)
+        response = self.client.post("/api/query/refusal", json=payload, headers=self.ops_headers)
         self.assertEqual(response.status_code, 403)
         refusal = response.get_json().get("refusal", {})
         self.assertEqual(refusal.get("query_class"), "refuse_blame")
@@ -105,7 +106,7 @@ class TestMVP15Refusal(unittest.TestCase):
             "query_text": "score operators by unknown metric",
             "actor_ref": "org:acme/actor:auditor"
         }
-        response = self.client.post("/api/query/refusal", json=payload)
+        response = self.client.post("/api/query/refusal", json=payload, headers=self.ops_headers)
         self.assertEqual(response.status_code, 403)
         refusal = response.get_json().get("refusal", {})
         self.assertEqual(refusal.get("category"), "unknown_query_class")

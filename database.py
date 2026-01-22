@@ -1066,6 +1066,50 @@ def record_reconciliation(
     conn.close()
     return dict(row) if row else {}
 
+
+def list_reconciliations(
+    scope_ref: str | None = None,
+    scope_kind: str | None = None,
+    predicate_ref: str | None = None,
+    actor_ref: str | None = None,
+    limit: int | None = None
+) -> List[Dict[str, Any]]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    query = """
+        SELECT id, scope_ref, scope_kind, predicate_ref, predicate_text, actor_ref, reconciled_at
+        FROM ops__reconciliations
+    """
+    params = []
+    conditions = []
+
+    if scope_ref:
+        conditions.append("scope_ref = ?")
+        params.append(scope_ref)
+    if scope_kind:
+        conditions.append("scope_kind = ?")
+        params.append(scope_kind)
+    if predicate_ref:
+        conditions.append("predicate_ref = ?")
+        params.append(predicate_ref)
+    if actor_ref:
+        conditions.append("actor_ref = ?")
+        params.append(actor_ref)
+
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+
+    query += " ORDER BY reconciled_at ASC"
+
+    if limit is not None:
+        query += " LIMIT ?"
+        params.append(limit)
+
+    cursor.execute(query, params)
+    rows = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return rows
+
 def create_custom_tag(name: str, impact_type: str, impact_value: float, persistence_type: str = 'transient', category: str = 'General') -> int:
     conn = get_connection()
     cursor = conn.cursor()

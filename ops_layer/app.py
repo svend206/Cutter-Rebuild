@@ -23,8 +23,9 @@ from . import genesis_hash
 from . import pdf_generator
 import vector_engine  # Cross-layer utility (remains at root)
 import database  # Cross-layer utility (remains at root)
-from cutter_ledger.boundary import emit_cutter_event
+from cutter_ledger.boundary import emit_cutter_event, get_events as get_cutter_events
 from state_ledger import validation as state_validation
+from state_ledger import boundary as state_boundary
 from .ledger_events import emit_carrier_handoff
 from .query_a import get_query_a_open_deadlines
 from .query_registry import (
@@ -182,6 +183,11 @@ def load_mesh_file(file_path: str) -> trimesh.Trimesh:
         raise RuntimeError(f"Failed to load mesh file from {file_path}: {str(e)}")
 
 # --- CORE ENDPOINTS ---
+
+@app.route('/harness', methods=['GET'])
+def harness() -> Any:
+    return render_template('harness.html')
+
 
 @app.route('/quote', methods=['POST'])
 def quote() -> Dict[str, Any]:
@@ -2195,6 +2201,124 @@ def reconcile_scope() -> Dict[str, Any]:
         return jsonify({'error': f'Failed to record reconciliation: {str(e)}'}), 500
 
 
+@app.route('/api/reconcile', methods=['GET'])
+def list_reconcile_scopes() -> Dict[str, Any]:
+    try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
+        if mode != "planning":
+            return jsonify({'error': 'reconciliation list requires ops_mode planning'}), 400
+
+        scope_ref = request.args.get('scope_ref')
+        scope_kind = request.args.get('scope_kind')
+        predicate_ref = request.args.get('predicate_ref')
+        actor_ref = request.args.get('actor_ref')
+        limit_raw = request.args.get('limit')
+        limit = None
+        if limit_raw:
+            limit = int(limit_raw)
+
+        records = database.list_reconciliations(
+            scope_ref=scope_ref,
+            scope_kind=scope_kind,
+            predicate_ref=predicate_ref,
+            actor_ref=actor_ref,
+            limit=limit
+        )
+        return jsonify({'success': True, 'reconciliations': records}), 200
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        return jsonify({'error': f'Failed to list reconciliations: {str(e)}'}), 500
+
+
+@app.route('/api/cutter/events', methods=['GET'])
+def list_cutter_events() -> Dict[str, Any]:
+    try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
+        if mode != "planning":
+            return jsonify({'error': 'cutter events require ops_mode planning'}), 400
+
+        subject_ref = request.args.get('subject_ref')
+        event_type = request.args.get('event_type')
+        limit_raw = request.args.get('limit')
+        limit = None
+        if limit_raw:
+            limit = int(limit_raw)
+
+        events = get_cutter_events(subject_ref=subject_ref, event_type=event_type)
+        if limit is not None:
+            events = events[-limit:]
+        return jsonify({'success': True, 'events': events}), 200
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        return jsonify({'error': f'Failed to load cutter events: {str(e)}'}), 500
+
+
+@app.route('/api/state/declarations', methods=['GET', 'POST'])
+def state_declarations() -> Dict[str, Any]:
+    try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
+        if mode != "planning":
+            return jsonify({'error': 'state declarations require ops_mode planning'}), 400
+
+        if request.method == 'POST':
+            payload = request.get_json(silent=True) or {}
+            entity_ref = payload.get('entity_ref')
+            scope_ref = payload.get('scope_ref')
+            state_text = payload.get('state_text')
+            actor_ref = payload.get('actor_ref')
+            declaration_kind = payload.get('declaration_kind')
+            cutter_evidence_ref = payload.get('cutter_evidence_ref')
+            evidence_refs = payload.get('evidence_refs')
+            supersedes_declaration_id = payload.get('supersedes_declaration_id')
+
+            if not entity_ref or not scope_ref or not state_text or not actor_ref or not declaration_kind:
+                return jsonify({
+                    'error': 'entity_ref, scope_ref, state_text, actor_ref, and declaration_kind are required'
+                }), 400
+            if evidence_refs is not None and not isinstance(evidence_refs, list):
+                return jsonify({'error': 'evidence_refs must be a list when provided'}), 400
+
+            declaration_id = state_boundary.emit_state_declaration(
+                entity_ref=entity_ref,
+                scope_ref=scope_ref,
+                state_text=state_text,
+                actor_ref=actor_ref,
+                declaration_kind=declaration_kind,
+                cutter_evidence_ref=cutter_evidence_ref,
+                evidence_refs=evidence_refs,
+                supersedes_declaration_id=supersedes_declaration_id
+            )
+            return jsonify({'success': True, 'declaration_id': declaration_id}), 200
+
+        entity_ref = request.args.get('entity_ref')
+        scope_ref = request.args.get('scope_ref')
+        actor_ref = request.args.get('actor_ref')
+        limit_raw = request.args.get('limit')
+        limit = None
+        if limit_raw:
+            limit = int(limit_raw)
+
+        declarations = state_boundary.get_declarations(
+            entity_ref=entity_ref,
+            scope_ref=scope_ref,
+            actor_ref=actor_ref,
+            limit=limit
+        )
+        declarations = list(reversed(declarations))
+        return jsonify({'success': True, 'declarations': declarations}), 200
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        return jsonify({'error': f'Failed to handle state declarations: {str(e)}'}), 500
+
 # --- IDENTITY INTEGRATION (PHASE 4 - CUSTOMER & CONTACT MANAGEMENT) ---
 # PHASE 1 REMEDIATION: "Guild Intelligence" label removed - this is Ops functionality
 
@@ -2290,6 +2414,11 @@ def search_contacts() -> Dict[str, Any]:
 def create_carrier_handoff() -> Dict[str, Any]:
     """POST /ops/carrier_handoff endpoint."""
     try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
+        if mode != "execution":
+            return jsonify({'error': 'carrier_handoff requires ops_mode execution'}), 400
         data = request.get_json()
         if not data:
             return jsonify({'error': 'No JSON data provided'}), 400
@@ -2325,6 +2454,11 @@ def refuse_harm_blame_query() -> Dict[str, Any]:
 
     Explicit refusal surface for automated harm/blame computation (MVP-15).
     """
+    mode, error = require_ops_mode()
+    if error:
+        return error
+    if mode != "planning":
+        return jsonify({'error': 'refusal requires ops_mode planning'}), 400
     payload = request.get_json(silent=True) or {}
     query_ref = payload.get("query_ref")
     query_text = payload.get("query_text")

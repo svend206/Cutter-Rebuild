@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Harness v0</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 24px;
+            background: #f7f7f7;
+            color: #222;
+        }
+        h1, h2, h3 {
+            margin: 0 0 12px 0;
+        }
+        .banner {
+            padding: 12px 16px;
+            background: #fff;
+            border: 1px solid #ddd;
+            margin-bottom: 16px;
+        }
+        .panel {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .field {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+            flex: 1;
+        }
+        label {
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 4px;
+        }
+        input, select, textarea, button {
+            padding: 8px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        textarea {
+            min-height: 80px;
+        }
+        button {
+            background: #2b2b2b;
+            color: #fff;
+            cursor: pointer;
+        }
+        button.secondary {
+            background: #666;
+        }
+        pre {
+            background: #f0f0f0;
+            padding: 12px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .note {
+            font-size: 12px;
+            color: #666;
+        }
+        .mode-indicator {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1>HARNESS v0 — NOT PRODUCT UX</h1>
+        <div class="note">Manual MVP exerciser. No dashboards, no scoring, no interpretation.</div>
+    </div>
+
+    <div class="panel">
+        <h2>Mode Selector</h2>
+        <div class="row">
+            <label><input type="radio" name="ops-mode" value="execution" checked /> Execution</label>
+            <label><input type="radio" name="ops-mode" value="planning" /> Planning</label>
+        </div>
+        <div class="note">Current mode: <span id="mode-current" class="mode-indicator">execution</span></div>
+    </div>
+
+    <div class="panel" data-mode="execution">
+        <h2>Ops Action Exerciser (Execution)</h2>
+        <form id="ops-action-form">
+            <div class="row">
+                <div class="field">
+                    <label>subject_ref</label>
+                    <input id="ops-subject-ref" type="text" placeholder="quote:123" required />
+                </div>
+                <div class="field">
+                    <label>carrier (optional)</label>
+                    <input id="ops-carrier" type="text" placeholder="carrier_name" />
+                </div>
+            </div>
+            <div class="field">
+                <label>event_data (optional JSON)</label>
+                <textarea id="ops-event-data" placeholder='{"note":"example"}'></textarea>
+            </div>
+            <button type="submit">Emit Ops Event</button>
+        </form>
+        <pre id="ops-action-result"></pre>
+    </div>
+
+    <div class="panel" data-mode="planning">
+        <h2>Cutter Ledger Viewer (Planning)</h2>
+        <form id="cutter-events-form">
+            <div class="row">
+                <div class="field">
+                    <label>subject_ref (optional)</label>
+                    <input id="cutter-subject-ref" type="text" placeholder="quote:123" />
+                </div>
+                <div class="field">
+                    <label>event_type (optional)</label>
+                    <input id="cutter-event-type" type="text" placeholder="carrier_handoff" />
+                </div>
+                <div class="field">
+                    <label>limit (optional)</label>
+                    <input id="cutter-limit" type="number" min="1" />
+                </div>
+            </div>
+            <button type="submit">Load Cutter Events</button>
+        </form>
+        <pre id="cutter-events-result"></pre>
+    </div>
+
+    <div class="panel" data-mode="planning">
+        <h2>State Ledger Entry (Planning)</h2>
+        <form id="state-declaration-form">
+            <div class="row">
+                <div class="field">
+                    <label>entity_ref</label>
+                    <input id="state-entity-ref" type="text" placeholder="org:acme.com/entity:project:alpha" required />
+                </div>
+                <div class="field">
+                    <label>scope_ref</label>
+                    <input id="state-scope-ref" type="text" placeholder="org:acme.com/scope:weekly" required />
+                </div>
+                <div class="field">
+                    <label>actor_ref</label>
+                    <input id="state-actor-ref" type="text" placeholder="org:acme.com/actor:owner" required />
+                </div>
+                <div class="field">
+                    <label>declaration_kind</label>
+                    <select id="state-declaration-kind" required>
+                        <option value="REAFFIRMATION">REAFFIRMATION</option>
+                        <option value="RECLASSIFICATION">RECLASSIFICATION</option>
+                    </select>
+                </div>
+            </div>
+            <div class="field">
+                <label>state_text</label>
+                <input id="state-text" type="text" placeholder="One sentence, present tense." required />
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label>cutter_evidence_ref (optional)</label>
+                    <input id="state-evidence-ref" type="text" placeholder="cutter:event:123" />
+                </div>
+                <div class="field">
+                    <label>evidence_refs (optional JSON array)</label>
+                    <input id="state-evidence-refs" type="text" placeholder='["cutter:event:123"]' />
+                </div>
+                <div class="field">
+                    <label>supersedes_declaration_id (optional)</label>
+                    <input id="state-supersedes-id" type="number" min="1" />
+                </div>
+            </div>
+            <button type="submit">Submit Declaration</button>
+        </form>
+        <pre id="state-declaration-result"></pre>
+    </div>
+
+    <div class="panel" data-mode="planning">
+        <h2>State Ledger Viewer (Planning)</h2>
+        <form id="state-list-form">
+            <div class="row">
+                <div class="field">
+                    <label>entity_ref (optional)</label>
+                    <input id="state-list-entity-ref" type="text" />
+                </div>
+                <div class="field">
+                    <label>scope_ref (optional)</label>
+                    <input id="state-list-scope-ref" type="text" />
+                </div>
+                <div class="field">
+                    <label>actor_ref (optional)</label>
+                    <input id="state-list-actor-ref" type="text" />
+                </div>
+                <div class="field">
+                    <label>limit (optional)</label>
+                    <input id="state-list-limit" type="number" min="1" />
+                </div>
+            </div>
+            <button type="submit">Load Declarations</button>
+        </form>
+        <pre id="state-list-result"></pre>
+    </div>
+
+    <div class="panel" data-mode="planning">
+        <h2>Reconciliation (MVP-12, Planning)</h2>
+        <form id="reconcile-form">
+            <div class="row">
+                <div class="field">
+                    <label>scope_ref</label>
+                    <input id="reconcile-scope-ref" type="text" placeholder="org:acme.com/scope:weekly" required />
+                </div>
+                <div class="field">
+                    <label>scope_kind</label>
+                    <select id="reconcile-scope-kind" required>
+                        <option value="query">query</option>
+                        <option value="report">report</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>predicate_ref</label>
+                    <input id="reconcile-predicate-ref" type="text" placeholder="predicate:open_deadlines" required />
+                </div>
+                <div class="field">
+                    <label>actor_ref</label>
+                    <input id="reconcile-actor-ref" type="text" placeholder="org:acme.com/actor:owner" required />
+                </div>
+            </div>
+            <div class="field">
+                <label>predicate_text (optional)</label>
+                <input id="reconcile-predicate-text" type="text" placeholder="actual_time > promised_time" />
+            </div>
+            <button type="submit">Record Reconciliation</button>
+        </form>
+        <pre id="reconcile-result"></pre>
+    </div>
+
+    <div class="panel" data-mode="planning">
+        <h2>Reconciliation Viewer (Planning)</h2>
+        <form id="reconcile-list-form">
+            <div class="row">
+                <div class="field">
+                    <label>scope_ref (optional)</label>
+                    <input id="reconcile-list-scope-ref" type="text" />
+                </div>
+                <div class="field">
+                    <label>scope_kind (optional)</label>
+                    <input id="reconcile-list-scope-kind" type="text" />
+                </div>
+                <div class="field">
+                    <label>predicate_ref (optional)</label>
+                    <input id="reconcile-list-predicate-ref" type="text" />
+                </div>
+                <div class="field">
+                    <label>actor_ref (optional)</label>
+                    <input id="reconcile-list-actor-ref" type="text" />
+                </div>
+                <div class="field">
+                    <label>limit (optional)</label>
+                    <input id="reconcile-list-limit" type="number" min="1" />
+                </div>
+            </div>
+            <button type="submit">Load Reconciliations</button>
+        </form>
+        <pre id="reconcile-list-result"></pre>
+    </div>
+
+    <div class="panel" data-mode="planning">
+        <h2>Refusal Tester (MVP-15, Planning)</h2>
+        <form id="refusal-form">
+            <div class="row">
+                <div class="field">
+                    <label>query_ref</label>
+                    <input id="refusal-query-ref" type="text" placeholder="query:blame:example" required />
+                </div>
+                <div class="field">
+                    <label>actor_ref</label>
+                    <input id="refusal-actor-ref" type="text" placeholder="org:acme.com/actor:owner" required />
+                </div>
+            </div>
+            <div class="field">
+                <label>query_text (optional)</label>
+                <input id="refusal-query-text" type="text" placeholder="Request blame computation" />
+            </div>
+            <div class="row">
+                <button type="submit">Submit Refusal Query</button>
+                <button type="button" class="secondary" id="refusal-load-events">Load Refusal Events</button>
+            </div>
+        </form>
+        <pre id="refusal-result"></pre>
+    </div>
+
+    <script type="module" src="/static/js/modules/harness.js"></script>
+</body>
+</html>
