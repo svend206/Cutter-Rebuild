@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 6.6
+version: 6.7
 date: 2026-01-22
 owner: Erik
 authoring_agent: cursor
@@ -18,7 +18,7 @@ tags: [integrator, status]
 This is the single status surface.
 
 ## Current
-- Commit/tag/push UI harness checkpoint
+- (none)
 
 ## Next
 - (none)
@@ -27,6 +27,7 @@ This is the single status surface.
 - (none)
 
 ## Recently Completed
+- Created UI harness checkpoint (tag: ui-harness-20260122)
 - Built UI harness v0 with mode-gated panels
 - Published REPORT 28 UI harness minimal delta definition
 - Published REPORT 29 UI harness verification evidence
