@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 6.1
+version: 6.2
 date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
@@ -24,6 +24,7 @@ This is the single status surface.
 - (none)
 
 ## Recently Completed
+- Cleaned test DB artifacts and hardened ignores
 - Published MVP-15 hardened checkpoint report
 - Hardened MVP-15 refusal boundary + tests
 - Published MVP-15 verification evidence report

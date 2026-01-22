@@ -6,3 +6,6 @@ __pycache__/
 
 cutter.db
 data/
+tests/*.db
+tests/tmp*.db
+tests/**/tmp*.db

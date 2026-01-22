@@ -1,10 +1,11 @@
 import os
+import tempfile
 import unittest
 from pathlib import Path
 
 from scripts import reset_db
 
-TEST_DB_PATH = Path(__file__).parent / "test_ops_mode_guard.db"
+TEST_DB_PATH = Path(tempfile.gettempdir()) / "test_ops_mode_guard.db"
 os.environ["TEST_DB_PATH"] = str(TEST_DB_PATH)
 
 reset_db.create_fresh_db(TEST_DB_PATH)

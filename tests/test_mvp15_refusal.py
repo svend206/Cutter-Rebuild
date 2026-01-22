@@ -1,11 +1,12 @@
 import json
 import os
 import sqlite3
+import tempfile
 import unittest
 from pathlib import Path
 
 # Ensure isolated DB before importing app/database
-TEST_DB_PATH = Path(__file__).parent / "test_mvp15_refusal.db"
+TEST_DB_PATH = Path(tempfile.gettempdir()) / "test_mvp15_refusal.db"
 os.environ["TEST_DB_PATH"] = str(TEST_DB_PATH)
 
 from scripts import reset_db
