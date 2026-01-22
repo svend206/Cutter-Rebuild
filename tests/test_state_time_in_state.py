@@ -73,6 +73,43 @@ class TestStateTimeInState(unittest.TestCase):
         self.assertEqual(latest["declaration_kind"], "REAFFIRMATION")
         self.assertGreaterEqual(latest["days_since_declaration"], 1)
 
+    def test_silence_does_not_create_new_declaration(self):
+        os.environ["TEST_DB_PATH"] = str(self.test_db_path)
+        entity_ref = "org:acme/entity:project:beta"
+        scope_ref = "org:acme/scope:weekly"
+        actor_ref = "org:acme/actor:owner"
+
+        register_entity(entity_ref, "Acme Beta", cadence_days=7)
+        assign_owner(entity_ref, actor_ref, "org:acme/actor:admin")
+
+        now = datetime.now(timezone.utc)
+        declared_at = (now - timedelta(days=2)).strftime("%Y-%m-%d %H:%M:%S")
+
+        conn = sqlite3.connect(str(self.test_db_path))
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO state__declarations
+            (entity_ref, scope_ref, state_text, declaration_kind, declared_by_actor_ref, declared_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (entity_ref, scope_ref, "Initial state", "RECLASSIFICATION", actor_ref, declared_at))
+        conn.commit()
+
+        cursor.execute("SELECT COUNT(*) FROM state__declarations")
+        before_count = cursor.fetchone()[0]
+        conn.close()
+
+        from state_ledger import queries as state_queries
+        _ = state_queries.query_time_in_state()
+
+        conn = sqlite3.connect(str(self.test_db_path))
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM state__declarations")
+        after_count = cursor.fetchone()[0]
+        conn.close()
+
+        self.assertEqual(before_count, 1)
+        self.assertEqual(after_count, 1)
+
 
 if __name__ == "__main__":
     unittest.main()

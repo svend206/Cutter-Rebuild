@@ -15,6 +15,7 @@ import sys
 import os
 import subprocess
 import tempfile
+import unittest
 from pathlib import Path
 from datetime import datetime, timedelta
 
@@ -33,6 +34,8 @@ if not os.environ.get("TEST_DB_PATH"):
     os.environ["TEST_DB_PATH"] = str(bootstrap_path)
 
 import database
+from scripts import reset_db
+from ops_layer import app as app_module
 
 
 def _ensure_test_db() -> Path:
@@ -458,3 +461,96 @@ def run_all_tests():
 if __name__ == '__main__':
     success = run_all_tests()
     sys.exit(0 if success else 1)
+
+
+class TestMVP7SeparationEnforcement(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.test_db_path = Path(tempfile.gettempdir()) / "test_mvp7_separation.db"
+        os.environ["TEST_DB_PATH"] = str(cls.test_db_path)
+        reset_db.create_fresh_db(cls.test_db_path)
+        cls.client = app_module.app.test_client()
+
+    def setUp(self) -> None:
+        os.environ["TEST_DB_PATH"] = str(self.test_db_path)
+        reset_db.create_fresh_db(self.test_db_path)
+
+    def _count_state_declarations(self) -> int:
+        conn = sqlite3.connect(str(self.test_db_path))
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM state__declarations")
+        count = cursor.fetchone()[0]
+        conn.close()
+        return count
+
+    def test_state_declaration_refuses_in_execution_mode(self) -> None:
+        payload = {
+            "entity_ref": "org:demo/entity:project:alpha",
+            "scope_ref": "org:demo/scope:weekly",
+            "state_text": "Operations continue.",
+            "actor_ref": "org:demo/actor:owner",
+            "declaration_kind": "REAFFIRMATION"
+        }
+        before_count = self._count_state_declarations()
+        response = self.client.post(
+            "/api/state/declarations",
+            headers={"X-Ops-Mode": "execution"},
+            json=payload
+        )
+        self.assertEqual(response.status_code, 400)
+        body = response.get_json() or {}
+        self.assertEqual(body.get("code"), "OPS_MODE_REQUIRED_PLANNING")
+        self.assertEqual(self._count_state_declarations(), before_count)
+
+    def test_ops_exhaust_does_not_create_state(self) -> None:
+        before_count = self._count_state_declarations()
+        response = self.client.post(
+            "/ops/carrier_handoff",
+            headers={"X-Ops-Mode": "execution"},
+            json={"subject_ref": "quote:demo-1"}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self._count_state_declarations(), before_count)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if cls.test_db_path.exists():
+            cls.test_db_path.unlink()
+        for suffix in ("-wal", "-shm"):
+            extra = Path(str(cls.test_db_path) + suffix)
+            if extra.exists():
+                extra.unlink()
+
+
+class TestMVP4ExplicitRecognition(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.test_db_path = Path(tempfile.gettempdir()) / "test_mvp4_explicit_recognition.db"
+        os.environ["TEST_DB_PATH"] = str(cls.test_db_path)
+        reset_db.create_fresh_db(cls.test_db_path)
+
+    def setUp(self) -> None:
+        os.environ["TEST_DB_PATH"] = str(self.test_db_path)
+        reset_db.create_fresh_db(self.test_db_path)
+
+    def test_no_implicit_declaration_created(self) -> None:
+        entity_ref = "org:demo/entity:project:alpha"
+        register_entity(entity_ref, "Alpha Project", cadence_days=7)
+        assign_owner(entity_ref, "org:demo/actor:owner", "org:demo/actor:admin")
+
+        conn = sqlite3.connect(str(self.test_db_path))
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM state__declarations")
+        count = cursor.fetchone()[0]
+        conn.close()
+
+        self.assertEqual(count, 0)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if cls.test_db_path.exists():
+            cls.test_db_path.unlink()
+        for suffix in ("-wal", "-shm"):
+            extra = Path(str(cls.test_db_path) + suffix)
+            if extra.exists():
+                extra.unlink()

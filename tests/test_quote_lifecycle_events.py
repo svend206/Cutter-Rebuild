@@ -102,6 +102,8 @@ class TestQuoteLifecycleEvents(unittest.TestCase):
         
         conn.commit()
         conn.close()
+        from ops_layer import app as app_module
+        cls.client = app_module.app.test_client()
     
     @classmethod
     def tearDownClass(cls):
@@ -163,6 +165,14 @@ class TestQuoteLifecycleEvents(unittest.TestCase):
         
         conn.commit()
         conn.close()
+
+    def _count_cutter_events(self) -> int:
+        conn = database.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM cutter__events")
+        count = cursor.fetchone()[0]
+        conn.close()
+        return count
     
     def test_quote_created_event_emitted(self):
         """QUOTE_CREATED event should be emitted when quote is saved."""
@@ -497,6 +507,19 @@ class TestQuoteLifecycleEvents(unittest.TestCase):
                     event_type.lower(),
                     f"Event type '{event_type}' contains evaluative word '{word}'"
                 )
+
+    def test_no_exhaust_on_refused_ops_action(self):
+        """Refused ops action should not emit exhaust."""
+        before = self._count_cutter_events()
+        response = self.client.post(
+            "/ops/carrier_handoff",
+            headers={"X-Ops-Mode": "execution"},
+            json={}
+        )
+        self.assertEqual(response.status_code, 400)
+        body = response.get_json() or {}
+        self.assertEqual(body.get("code"), "MISSING_REQUIRED_FIELDS")
+        self.assertEqual(self._count_cutter_events(), before)
 
 
 if __name__ == '__main__':

@@ -24,6 +24,14 @@ class TestMVP12Reconciliation(unittest.TestCase):
         os.environ["TEST_DB_PATH"] = str(TEST_DB_PATH)
         reset_db.create_fresh_db(TEST_DB_PATH)
 
+    def _count_cutter_events(self) -> int:
+        conn = sqlite3.connect(str(TEST_DB_PATH))
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM cutter__events")
+        count = cursor.fetchone()[0]
+        conn.close()
+        return count
+
     def test_reconciliation_records_query_scoped_entry(self) -> None:
         os.environ["TEST_DB_PATH"] = str(TEST_DB_PATH)
         payload = {
@@ -119,6 +127,36 @@ class TestMVP12Reconciliation(unittest.TestCase):
         conn.close()
         self.assertEqual(len(rows), 2)
         self.assertTrue(all(row[0] == predicate_ref for row in rows))
+
+    def test_reconciliation_does_not_block_execution(self) -> None:
+        payload = {
+            "scope_ref": "org:acme/scope:weekly-review",
+            "scope_kind": "report",
+            "predicate_ref": "scope=weekly-review/report=ops-unclosed-quotes",
+            "actor_ref": "org:acme/actor:auditor"
+        }
+        response = self.client.post(
+            "/api/reconcile",
+            headers={"X-Ops-Mode": "planning"},
+            json=payload
+        )
+        self.assertEqual(response.status_code, 200)
+
+        before_events = self._count_cutter_events()
+        exec_response = self.client.post(
+            "/ops/carrier_handoff",
+            headers={"X-Ops-Mode": "execution"},
+            json={"subject_ref": "quote:mvp12-demo"}
+        )
+        self.assertEqual(exec_response.status_code, 200)
+        self.assertGreater(self._count_cutter_events(), before_events)
+
+        conn = sqlite3.connect(str(TEST_DB_PATH))
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM ops__reconciliations")
+        count = cursor.fetchone()[0]
+        conn.close()
+        self.assertEqual(count, 1)
 
 
 if __name__ == "__main__":

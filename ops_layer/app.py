@@ -2350,7 +2350,10 @@ def state_declarations() -> Dict[str, Any]:
         if error:
             return error
         if mode != "planning":
-            return jsonify({'error': 'state declarations require ops_mode planning'}), 400
+            return jsonify({
+                'error': 'state declarations require ops_mode planning',
+                'code': 'OPS_MODE_REQUIRED_PLANNING'
+            }), 400
 
         if request.method == 'POST':
             payload = request.get_json(silent=True) or {}
@@ -2502,19 +2505,31 @@ def create_carrier_handoff() -> Dict[str, Any]:
         if error:
             return error
         if mode != "execution":
-            return jsonify({'error': 'carrier_handoff requires ops_mode execution'}), 400
+            return jsonify({
+                'error': 'carrier_handoff requires ops_mode execution',
+                'code': 'OPS_MODE_REQUIRED_EXECUTION'
+            }), 400
         data = request.get_json()
         if not data:
-            return jsonify({'error': 'No JSON data provided'}), 400
+            return jsonify({
+                'error': 'subject_ref is required',
+                'code': 'MISSING_REQUIRED_FIELDS'
+            }), 400
 
         subject_ref = data.get('subject_ref')
         if not subject_ref:
-            return jsonify({'error': 'subject_ref is required'}), 400
+            return jsonify({
+                'error': 'subject_ref is required',
+                'code': 'MISSING_REQUIRED_FIELDS'
+            }), 400
 
         carrier = data.get('carrier')
         event_data = data.get('event_data')
         if event_data is not None and not isinstance(event_data, dict):
-            return jsonify({'error': 'event_data must be an object'}), 400
+            return jsonify({
+                'error': 'event_data must be an object',
+                'code': 'INVALID_EVENT_DATA'
+            }), 400
 
         event_id = emit_carrier_handoff(
             subject_ref=subject_ref,

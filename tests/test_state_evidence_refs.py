@@ -63,6 +63,40 @@ class TestStateEvidenceRefs(unittest.TestCase):
         self.assertIn("evidence_refs_json", latest)
         self.assertIsNotNone(latest["evidence_refs_json"])
 
+    def test_evidence_presence_does_not_change_behavior(self):
+        entity_ref = "org:acme/entity:project:gamma"
+        scope_ref = "org:acme/scope:weekly"
+        actor_ref = "org:acme/actor:owner"
+
+        register_entity(entity_ref, "Acme Gamma", cadence_days=7)
+        assign_owner(entity_ref, actor_ref, "org:acme/actor:admin")
+
+        emit_state_declaration(
+            entity_ref=entity_ref,
+            scope_ref=scope_ref,
+            state_text="State with evidence",
+            actor_ref=actor_ref,
+            declaration_kind="REAFFIRMATION",
+            evidence_refs=[{"type": "cutter_event", "ref": "cutter:event:123"}]
+        )
+
+        emit_state_declaration(
+            entity_ref=entity_ref,
+            scope_ref=scope_ref,
+            state_text="State without evidence",
+            actor_ref=actor_ref,
+            declaration_kind="REAFFIRMATION"
+        )
+
+        declarations = get_declarations(entity_ref=entity_ref)
+        self.assertEqual(len(declarations), 2)
+
+        with_evidence = [d for d in declarations if d["state_text"] == "State with evidence"][0]
+        without_evidence = [d for d in declarations if d["state_text"] == "State without evidence"][0]
+
+        self.assertIsNotNone(with_evidence["evidence_refs_json"])
+        self.assertIn(without_evidence["evidence_refs_json"], (None, "[]"))
+
 
 if __name__ == "__main__":
     unittest.main()
