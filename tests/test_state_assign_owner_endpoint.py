@@ -34,8 +34,61 @@ class TestStateAssignOwnerEndpoint(unittest.TestCase):
             json=payload
         )
         self.assertEqual(response.status_code, 400)
-        error_msg = (response.get_json() or {}).get("error", "")
+        body = response.get_json() or {}
+        self.assertEqual(body.get("code"), "OPS_MODE_REQUIRED_PLANNING")
+        self.assertIn("error", body)
+        error_msg = body.get("error", "")
         self.assertIn("planning", error_msg.lower())
+
+    def test_assign_owner_refuses_missing_entity(self) -> None:
+        payload = {
+            "entity_ref": "org:demo/entity:project:missing",
+            "owner_actor_ref": "org:demo/actor:owner"
+        }
+        response = self.client.post(
+            "/api/state/assign_owner",
+            headers={"X-Ops-Mode": "planning"},
+            json=payload
+        )
+        self.assertEqual(response.status_code, 400)
+        body = response.get_json() or {}
+        self.assertEqual(body.get("code"), "ENTITY_REF_NOT_REGISTERED")
+        self.assertIn("error", body)
+        error_msg = body.get("error", "")
+        self.assertIn("entity_ref", error_msg.lower())
+
+    def test_ensure_entity_with_owner_requires_planning_mode(self) -> None:
+        payload = {
+            "entity_ref": "org:demo/entity:project:alpha",
+            "owner_actor_ref": "org:demo/actor:owner"
+        }
+        response = self.client.post(
+            "/harness/ensure_entity_with_owner",
+            headers={"X-Ops-Mode": "execution"},
+            json=payload
+        )
+        self.assertEqual(response.status_code, 400)
+        body = response.get_json() or {}
+        self.assertEqual(body.get("code"), "OPS_MODE_REQUIRED_PLANNING")
+        self.assertIn("error", body)
+        error_msg = body.get("error", "")
+        self.assertIn("planning", error_msg.lower())
+
+    def test_ensure_entity_with_owner_creates_entity_and_owner(self) -> None:
+        payload = {
+            "entity_ref": "org:demo/entity:project:alpha",
+            "owner_actor_ref": "org:demo/actor:owner"
+        }
+        response = self.client.post(
+            "/harness/ensure_entity_with_owner",
+            headers={"X-Ops-Mode": "planning"},
+            json=payload
+        )
+        self.assertEqual(response.status_code, 200)
+        body = response.get_json() or {}
+        self.assertTrue(body.get("success"))
+        self.assertTrue(body.get("entity_created"))
+        self.assertTrue(body.get("owner_assigned"))
 
     def test_assign_owner_allows_state_declaration(self) -> None:
         entity_ref = "org:demo/entity:project:alpha"

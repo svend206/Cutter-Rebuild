@@ -2266,13 +2266,24 @@ def assign_state_owner() -> Dict[str, Any]:
         if error:
             return error
         if mode != "planning":
-            return jsonify({'error': 'assign_owner requires ops_mode planning'}), 400
+            return jsonify({
+                'error': 'assign_owner requires ops_mode planning',
+                'code': 'OPS_MODE_REQUIRED_PLANNING'
+            }), 400
 
         payload = request.get_json(silent=True) or {}
         entity_ref = payload.get('entity_ref')
         owner_actor_ref = payload.get('owner_actor_ref')
         if not entity_ref or not owner_actor_ref:
-            return jsonify({'error': 'entity_ref and owner_actor_ref are required'}), 400
+            return jsonify({
+                'error': 'entity_ref and owner_actor_ref are required',
+                'code': 'MISSING_REQUIRED_FIELDS'
+            }), 400
+        if not state_boundary.entity_exists(entity_ref):
+            return jsonify({
+                'error': 'entity_ref is not registered',
+                'code': 'ENTITY_REF_NOT_REGISTERED'
+            }), 400
 
         assignment_id = state_boundary.assign_owner(
             entity_ref=entity_ref,
@@ -2287,9 +2298,49 @@ def assign_state_owner() -> Dict[str, Any]:
             'assigned_by_actor_ref': owner_actor_ref
         }), 200
     except ValueError as e:
-        return jsonify({'error': str(e)}), 400
+        return jsonify({
+            'error': 'assign_owner failed',
+            'code': 'ASSIGN_OWNER_FAILED'
+        }), 400
     except Exception as e:
         return jsonify({'error': f'Failed to assign owner: {str(e)}'}), 500
+
+
+@app.route('/harness/ensure_entity_with_owner', methods=['POST'])
+def harness_ensure_entity_with_owner() -> Dict[str, Any]:
+    try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
+        if mode != "planning":
+            return jsonify({
+                'error': 'ensure_entity_with_owner requires ops_mode planning',
+                'code': 'OPS_MODE_REQUIRED_PLANNING'
+            }), 400
+
+        payload = request.get_json(silent=True) or {}
+        entity_ref = payload.get('entity_ref')
+        owner_actor_ref = payload.get('owner_actor_ref')
+        if not entity_ref or not owner_actor_ref:
+            return jsonify({
+                'error': 'entity_ref and owner_actor_ref are required',
+                'code': 'MISSING_REQUIRED_FIELDS'
+            }), 400
+
+        result = state_boundary.ensure_entity_with_owner(
+            entity_ref=entity_ref,
+            owner_actor_ref=owner_actor_ref,
+            assigned_by_actor_ref=owner_actor_ref,
+            entity_label=entity_ref
+        )
+        return jsonify({'success': True, **result}), 200
+    except ValueError as e:
+        return jsonify({
+            'error': 'ensure_entity_with_owner failed',
+            'code': 'ENSURE_ENTITY_WITH_OWNER_FAILED'
+        }), 400
+    except Exception as e:
+        return jsonify({'error': f'Failed to ensure entity with owner: {str(e)}'}), 500
 
 
 @app.route('/api/state/declarations', methods=['GET', 'POST'])

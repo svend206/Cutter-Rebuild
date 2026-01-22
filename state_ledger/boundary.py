@@ -120,6 +120,98 @@ def get_current_owner(entity_ref: str) -> Optional[str]:
     return row['owner_actor_ref'] if row else None
 
 
+def entity_exists(entity_ref: str) -> bool:
+    """Return True if entity_ref is registered in state__entities."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT 1
+        FROM state__entities
+        WHERE entity_ref = ?
+        LIMIT 1
+    """, (entity_ref,))
+    exists = cursor.fetchone() is not None
+    conn.close()
+    return exists
+
+
+def ensure_entity_with_owner(
+    entity_ref: str,
+    owner_actor_ref: str,
+    assigned_by_actor_ref: str,
+    entity_label: Optional[str] = None,
+    cadence_days: int = 7
+) -> Dict[str, Any]:
+    """
+    Ensure an entity exists and has exactly one current owner (atomic).
+
+    If the entity does not exist, it is created and an owner is assigned
+    in a single transaction (no committed unowned entity).
+    If the entity exists and is already owned, no changes are made.
+    If the entity exists and is unowned, an owner is assigned.
+    """
+    entity_valid, entity_error = validation.validate_entity_ref(entity_ref)
+    if not entity_valid:
+        raise ValueError(f"Invalid entity_ref: {entity_error}")
+
+    owner_valid, owner_error = validation.validate_actor_ref(owner_actor_ref)
+    if not owner_valid:
+        raise ValueError(f"Invalid owner_actor_ref: {owner_error}")
+
+    assigner_valid, assigner_error = validation.validate_actor_ref(assigned_by_actor_ref)
+    if not assigner_valid:
+        raise ValueError(f"Invalid assigned_by_actor_ref: {assigner_error}")
+
+    if cadence_days < 1:
+        raise ValueError(f"cadence_days must be >= 1, got: {cadence_days}")
+
+    label = entity_label or entity_ref
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        conn.execute("BEGIN")
+
+        cursor.execute("""
+            SELECT entity_ref
+            FROM state__entities
+            WHERE entity_ref = ?
+        """, (entity_ref,))
+        entity_row = cursor.fetchone()
+
+        cursor.execute("""
+            SELECT owner_actor_ref
+            FROM state__recognition_owners
+            WHERE entity_ref = ?
+            AND unassigned_at IS NULL
+        """, (entity_ref,))
+        owner_row = cursor.fetchone()
+
+        if entity_row is None:
+            cursor.execute("""
+                INSERT INTO state__entities (entity_ref, entity_label, cadence_days)
+                VALUES (?, ?, ?)
+            """, (entity_ref, label, cadence_days))
+
+        if owner_row is None:
+            cursor.execute("""
+                INSERT INTO state__recognition_owners
+                (entity_ref, owner_actor_ref, assigned_by_actor_ref)
+                VALUES (?, ?, ?)
+            """, (entity_ref, owner_actor_ref, assigned_by_actor_ref))
+
+        conn.commit()
+        return {
+            "entity_ref": entity_ref,
+            "owner_actor_ref": owner_actor_ref if owner_row is None else owner_row["owner_actor_ref"],
+            "entity_created": entity_row is None,
+            "owner_assigned": owner_row is None
+        }
+    except sqlite3.IntegrityError:
+        conn.rollback()
+        raise ValueError("ensure_entity_with_owner failed")
+    finally:
+        conn.close()
 def assign_owner(
     entity_ref: str,
     owner_actor_ref: str,

@@ -138,6 +138,23 @@ document.getElementById("state-declaration-form").addEventListener("submit", asy
     showResult("state-declaration-result", data);
 });
 
+document.getElementById("ensure-entity-owner-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!requireMode("planning", "ensure-entity-owner-result")) return;
+
+    const payload = {
+        entity_ref: document.getElementById("ensure-entity-ref").value.trim(),
+        owner_actor_ref: document.getElementById("ensure-owner-ref").value.trim()
+    };
+
+    const response = await apiFetch("/harness/ensure_entity_with_owner", {
+        method: "POST",
+        body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    showResult("ensure-entity-owner-result", data);
+});
+
 document.getElementById("assign-owner-form").addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!requireMode("planning", "assign-owner-result")) return;

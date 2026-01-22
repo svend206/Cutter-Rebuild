@@ -182,6 +182,24 @@
     </div>
 
     <div class="panel" data-mode="planning">
+        <h2>Ensure Entity + Owner (State Ledger, Planning)</h2>
+        <form id="ensure-entity-owner-form">
+            <div class="row">
+                <div class="field">
+                    <label>entity_ref</label>
+                    <input id="ensure-entity-ref" type="text" placeholder="org:testco/entity:project:alp" required />
+                </div>
+                <div class="field">
+                    <label>owner_actor_ref</label>
+                    <input id="ensure-owner-ref" type="text" placeholder="org:testco/actor:erik" required />
+                </div>
+            </div>
+            <button type="submit">Ensure Entity + Owner</button>
+        </form>
+        <pre id="ensure-entity-owner-result"></pre>
+    </div>
+
+    <div class="panel" data-mode="planning">
         <h2>Assign Owner (State Ledger, Planning)</h2>
         <form id="assign-owner-form">
             <div class="row">
