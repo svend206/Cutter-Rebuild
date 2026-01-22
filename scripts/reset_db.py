@@ -287,7 +287,8 @@ def create_fresh_db(db_path: Path):
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 scope_ref TEXT NOT NULL,
                 scope_kind TEXT NOT NULL CHECK (scope_kind IN ('query', 'report')),
-                predicate_text TEXT NOT NULL,
+                predicate_ref TEXT NOT NULL,
+                predicate_text TEXT,
                 actor_ref TEXT NOT NULL,
                 reconciled_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
             )

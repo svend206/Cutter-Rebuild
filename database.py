@@ -282,7 +282,8 @@ def initialize_database() -> None:
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             scope_ref TEXT NOT NULL,
             scope_kind TEXT NOT NULL CHECK (scope_kind IN ('query', 'report')),
-            predicate_text TEXT NOT NULL,
+            predicate_ref TEXT NOT NULL,
+            predicate_text TEXT,
             actor_ref TEXT NOT NULL,
             reconciled_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
@@ -296,6 +297,48 @@ def initialize_database() -> None:
             cursor.execute(f"ALTER TABLE {table} ADD COLUMN {col_name} {col_type}")
         except sqlite3.OperationalError:
             pass # Column exists
+
+    def rebuild_reconciliations_if_needed():
+        cursor.execute("PRAGMA table_info(ops__reconciliations)")
+        columns = cursor.fetchall()
+        if not columns:
+            return
+        col_by_name = {row[1]: row for row in columns}
+        predicate_ref_missing = "predicate_ref" not in col_by_name
+        predicate_text_notnull = col_by_name.get("predicate_text", (None, None, None, 0))[3] == 1
+        if not predicate_ref_missing and not predicate_text_notnull:
+            return
+        cursor.execute("ALTER TABLE ops__reconciliations RENAME TO ops__reconciliations_old")
+        cursor.execute("""
+            CREATE TABLE ops__reconciliations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                scope_ref TEXT NOT NULL,
+                scope_kind TEXT NOT NULL CHECK (scope_kind IN ('query', 'report')),
+                predicate_ref TEXT NOT NULL,
+                predicate_text TEXT,
+                actor_ref TEXT NOT NULL,
+                reconciled_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        cursor.execute("""
+            INSERT INTO ops__reconciliations (
+                scope_ref,
+                scope_kind,
+                predicate_ref,
+                predicate_text,
+                actor_ref,
+                reconciled_at
+            )
+            SELECT
+                scope_ref,
+                scope_kind,
+                predicate_text,
+                predicate_text,
+                actor_ref,
+                reconciled_at
+            FROM ops__reconciliations_old
+        """)
+        cursor.execute("DROP TABLE ops__reconciliations_old")
 
     # Migrate Quotes table (Deal Closer fields)
     add_column_safe('ops__quotes', 'win_notes', 'TEXT')
@@ -343,6 +386,8 @@ def initialize_database() -> None:
 
     # Migrate State Ledger declarations (if table exists)
     add_column_safe('state__declarations', 'evidence_refs_json', "TEXT DEFAULT '[]'")
+
+    rebuild_reconciliations_if_needed()
 
     conn.commit()
     conn.close()
@@ -996,7 +1041,8 @@ def get_all_tags() -> List[Dict[str, Any]]:
 def record_reconciliation(
     scope_ref: str,
     scope_kind: str,
-    predicate_text: str,
+    predicate_ref: str,
+    predicate_text: str | None,
     actor_ref: str
 ) -> Dict[str, Any]:
     """
@@ -1006,12 +1052,12 @@ def record_reconciliation(
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO ops__reconciliations
-        (scope_ref, scope_kind, predicate_text, actor_ref)
-        VALUES (?, ?, ?, ?)
-    """, (scope_ref, scope_kind, predicate_text, actor_ref))
+        (scope_ref, scope_kind, predicate_ref, predicate_text, actor_ref)
+        VALUES (?, ?, ?, ?, ?)
+    """, (scope_ref, scope_kind, predicate_ref, predicate_text, actor_ref))
     reconciliation_id = cursor.lastrowid
     cursor.execute("""
-        SELECT id, scope_ref, scope_kind, predicate_text, actor_ref, reconciled_at
+        SELECT id, scope_ref, scope_kind, predicate_ref, predicate_text, actor_ref, reconciled_at
         FROM ops__reconciliations
         WHERE id = ?
     """, (reconciliation_id,))

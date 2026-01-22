@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 5.1
+version: 6.0
 date: 2026-01-21
 owner: Erik
 authoring_agent: cursor
@@ -18,22 +18,25 @@ tags: [integrator, status]
 This is the single status surface.
 
 ## Current
-- (none)
+- Harden MVP-15 refusal + checkpoint
 
 ## Next
 - (none)
 
 ## Recently Completed
-- Implemented MVP-12 reconciliation (loop 1)
-- Published MVP-12 verification evidence report
-- Published MVP-12 minimal delta definition
-- Completed ops_mode default constitutional compat check
-- Published ops_mode default compat report
-- Audit gate + tests pass post-remediation
-- Remediated audit gate + tests post-rebaseline
-- Audit gate passed (audit-2026-01-21)
-- Published audit gate remediation plan
-- Published test remediation log
+- Published MVP-15 verification evidence report
+- Defined MVP-15 minimal refusal surface (report)
+- Implemented MVP-15 refusal endpoint + tests
+- Published MVP-12/13/14 proof-tightening evidence report
+- Tightened MVP-14 omission preservation verification
+- Tightened MVP-13 execution gate point evidence
+- Tightened MVP-12 predicate binding proof
+- Published MVP-14 verification evidence report
+- Implemented MVP-14 execution without explanations tests
+- Defined MVP-14 minimal delta (report)
+- Verified MVP-13 loop 1 integrity (report)
+- Published MVP-13 verification evidence report
+- Implemented MVP-13 execution continuity tests
 
 Notes:
 - Keep "Current" capped at 3 items.

@@ -27,6 +27,11 @@ from cutter_ledger.boundary import emit_cutter_event
 from state_ledger import validation as state_validation
 from .ledger_events import emit_carrier_handoff
 from .query_a import get_query_a_open_deadlines
+from .query_registry import (
+    QUERY_CLASS_ALLOWED,
+    QUERY_CLASS_REFUSE_BLAME,
+    resolve_query_class
+)
 from cutter_ledger.queries import query_dwell_vs_expectation, query_open_response_deadlines
 from .preflight import run_preflight_or_exit
 
@@ -76,6 +81,42 @@ EXECUTION_FORBIDDEN_KEYS = {
     "why",
 }
 
+MVP15_REFUSAL_CATEGORY_BLAME = "automated_harm_blame_computation"
+MVP15_REFUSAL_CATEGORY_UNKNOWN = "unknown_query_class"
+
+
+def build_mvp15_refusal(
+    query_ref: str,
+    actor_ref: str,
+    query_class: str,
+    refusal_category: str,
+    refusal_reason: str,
+    query_text: str | None
+) -> tuple[Any, int]:
+    event_data = {
+        "query_ref": query_ref,
+        "actor_ref": actor_ref,
+        "query_class": query_class,
+        "refusal_category": refusal_category
+    }
+    if query_text:
+        event_data["query_text"] = query_text
+    event_id = emit_cutter_event(
+        event_type="REFUSAL_EMITTED",
+        subject_ref=f"query:{query_ref}",
+        event_data=event_data
+    )
+    return jsonify({
+        "success": False,
+        "refused": True,
+        "refusal": {
+            "category": refusal_category,
+            "reason": refusal_reason,
+            "query_ref": query_ref,
+            "query_class": query_class
+        },
+        "event_id": event_id
+    }), 403
 
 def get_ops_mode() -> str | None:
     """Return explicit ops_mode from request or None if missing/invalid."""
@@ -2120,13 +2161,16 @@ def reconcile_scope() -> Dict[str, Any]:
         payload = request.get_json(silent=True) or {}
         scope_ref = payload.get('scope_ref')
         scope_kind = payload.get('scope_kind')
+        predicate_ref = payload.get('predicate_ref')
         predicate_text = payload.get('predicate_text')
         actor_ref = payload.get('actor_ref')
 
-        if not scope_ref or not scope_kind or not predicate_text or not actor_ref:
-            return jsonify({'error': 'scope_ref, scope_kind, predicate_text, and actor_ref are required'}), 400
+        if not scope_ref or not scope_kind or not predicate_ref or not actor_ref:
+            return jsonify({'error': 'scope_ref, scope_kind, predicate_ref, and actor_ref are required'}), 400
         if scope_kind not in {"query", "report"}:
             return jsonify({'error': 'scope_kind must be query or report'}), 400
+        if not isinstance(predicate_ref, str) or not predicate_ref.strip():
+            return jsonify({'error': 'predicate_ref must be a non-empty string'}), 400
 
         scope_valid, scope_error = state_validation.validate_scope_ref(scope_ref)
         if not scope_valid:
@@ -2139,6 +2183,7 @@ def reconcile_scope() -> Dict[str, Any]:
         record = database.record_reconciliation(
             scope_ref=scope_ref,
             scope_kind=scope_kind,
+            predicate_ref=predicate_ref,
             predicate_text=predicate_text,
             actor_ref=actor_ref
         )
@@ -2269,6 +2314,60 @@ def create_carrier_handoff() -> Dict[str, Any]:
         return jsonify({'error': f'Invalid parameter: {str(e)}'}), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+# --- MVP-15: Explicit Refusal for Harm/Blame Queries ---
+
+@app.route('/api/query/refusal', methods=['POST'])
+def refuse_harm_blame_query() -> Dict[str, Any]:
+    """
+    POST /api/query/refusal
+
+    Explicit refusal surface for automated harm/blame computation (MVP-15).
+    """
+    payload = request.get_json(silent=True) or {}
+    query_ref = payload.get("query_ref")
+    query_text = payload.get("query_text")
+    actor_ref = payload.get("actor_ref")
+
+    if not query_ref or not actor_ref:
+        return jsonify({'error': 'query_ref and actor_ref are required'}), 400
+    if not isinstance(query_ref, str) or not query_ref.strip():
+        return jsonify({'error': 'query_ref must be a non-empty string'}), 400
+
+    actor_valid, actor_error = state_validation.validate_actor_ref(actor_ref)
+    if not actor_valid:
+        return jsonify({'error': f'actor_ref invalid: {actor_error}'}), 400
+    query_class = resolve_query_class(query_ref)
+    if query_class is None:
+        return build_mvp15_refusal(
+            query_ref=query_ref,
+            actor_ref=actor_ref,
+            query_class="unknown",
+            refusal_category=MVP15_REFUSAL_CATEGORY_UNKNOWN,
+            refusal_reason="Query class is unknown; refusal is required.",
+            query_text=query_text
+        )
+    if query_class == QUERY_CLASS_REFUSE_BLAME:
+        return build_mvp15_refusal(
+            query_ref=query_ref,
+            actor_ref=actor_ref,
+            query_class=query_class,
+            refusal_category=MVP15_REFUSAL_CATEGORY_BLAME,
+            refusal_reason="Automated harm/blame computation is refused.",
+            query_text=query_text
+        )
+    if query_class == QUERY_CLASS_ALLOWED:
+        return jsonify({'error': 'query_ref is allowed; refusal not applicable'}), 400
+
+    return build_mvp15_refusal(
+        query_ref=query_ref,
+        actor_ref=actor_ref,
+        query_class=query_class,
+        refusal_category=MVP15_REFUSAL_CATEGORY_UNKNOWN,
+        refusal_reason="Query class is unknown; refusal is required.",
+        query_text=query_text
+    )
 
 
 # --- LOOP 1: QUERY A (READ-ONLY) ---
