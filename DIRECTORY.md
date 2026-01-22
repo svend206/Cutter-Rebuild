@@ -2,7 +2,7 @@
 doc_id: directory
 doc_type: spec
 status: active
-version: 5.4
+version: 5.6
 date: 2026-01-22
 owner: Erik
 authoring_agent: cursor
@@ -153,6 +153,8 @@ Authority lives in files, not in chat.
 - `reports/REPORT_28_UI_HARNESS_MINIMAL_DELTA_DEFINITION_20260122_060018.md`
 - `reports/REPORT_29_UI_HARNESS_VERIFICATION_EVIDENCE_20260122_060332.md`
 - `reports/REPORT_30_UI_HARNESS_CHECKPOINT_COMMIT_20260122_062122.md`
+- `reports/REPORT_32_UI_HARNESS_ASSIGN_OWNER_EVIDENCE_20260121_120500.md`
+- `reports/REPORT_33_AUDIT_OVERRIDE_CLEARED_20260122_170632.md`
 - `scripts/README.md`
 - `tests/README.md`
 - `packs/ARCHITECT.md`

@@ -47,8 +47,8 @@ class TestStateTimeInState(unittest.TestCase):
         assign_owner(entity_ref, actor_ref, "org:acme/actor:admin")
 
         now = datetime.now(timezone.utc)
-        older = (now - timedelta(days=2)).strftime("%Y-%m-%d %H:%M:%S")
-        newer = (now - timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
+        older = (now - timedelta(days=3)).strftime("%Y-%m-%d %H:%M:%S")
+        newer = (now - timedelta(days=2)).strftime("%Y-%m-%d %H:%M:%S")
 
         conn = sqlite3.connect(str(self.test_db_path))
         cursor = conn.cursor()

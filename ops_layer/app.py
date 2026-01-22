@@ -2259,6 +2259,39 @@ def list_cutter_events() -> Dict[str, Any]:
         return jsonify({'error': f'Failed to load cutter events: {str(e)}'}), 500
 
 
+@app.route('/api/state/assign_owner', methods=['POST'])
+def assign_state_owner() -> Dict[str, Any]:
+    try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
+        if mode != "planning":
+            return jsonify({'error': 'assign_owner requires ops_mode planning'}), 400
+
+        payload = request.get_json(silent=True) or {}
+        entity_ref = payload.get('entity_ref')
+        owner_actor_ref = payload.get('owner_actor_ref')
+        if not entity_ref or not owner_actor_ref:
+            return jsonify({'error': 'entity_ref and owner_actor_ref are required'}), 400
+
+        assignment_id = state_boundary.assign_owner(
+            entity_ref=entity_ref,
+            owner_actor_ref=owner_actor_ref,
+            assigned_by_actor_ref=owner_actor_ref
+        )
+        return jsonify({
+            'success': True,
+            'assignment_id': assignment_id,
+            'entity_ref': entity_ref,
+            'owner_actor_ref': owner_actor_ref,
+            'assigned_by_actor_ref': owner_actor_ref
+        }), 200
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+    except Exception as e:
+        return jsonify({'error': f'Failed to assign owner: {str(e)}'}), 500
+
+
 @app.route('/api/state/declarations', methods=['GET', 'POST'])
 def state_declarations() -> Dict[str, Any]:
     try:

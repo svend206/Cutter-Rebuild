@@ -52,6 +52,11 @@ tags: [report, ui, harness, verification, mvp, context]
 - Refusal tester: `POST /api/query/refusal`
 - Refusal event viewer: `GET /api/cutter/events?subject_ref=query:{query_ref}`
 
+## Gap Found
+- DS-2 refusal requires `assign_owner()` first.
+- The harness has no control to perform ownership assignment.
+- State Ledger manual exercise is blocked for new entities.
+
 ## Manual Happy Path Script
 1. Open `/harness` and confirm banner “HARNESS v0 — NOT PRODUCT UX”.
 2. Select **Execution** mode.

@@ -182,6 +182,24 @@
     </div>
 
     <div class="panel" data-mode="planning">
+        <h2>Assign Owner (State Ledger, Planning)</h2>
+        <form id="assign-owner-form">
+            <div class="row">
+                <div class="field">
+                    <label>entity_ref</label>
+                    <input id="assign-entity-ref" type="text" placeholder="org:testco/entity:project:alp" required />
+                </div>
+                <div class="field">
+                    <label>owner_actor_ref</label>
+                    <input id="assign-owner-ref" type="text" placeholder="org:testco/actor:erik" required />
+                </div>
+            </div>
+            <button type="submit">Assign Owner</button>
+        </form>
+        <pre id="assign-owner-result"></pre>
+    </div>
+
+    <div class="panel" data-mode="planning">
         <h2>State Ledger Viewer (Planning)</h2>
         <form id="state-list-form">
             <div class="row">

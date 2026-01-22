@@ -138,6 +138,23 @@ document.getElementById("state-declaration-form").addEventListener("submit", asy
     showResult("state-declaration-result", data);
 });
 
+document.getElementById("assign-owner-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!requireMode("planning", "assign-owner-result")) return;
+
+    const payload = {
+        entity_ref: document.getElementById("assign-entity-ref").value.trim(),
+        owner_actor_ref: document.getElementById("assign-owner-ref").value.trim()
+    };
+
+    const response = await apiFetch("/api/state/assign_owner", {
+        method: "POST",
+        body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    showResult("assign-owner-result", data);
+});
+
 document.getElementById("state-list-form").addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!requireMode("planning", "state-list-result")) return;
