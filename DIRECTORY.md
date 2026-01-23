@@ -93,6 +93,9 @@ Authority lives in files, not in chat.
 - `inbox/INBOX.md`
 - `obligations/OBLIGATIONS.md`
 - `planning/Phase_I_work_charter.md`
+- `planning/PHASE_II_WORK_CHARTER.md`
+- `planning/PHASE_II_RECORD_TYPES_CATALOG.md`
+- `planning/PHASE_II_REPRESENTATION_INVARIANTS.md`
 - `ux/UX_INDEX.md`
 - `ux/ui_surface_rules_and_pages.md`
 - `ux/SYSTEM_PAGE_PURPOSE_SPEC.md`
@@ -163,6 +166,8 @@ Authority lives in files, not in chat.
 - `reports/REPORT_34_AUDIT_TAG_ALIGNMENT_20260122_172935.md`
 - `reports/REPORT_35_PHASE_I_ADVERSARIAL_TESTS_20260123_113450.md`
 - `reports/REPORT_36_PHASE_I_CLOSURE_AUDIT_20260123_114810.md`
+- `reports/REPORT_37_PHASE_II_ADVERSARIAL_EXIT_AUDIT_20260123_150000.md`
+- `reports/REPORT_38_PHASE_II_CLOSURE_AUDIT_20260123_151000.md`
 - `scripts/README.md`
 - `tests/README.md`
 - `packs/ARCHITECT.md`

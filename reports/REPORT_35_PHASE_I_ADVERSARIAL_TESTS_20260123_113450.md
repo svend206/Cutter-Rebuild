@@ -2,7 +2,7 @@
 doc_id: report_phase_i_adversarial_tests_20260123_113450
 doc_type: context
 status: active
-version: 1.0
+version: 1.2
 date: 2026-01-23
 owner: Erik
 authoring_agent: cursor
@@ -119,3 +119,25 @@ Purpose: address the adversarial attack vectors by defining tests and recording 
 ## Summary
 All automated document‑inspection tests pass.  
 Three human‑judgment tests are required for any new Phase I artifacts to prevent smuggled design through prose.
+
+---
+
+## Addendum — 2026-01-23 Phase II Language Fixes
+
+Scope: language-only edits to Phase II artifacts to remove implied agency, workflow, and evaluation.
+
+### Record Types Catalogue (planning/PHASE_II_RECORD_TYPES_CATALOG.md)
+- “Hold a durable statement that the system refused to act.” → “Hold a durable statement that a refusal occurred and an attempted action was not performed.”
+- “That a refusal occurred and was recorded.” → “That a refusal occurred and was recorded, including its stated reason.”
+- “Hold a durable statement that a newer record corrects or supersedes a prior record.” → “Hold a durable statement that one record is designated as superseding another.”
+- “That a correction or supersession was recorded without erasing history.” → “That a supersession designation was recorded without erasing history.”
+- “That the earlier record was careless, invalid, or blameworthy.” → “That the earlier record was erroneous, careless, invalid, or blameworthy.”
+
+### Representation Invariants (planning/PHASE_II_REPRESENTATION_INVARIANTS.md)
+- “Records must preserve when they occurred or were declared.” → “Records include when they occurred or were declared.”
+- “Records may refer to other records only as “refers to.”” → “Reference relationships between records are representable only as “refers to.””
+- “Each record stands on its own terms.” → “Each record is preserved independently.”
+
+### Phase II Work Charter (planning/PHASE_II_WORK_CHARTER.md)
+- “Defining how time attaches to records” → “Defining how time is represented as part of each record”
+- “Defining how records may reference each other without collapsing roles” → “Defining how reference relationships between records are representable without collapsing roles”
