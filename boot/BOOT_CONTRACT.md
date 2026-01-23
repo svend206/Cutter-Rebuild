@@ -27,6 +27,23 @@ This contract gates all action in this repository.
 ## Non-Invention
 Agents may not invent requirements, rules, or scope that are not explicitly written in authoritative documents.
 
+## No Known Deferral Rule
+When a known issue, weakness, or inconsistency is discovered during work, and it can be resolved safely within the current scope and authority, it must be resolved immediately.
+
+Deferral is permitted only when at least one of the following is true:
+- Fixing it now would violate a locked constraint, phase rule, or explicit scope boundary.
+- Fixing it now would weaken an invariant or require authority not granted.
+- The issue cannot be safely resolved with current information and acting now would introduce risk.
+- Fixing it now would require a broad refactor that changes behavior beyond the current task.
+
+If an issue is deferred, the deferral must be explicit and recorded:
+- what is being deferred
+- why it meets one of the allowed exceptions
+- where it lives (file, path, endpoint, or component)
+
+Silence is not an acceptable deferral mechanism.
+“OK for now” is not a justification.
+
 ## Promotion Discipline
 Legacy artifacts from the old repo are read-only. Promotion into this repo must be explicit.
 
