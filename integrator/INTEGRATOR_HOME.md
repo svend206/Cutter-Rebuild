@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 10.5
+version: 10.9
 date: 2026-01-23
 owner: Erik
 authoring_agent: cursor
@@ -18,10 +18,9 @@ tags: [integrator, status]
 This is the single status surface.
 
 ## Phase
-- Phase: IV — Exposure
-- Phase intent: Surface bound reality to humans without interpretation.
-- Phase exit gate: No visual judgment, implied priority, hidden aggregation, or softened persistence.
-- Phase IV entry obligations: record volume/obscuring (record flooding); practical human inspectability/accessibility.
+- Phase: V — Reliance
+- Phase intent: Define reliance boundaries without surrendering judgment or responsibility.
+- Phase exit gate: No authority creep, implied correctness, or responsibility leakage.
 
 Phase rule: Items in Current/Next/Active must be allowed work for the declared phase in `boot/PROJECT_PHASE_CONSTITUTION.md`. Out-of-phase work must be refused and removed from those lists, not deferred.
 
@@ -35,6 +34,10 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - (none)
 
 ## Recently Completed
+- Phase IV closed (PASS) with adversarial exit audit; REPORT 40 recorded.
+- Created Phase IV exposure views catalogue and registered it in DIRECTORY.
+- Created Phase IV exposure invariants and registered it in DIRECTORY.
+- Created Phase IV work charter and registered it in DIRECTORY.
 - Phase III closed (PASS) with adversarial exit audit; REPORT 39 recorded.
 - Hardened Phase III binding matrix with explicit deferrals and entry obligations.
 - Remediated Phase III binding matrix and recorded REPORT 39.
@@ -42,9 +45,7 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - Created Phase III work charter and registered it in DIRECTORY.
 - Phase II closed (PASS) with adversarial exit audit; REPORT 38 recorded.
 - De-agentified Phase II work charter language and updated REPORT 35.
-- Applied Phase II language-only fixes (record types + invariants) and updated REPORT 35.
 - Created Phase II representation invariants and registered it in DIRECTORY.
-- Created Phase II record types catalogue and registered it in DIRECTORY.
 - Renamed Phase II work charter to `planning/PHASE_II_WORK_CHARTER.md` and updated references.
 
 Notes:
