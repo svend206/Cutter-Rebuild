@@ -26,6 +26,7 @@ import database  # Cross-layer utility (remains at root)
 from cutter_ledger.boundary import emit_cutter_event, get_events as get_cutter_events
 from state_ledger import validation as state_validation
 from state_ledger import boundary as state_boundary
+from state_ledger import queries as state_queries
 from .ledger_events import emit_carrier_handoff
 from .query_a import get_query_a_open_deadlines
 from .query_registry import (
@@ -85,6 +86,12 @@ EXECUTION_FORBIDDEN_KEYS = {
 MVP15_REFUSAL_CATEGORY_BLAME = "automated_harm_blame_computation"
 MVP15_REFUSAL_CATEGORY_UNKNOWN = "unknown_query_class"
 
+REPORT_QUERY_TYPES = {
+    "entities_time_in_state_over",
+    "entities_missing_reaffirmation_over",
+    "latest_declaration_per_entity"
+}
+
 
 def build_mvp15_refusal(
     query_ref: str,
@@ -141,6 +148,32 @@ def require_ops_mode():
     if mode is None:
         return None, (jsonify({"error": "ops_mode is required", "success": False}), 400)
     return mode, None
+
+
+def normalize_report_params(query_type: str, params: Dict[str, Any]) -> Dict[str, Any]:
+    if not isinstance(params, dict):
+        raise ValueError("params must be an object")
+    if query_type == "latest_declaration_per_entity":
+        if params:
+            raise ValueError("params must be empty for latest_declaration_per_entity")
+        return {}
+    if query_type == "entities_time_in_state_over":
+        threshold_days = params.get("threshold_days")
+        cadence_days = params.get("cadence_days")
+        raw_value = threshold_days if threshold_days is not None else cadence_days
+        if raw_value is None:
+            raise ValueError("threshold_days or cadence_days is required")
+        if not isinstance(raw_value, int) or raw_value < 0:
+            raise ValueError("threshold_days must be a non-negative integer")
+        return {"threshold_days": raw_value}
+    if query_type == "entities_missing_reaffirmation_over":
+        threshold_days = params.get("threshold_days")
+        if threshold_days is None:
+            raise ValueError("threshold_days is required")
+        if not isinstance(threshold_days, int) or threshold_days < 0:
+            raise ValueError("threshold_days must be a non-negative integer")
+        return {"threshold_days": threshold_days}
+    raise ValueError("query_type is not supported")
 
 
 def strip_execution_fields(payload: Any) -> Any:
@@ -2257,6 +2290,168 @@ def list_cutter_events() -> Dict[str, Any]:
         return jsonify({'error': str(e)}), 400
     except Exception as e:
         return jsonify({'error': f'Failed to load cutter events: {str(e)}'}), 500
+
+
+@app.route('/api/reports/save', methods=['POST'])
+def save_report_definition() -> Dict[str, Any]:
+    try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
+        if mode != "planning":
+            return jsonify({
+                'error': 'reports require ops_mode planning',
+                'code': 'OPS_MODE_REQUIRED_PLANNING'
+            }), 400
+
+        payload = request.get_json(silent=True) or {}
+        report_name = (payload.get('report_name') or "").strip()
+        query_type = (payload.get('query_type') or "").strip()
+        params = payload.get('params') or {}
+        created_by_actor_ref = (payload.get('created_by_actor_ref') or "").strip()
+
+        if not report_name or not query_type or not created_by_actor_ref:
+            return jsonify({
+                'error': 'report_name, query_type, and created_by_actor_ref are required',
+                'code': 'MISSING_REQUIRED_FIELDS'
+            }), 400
+
+        actor_valid, actor_error = state_validation.validate_actor_ref(created_by_actor_ref)
+        if not actor_valid:
+            return jsonify({
+                'error': f'created_by_actor_ref invalid: {actor_error}',
+                'code': 'INVALID_ACTOR_REF'
+            }), 400
+
+        if query_type not in REPORT_QUERY_TYPES:
+            return jsonify({
+                'error': 'query_type is not supported',
+                'code': 'INVALID_QUERY_TYPE'
+            }), 400
+
+        try:
+            normalized_params = normalize_report_params(query_type, params)
+        except ValueError:
+            return jsonify({
+                'error': 'params invalid for query_type',
+                'code': 'INVALID_REPORT_PARAMS'
+            }), 400
+
+        if database.report_name_exists(report_name):
+            return jsonify({
+                'error': 'report_name already exists',
+                'code': 'REPORT_NAME_CONFLICT'
+            }), 400
+
+        params_json = json.dumps(normalized_params, sort_keys=True)
+        record = database.create_saved_report(
+            report_name=report_name,
+            query_type=query_type,
+            params_json=params_json,
+            created_by_actor_ref=created_by_actor_ref
+        )
+        return jsonify({'success': True, 'report': record}), 200
+    except Exception:
+        return jsonify({
+            'error': 'failed to save report',
+            'code': 'REPORT_SAVE_FAILED'
+        }), 500
+
+
+@app.route('/api/reports/list', methods=['GET'])
+def list_report_definitions() -> Dict[str, Any]:
+    try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
+        if mode != "planning":
+            return jsonify({
+                'error': 'reports require ops_mode planning',
+                'code': 'OPS_MODE_REQUIRED_PLANNING'
+            }), 400
+
+        reports = database.list_saved_reports()
+        return jsonify({'success': True, 'reports': reports}), 200
+    except Exception:
+        return jsonify({
+            'error': 'failed to list reports',
+            'code': 'REPORT_LIST_FAILED'
+        }), 500
+
+
+@app.route('/api/reports/run', methods=['POST'])
+def run_saved_report() -> Dict[str, Any]:
+    try:
+        mode, error = require_ops_mode()
+        if error:
+            return error
+        if mode != "planning":
+            return jsonify({
+                'error': 'reports require ops_mode planning',
+                'code': 'OPS_MODE_REQUIRED_PLANNING'
+            }), 400
+
+        payload = request.get_json(silent=True) or {}
+        report_id = payload.get('report_id')
+        if report_id is None:
+            return jsonify({
+                'error': 'report_id is required',
+                'code': 'MISSING_REQUIRED_FIELDS'
+            }), 400
+        if not isinstance(report_id, int):
+            return jsonify({
+                'error': 'report_id must be an integer',
+                'code': 'INVALID_REPORT_ID'
+            }), 400
+
+        report = database.get_saved_report(report_id)
+        if not report:
+            return jsonify({
+                'error': 'report not found',
+                'code': 'REPORT_NOT_FOUND'
+            }), 404
+
+        try:
+            params = json.loads(report.get('params_json') or "{}")
+        except json.JSONDecodeError:
+            return jsonify({
+                'error': 'report params invalid',
+                'code': 'INVALID_REPORT_PARAMS'
+            }), 400
+
+        query_type = report.get('query_type')
+        try:
+            normalized_params = normalize_report_params(query_type, params)
+        except ValueError:
+            return jsonify({
+                'error': 'report params invalid',
+                'code': 'INVALID_REPORT_PARAMS'
+            }), 400
+
+        if query_type == "entities_time_in_state_over":
+            rows = state_queries.query_entities_time_in_state_over(normalized_params["threshold_days"])
+        elif query_type == "entities_missing_reaffirmation_over":
+            rows = state_queries.query_entities_missing_reaffirmation_over(normalized_params["threshold_days"])
+        elif query_type == "latest_declaration_per_entity":
+            rows = state_queries.query_latest_declaration_per_entity()
+        else:
+            return jsonify({
+                'error': 'query_type is not supported',
+                'code': 'INVALID_QUERY_TYPE'
+            }), 400
+
+        last_run_at = database.mark_report_run(report_id)
+        return jsonify({
+            'success': True,
+            'report': report,
+            'last_run_at': last_run_at,
+            'rows': rows
+        }), 200
+    except Exception:
+        return jsonify({
+            'error': 'failed to run report',
+            'code': 'REPORT_RUN_FAILED'
+        }), 500
 
 
 @app.route('/api/state/assign_owner', methods=['POST'])

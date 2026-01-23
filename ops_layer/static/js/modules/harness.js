@@ -192,6 +192,71 @@ document.getElementById("state-list-form").addEventListener("submit", async (eve
     showResult("state-list-result", data);
 });
 
+document.getElementById("report-save-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!requireMode("planning", "report-save-result")) return;
+
+    const reportName = document.getElementById("report-name").value.trim();
+    const queryType = document.getElementById("report-query-type").value;
+    const actorRef = document.getElementById("report-actor-ref").value.trim();
+    const paramsRaw = document.getElementById("report-params").value.trim();
+    let params = {};
+
+    if (paramsRaw) {
+        try {
+            params = parseJsonInput(paramsRaw, "params");
+            if (params === null || Array.isArray(params) || typeof params !== "object") {
+                throw new Error("params must be a JSON object");
+            }
+        } catch (error) {
+            showResult("report-save-result", { error: error.message });
+            return;
+        }
+    }
+
+    const payload = {
+        report_name: reportName,
+        query_type: queryType,
+        params: params,
+        created_by_actor_ref: actorRef
+    };
+
+    const response = await apiFetch("/api/reports/save", {
+        method: "POST",
+        body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    showResult("report-save-result", data);
+});
+
+document.getElementById("report-list-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!requireMode("planning", "report-list-result")) return;
+
+    const response = await apiFetch("/api/reports/list", { method: "GET" });
+    const data = await response.json();
+    showResult("report-list-result", data);
+});
+
+document.getElementById("report-run-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!requireMode("planning", "report-run-result")) return;
+
+    const reportIdRaw = document.getElementById("report-id").value.trim();
+    const reportId = Number(reportIdRaw);
+    if (!Number.isInteger(reportId) || reportId < 1) {
+        showResult("report-run-result", { error: "report_id must be a positive integer" });
+        return;
+    }
+
+    const response = await apiFetch("/api/reports/run", {
+        method: "POST",
+        body: JSON.stringify({ report_id: reportId })
+    });
+    const data = await response.json();
+    showResult("report-run-result", data);
+});
+
 document.getElementById("reconcile-form").addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!requireMode("planning", "reconcile-result")) return;

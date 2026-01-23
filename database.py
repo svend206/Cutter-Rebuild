@@ -288,6 +288,19 @@ def initialize_database() -> None:
             reconciled_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
     """)
+
+    # 11. Saved report definitions (Post-MVP planning-only)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS ops__saved_reports (
+            report_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            report_name TEXT NOT NULL UNIQUE,
+            query_type TEXT NOT NULL,
+            params_json TEXT NOT NULL,
+            created_by_actor_ref TEXT NOT NULL,
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            last_run_at TEXT
+        )
+    """)
     
     # --- MIGRATIONS (Ensure columns exist on legacy/existing DBs) ---
     
@@ -1109,6 +1122,111 @@ def list_reconciliations(
     rows = [dict(row) for row in cursor.fetchall()]
     conn.close()
     return rows
+
+
+def report_name_exists(report_name: str) -> bool:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT 1
+        FROM ops__saved_reports
+        WHERE report_name = ?
+        LIMIT 1
+    """, (report_name,))
+    exists = cursor.fetchone() is not None
+    conn.close()
+    return exists
+
+
+def create_saved_report(
+    report_name: str,
+    query_type: str,
+    params_json: str,
+    created_by_actor_ref: str
+) -> Dict[str, Any]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO ops__saved_reports
+        (report_name, query_type, params_json, created_by_actor_ref)
+        VALUES (?, ?, ?, ?)
+    """, (report_name, query_type, params_json, created_by_actor_ref))
+    report_id = cursor.lastrowid
+    cursor.execute("""
+        SELECT
+            report_id,
+            report_name,
+            query_type,
+            params_json,
+            created_by_actor_ref,
+            created_at,
+            last_run_at
+        FROM ops__saved_reports
+        WHERE report_id = ?
+    """, (report_id,))
+    row = cursor.fetchone()
+    conn.commit()
+    conn.close()
+    return dict(row) if row else {}
+
+
+def list_saved_reports() -> List[Dict[str, Any]]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT
+            report_id,
+            report_name,
+            query_type,
+            params_json,
+            created_by_actor_ref,
+            created_at,
+            last_run_at
+        FROM ops__saved_reports
+        ORDER BY created_at ASC
+    """)
+    rows = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return rows
+
+
+def get_saved_report(report_id: int) -> Optional[Dict[str, Any]]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT
+            report_id,
+            report_name,
+            query_type,
+            params_json,
+            created_by_actor_ref,
+            created_at,
+            last_run_at
+        FROM ops__saved_reports
+        WHERE report_id = ?
+    """, (report_id,))
+    row = cursor.fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def mark_report_run(report_id: int) -> Optional[str]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        UPDATE ops__saved_reports
+        SET last_run_at = CURRENT_TIMESTAMP
+        WHERE report_id = ?
+    """, (report_id,))
+    conn.commit()
+    cursor.execute("""
+        SELECT last_run_at
+        FROM ops__saved_reports
+        WHERE report_id = ?
+    """, (report_id,))
+    row = cursor.fetchone()
+    conn.close()
+    return row["last_run_at"] if row else None
 
 def create_custom_tag(name: str, impact_type: str, impact_value: float, persistence_type: str = 'transient', category: str = 'General') -> int:
     conn = get_connection()

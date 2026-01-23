@@ -244,6 +244,52 @@
     </div>
 
     <div class="panel" data-mode="planning">
+        <h2>Saved Reports (Planning)</h2>
+        <form id="report-save-form">
+            <div class="row">
+                <div class="field">
+                    <label>report_name</label>
+                    <input id="report-name" type="text" placeholder="weekly-time-in-state" required />
+                </div>
+                <div class="field">
+                    <label>query_type</label>
+                    <select id="report-query-type" required>
+                        <option value="entities_time_in_state_over">entities_time_in_state_over</option>
+                        <option value="entities_missing_reaffirmation_over">entities_missing_reaffirmation_over</option>
+                        <option value="latest_declaration_per_entity">latest_declaration_per_entity</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>created_by_actor_ref</label>
+                    <input id="report-actor-ref" type="text" placeholder="org:acme.com/actor:owner" required />
+                </div>
+            </div>
+            <div class="field">
+                <label>params (optional JSON object)</label>
+                <textarea id="report-params" placeholder='{"threshold_days": 7}'></textarea>
+            </div>
+            <button type="submit">Save Report</button>
+        </form>
+        <pre id="report-save-result"></pre>
+
+        <form id="report-list-form">
+            <button type="submit" class="secondary">List Reports</button>
+        </form>
+        <pre id="report-list-result"></pre>
+
+        <form id="report-run-form">
+            <div class="row">
+                <div class="field">
+                    <label>report_id</label>
+                    <input id="report-id" type="number" min="1" required />
+                </div>
+            </div>
+            <button type="submit">Run Report</button>
+        </form>
+        <pre id="report-run-result"></pre>
+    </div>
+
+    <div class="panel" data-mode="planning">
         <h2>Reconciliation (MVP-12, Planning)</h2>
         <form id="reconcile-form">
             <div class="row">

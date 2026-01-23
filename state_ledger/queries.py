@@ -121,6 +121,92 @@ def query_time_in_state() -> List[Dict[str, Any]]:
     return rows
 
 
+def query_entities_time_in_state_over(threshold_days: int) -> List[Dict[str, Any]]:
+    """
+    Return entities where time-in-state exceeds threshold_days.
+    """
+    if threshold_days < 0:
+        raise ValueError("threshold_days must be >= 0")
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT
+            entity_ref,
+            entity_label,
+            cadence_days,
+            scope_ref,
+            state_text,
+            declaration_kind,
+            declared_by_actor_ref,
+            declared_at,
+            days_since_declaration
+        FROM view_state_time_in_state
+        WHERE days_since_declaration IS NOT NULL
+        AND days_since_declaration > ?
+        ORDER BY days_since_declaration DESC, entity_ref ASC
+    """, (threshold_days,))
+    rows = []
+    for row in cursor.fetchall():
+        rows.append({
+            'entity_ref': row['entity_ref'],
+            'entity_label': row['entity_label'],
+            'cadence_days': row['cadence_days'],
+            'scope_ref': row['scope_ref'],
+            'state_text': row['state_text'],
+            'declaration_kind': row['declaration_kind'],
+            'declared_by_actor_ref': row['declared_by_actor_ref'],
+            'declared_at': row['declared_at'],
+            'days_since_declaration': row['days_since_declaration']
+        })
+    conn.close()
+    return rows
+
+
+def query_entities_missing_reaffirmation_over(threshold_days: int) -> List[Dict[str, Any]]:
+    """
+    Return entities missing reaffirmation beyond threshold_days.
+    """
+    return query_entities_time_in_state_over(threshold_days)
+
+
+def query_latest_declaration_per_entity() -> List[Dict[str, Any]]:
+    """
+    Return latest declarations per entity (no aggregation or judgment).
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT
+            entity_ref,
+            entity_label,
+            cadence_days,
+            scope_ref,
+            state_text,
+            declaration_kind,
+            declared_by_actor_ref,
+            declared_at,
+            days_since_declaration
+        FROM view_state_time_in_state
+        WHERE declared_at IS NOT NULL
+        ORDER BY entity_ref ASC, scope_ref ASC
+    """)
+    rows = []
+    for row in cursor.fetchall():
+        rows.append({
+            'entity_ref': row['entity_ref'],
+            'entity_label': row['entity_label'],
+            'cadence_days': row['cadence_days'],
+            'scope_ref': row['scope_ref'],
+            'state_text': row['state_text'],
+            'declaration_kind': row['declaration_kind'],
+            'declared_by_actor_ref': row['declared_by_actor_ref'],
+            'declared_at': row['declared_at'],
+            'days_since_declaration': row['days_since_declaration']
+        })
+    conn.close()
+    return rows
+
+
 def get_latest_declarations(
     entity_ref: Optional[str] = None,
     scope_ref: Optional[str] = None,

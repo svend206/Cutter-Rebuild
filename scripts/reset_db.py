@@ -293,6 +293,19 @@ def create_fresh_db(db_path: Path):
                 reconciled_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
             )
         """)
+
+        # ops__saved_reports (Post-MVP planning-only)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS ops__saved_reports (
+                report_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                report_name TEXT NOT NULL UNIQUE,
+                query_type TEXT NOT NULL,
+                params_json TEXT NOT NULL,
+                created_by_actor_ref TEXT NOT NULL,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                last_run_at TEXT
+            )
+        """)
         
         # Create Cutter Ledger tables (reuse connection)
         if conn is None or not hasattr(conn, 'cursor'):
