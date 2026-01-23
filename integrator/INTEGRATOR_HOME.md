@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 7.9
+version: 8.7
 date: 2026-01-22
 owner: Erik
 authoring_agent: cursor
@@ -27,6 +27,10 @@ This is the single status surface.
 - (none)
 
 ## Recently Completed
+- Checkpoint: governance-no-known-deferral-2026-01-22 (commit: a45b0f3) — Add No Known Deferral rule for agents. Gates: audit_gate.py PASS, unittest PASS.
+- Checkpoint: governance-freeze-artifacts-2026-01-22 (commit: 869d3ed) — Add MVP freeze artifacts + local pre-push gate helper. Gates: audit_gate.py PASS, unittest PASS.
+- Checkpoint: post-mvp-p1-saved-reports-2026-01-22 (commit: 8514d7c) — Planning-only saved reports (typed, read-only). Gates: audit_gate.py PASS, unittest PASS.
+- Checkpoint: mvp-locked-all-green-2026-01-22 (commit: 23be9b3) — Locked MVP: all capabilities hardened + failure-mode proofs green. Gates: audit_gate.py PASS, unittest PASS.
 - Created audit tag: audit-2026-01-22-mvp-gap-tests
 - Audit gate + unit tests PASS after MVP gap tests
 - Added MVP failure-mode tests for MVP-1/4/5/6/7/12
