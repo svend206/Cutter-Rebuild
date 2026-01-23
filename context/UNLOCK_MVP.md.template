@@ -1,0 +1,28 @@
+---
+doc_id: unlock_mvp_template_20260122
+doc_type: context
+status: template
+version: 1.0
+date: 2026-01-22
+owner: Erik
+authoring_agent: cursor
+supersedes: []
+superseded_by: []
+authoritative_sources: [context/MVP_CAPABILITIES_LOCKED.md]
+conflicts_with: []
+tags: [mvp, unlock, template, context]
+---
+
+# MVP Unlock Template
+
+## Date
+
+## Why unlock is necessary
+
+## Which MVP capability is impacted
+
+## What invariants might be at risk
+
+## What proofs will be added/updated
+
+## How rollback works

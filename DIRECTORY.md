@@ -2,7 +2,7 @@
 doc_id: directory
 doc_type: spec
 status: active
-version: 5.7
+version: 5.8
 date: 2026-01-22
 owner: Erik
 authoring_agent: cursor
@@ -115,6 +115,9 @@ Authority lives in files, not in chat.
 - `context/UI_VERIFICATION_SPEC_MVP-14.md`
 - `context/UI_VERIFICATION_SPEC_MVP-15.md`
 - `context/MVP_15_REFUSAL_SURFACE_VERIFICATION.md`
+- `context/MVP_LOCK_AT_TAG.md`
+- `context/POST_MVP_INTENT.md`
+- `context/UNLOCK_MVP.md.template`
 - `context/manifesto/CORE_MANIFESTO.md`
 - `context/manifesto/# Cannot Outsource Risk.md`
 - `context/manifesto/think_different.md`

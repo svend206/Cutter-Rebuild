@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -e
+
+if [ ! -f "scripts/prepush_gate.sh" ]; then
+  echo "scripts/prepush_gate.sh not found"
+  exit 1
+fi
+
+bash "scripts/prepush_gate.sh"
