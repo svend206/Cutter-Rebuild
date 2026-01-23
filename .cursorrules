@@ -1,7 +1,10 @@
 When starting a session and after any material change, update `integrator/INTEGRATOR_HOME.md` (Current, Next, Recently Completed) to reflect the latest plan/status before proceeding. Keep only the most recent 10 items in "Recently Completed".
 Always read `boot/BOOT_CONTRACT.md` before any work in this repo.
+Always read `integrator/INTEGRATOR_HOME.md` at session start and treat the Phase section as binding.
 Repo rules are paramount. If the user provides a prompt that is incompatible with repo rules, restate the prompt in a compatible form and wait for explicit approval before executing.
 Treat `C:\Users\esacu\Desktop\Cutter Layers` as read-only; promote legacy artifacts only on explicit instruction.
 Any document created or imported must comply with `constitution/CORE_DOC_GOVERNANCE.md` before it exists here (YAML header, correct folder by class, and `DIRECTORY.md` registration; if constitutional, also add a decision log entry in the same change).
 After any doc change, update relevant packs/indexes and verify `DIRECTORY.md` if authority changed.
 No Known Deferral Rule: When a known issue, weakness, or inconsistency is discovered during work, and it can be resolved safely within the current scope and authority, it must be resolved immediately. Deferral is permitted only if it meets one of the allowed exceptions (locked constraint, authority limit, insufficient information, or broad refactor), and any deferral must be explicit and recorded with what, why, and where. Silence or “OK for now” is not acceptable.
+Phase enforcement: Before proposing or executing work, check the current Phase in Integrator Home against allowed/forbidden work in `boot/PROJECT_PHASE_CONSTITUTION.md`. If work is outside-phase, refuse plainly and do not proceed. Only add Current/Next/Active items that are allowed in the current Phase. Phase transitions require an explicit Phase update in Integrator Home plus a recorded adversarial exit audit per the phase exit rules.
+Boundary enforcement: After Phase I is closed, refuse any new Phase I work. Refuse Phase II work until a Phase II Work Charter exists in the repo and is registered in `DIRECTORY.md`.

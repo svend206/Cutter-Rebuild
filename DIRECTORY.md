@@ -2,7 +2,7 @@
 doc_id: directory
 doc_type: spec
 status: active
-version: 5.8
+version: 6.2
 date: 2026-01-22
 owner: Erik
 authoring_agent: cursor
@@ -84,6 +84,7 @@ Authority lives in files, not in chat.
 
 ## C. Specs (Authoritative)
 - `boot/BOOT_CONTRACT.md`
+- `boot/PROJECT_PHASE_CONSTITUTION.md`
 - `bootstrap/BOOTSTRAP_INDEX.md`
 - `bootstrap/CONSTITUTION_INDEX.md`
 - `bootstrap/CONSTITUTION_MISREAD_TEST.md`
@@ -91,6 +92,7 @@ Authority lives in files, not in chat.
 - `integrator/INTEGRATOR_HOME.md`
 - `inbox/INBOX.md`
 - `obligations/OBLIGATIONS.md`
+- `planning/Phase_I_work_charter.md`
 - `ux/UX_INDEX.md`
 - `ux/ui_surface_rules_and_pages.md`
 - `ux/SYSTEM_PAGE_PURPOSE_SPEC.md`
@@ -159,6 +161,8 @@ Authority lives in files, not in chat.
 - `reports/REPORT_32_UI_HARNESS_ASSIGN_OWNER_EVIDENCE_20260121_120500.md`
 - `reports/REPORT_33_AUDIT_OVERRIDE_CLEARED_20260122_170632.md`
 - `reports/REPORT_34_AUDIT_TAG_ALIGNMENT_20260122_172935.md`
+- `reports/REPORT_35_PHASE_I_ADVERSARIAL_TESTS_20260123_113450.md`
+- `reports/REPORT_36_PHASE_I_CLOSURE_AUDIT_20260123_114810.md`
 - `scripts/README.md`
 - `tests/README.md`
 - `packs/ARCHITECT.md`

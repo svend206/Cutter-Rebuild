@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 8.7
+version: 9.2
 date: 2026-01-22
 owner: Erik
 authoring_agent: cursor
@@ -17,6 +17,13 @@ tags: [integrator, status]
 
 This is the single status surface.
 
+## Phase
+- Phase: II — Representation
+- Phase intent: Represent reality without interpreting it.
+- Phase exit gate: No recommendation, priority, judgment, or implied response.
+
+Phase rule: Items in Current/Next/Active must be allowed work for the declared phase in `boot/PROJECT_PHASE_CONSTITUTION.md`. Out-of-phase work must be refused and removed from those lists, not deferred.
+
 ## Current
 - (none)
 
@@ -27,6 +34,10 @@ This is the single status surface.
 - (none)
 
 ## Recently Completed
+- Phase I closed (PASS) with adversarial audit; REPORT 36 recorded.
+- Published REPORT 35 Phase I adversarial tests.
+- Phase 0 completed (pre-Phase I). Phase I is now active.
+- Project Phase Constitution spec added and registered.
 - Checkpoint: governance-no-known-deferral-2026-01-22 (commit: a45b0f3) — Add No Known Deferral rule for agents. Gates: audit_gate.py PASS, unittest PASS.
 - Checkpoint: governance-freeze-artifacts-2026-01-22 (commit: 869d3ed) — Add MVP freeze artifacts + local pre-push gate helper. Gates: audit_gate.py PASS, unittest PASS.
 - Checkpoint: post-mvp-p1-saved-reports-2026-01-22 (commit: 8514d7c) — Planning-only saved reports (typed, read-only). Gates: audit_gate.py PASS, unittest PASS.
