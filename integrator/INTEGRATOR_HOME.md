@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 13.8
+version: 14.8
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -18,9 +18,9 @@ tags: [integrator, status]
 This is the single status surface.
 
 ## Phase
-- Phase: VII — Guarantees & Claim Boundaries (CLOSED)
-- Phase intent: Define explicit guarantees, denials, and refusal binding.
-- Phase exit gate: Every considered claim is guaranteed, denied, or out of scope.
+- Phase: VIII — Abuse & Adversarial Resistance (CLOSED)
+- Phase intent: Define abuse visibility without prevention or moralization.
+- Phase exit gate: If this system is abused, visibility limits are explicit and not denied.
 
 Phase rule: Items in Current/Next/Active must be allowed work for the declared phase in `boot/PROJECT_PHASE_CONSTITUTION.md`. Out-of-phase work must be refused and removed from those lists, not deferred.
 
@@ -34,16 +34,16 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - (none)
 
 ## Recently Completed
+- Phase VIII closed (PASS) with adversarial audit recorded.
+- Updated Phase VIII audit record content.
+- Drafted Phase VIII adversarial audit record scope.
+- Drafted Phase VIII non-visibility justifications.
+- Created Phase VIII Loop 3 residual harm disclosure.
+- Created Phase VIII Loop 2 abuse visibility boundary.
+- Created Phase VIII Loop 1 adversarial audit record and registered it in DIRECTORY.
+- Created Phase VIII Loop 1 adversarial misuse catalog.
+- Projected Phase VIII tasks from work charter.
 - Phase VII closed (PASS) with Loop 2 audit recorded.
-- Created Phase VII Loop 2 adversarial audit record and registered it in DIRECTORY.
-- Created Phase VII Loop 2 decision artifact.
-- Created Phase VII Loop 1 adversarial audit record and registered it in DIRECTORY.
-- Created Phase VII Loop 1 artifact for claim hardening.
-- Hardened Phase VII Loop 1 semantics per reopening directives.
-- Updated Phase VII work charter for guarantees and projected tasks.
-- Applied Constitutional Amendment v4 to Project Phase Constitution.
-- Created constitutional amendment v4 draft document and registered it in DIRECTORY.
-- Replaced amendment v3 audit draft with adversarial review.
 
 Notes:
 - Keep "Current" capped at 3 items.

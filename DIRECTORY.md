@@ -2,8 +2,8 @@
 doc_id: directory
 doc_type: spec
 status: active
-version: 6.2
-date: 2026-01-22
+version: 6.5
+date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
 supersedes: []
@@ -111,6 +111,12 @@ Authority lives in files, not in chat.
 - `planning/PHASE_VII_LOOP_1_AUDIT.md`
 - `planning/PHASE_VII_LOOP_2.md`
 - `planning/PHASE_VII_LOOP_2_AUDIT.md`
+- `planning/PHASE_VIII_WORK_CHARTER.md`
+- `planning/PHASE_VIII_LOOP_1.md`
+- `planning/PHASE_VIII_LOOP_1_AUDIT.md`
+- `planning/PHASE_VIII_LOOP_2.md`
+- `planning/PHASE_VIII_LOOP_3.md`
+- `planning/PHASE_VIII_AUDIT_RECORD.md`
 - `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_AUDIT.md`
 - `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V3_GUARANTEES_PHASE.md`
 - `planning/project phase constitution amendment audit 2.md`
