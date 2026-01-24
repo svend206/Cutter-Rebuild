@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 14.8
+version: 15.3
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -18,9 +18,9 @@ tags: [integrator, status]
 This is the single status surface.
 
 ## Phase
-- Phase: VIII — Abuse & Adversarial Resistance (CLOSED)
-- Phase intent: Define abuse visibility without prevention or moralization.
-- Phase exit gate: If this system is abused, visibility limits are explicit and not denied.
+- Phase: IX — Commercialization Boundaries (CLOSED)
+- Phase intent: Define commercialization boundaries without implying authority.
+- Phase exit gate: No commercial representation introduces claims not present or denied in Phase VII.
 
 Phase rule: Items in Current/Next/Active must be allowed work for the declared phase in `boot/PROJECT_PHASE_CONSTITUTION.md`. Out-of-phase work must be refused and removed from those lists, not deferred.
 
@@ -34,16 +34,17 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - (none)
 
 ## Recently Completed
+- Updated Phase IX prohibited-claims wording.
+- Phase IX closed (PASS) with pass/fail determination recorded.
+- Aligned Phase IX allowed work with constitution.
+- Removed non-authorized Phase IX audit requirement.
+- Drafted Phase IX demonstration constraint statement.
+- Drafted Phase IX prohibited claim list.
+- Drafted Phase IX claim consistency check against Phase VII.
+- Created Phase IX work charter and registered it in DIRECTORY.
+- Projected Phase IX tasks from work charter.
 - Phase VIII closed (PASS) with adversarial audit recorded.
 - Updated Phase VIII audit record content.
-- Drafted Phase VIII adversarial audit record scope.
-- Drafted Phase VIII non-visibility justifications.
-- Created Phase VIII Loop 3 residual harm disclosure.
-- Created Phase VIII Loop 2 abuse visibility boundary.
-- Created Phase VIII Loop 1 adversarial audit record and registered it in DIRECTORY.
-- Created Phase VIII Loop 1 adversarial misuse catalog.
-- Projected Phase VIII tasks from work charter.
-- Phase VII closed (PASS) with Loop 2 audit recorded.
 
 Notes:
 - Keep "Current" capped at 3 items.
