@@ -107,6 +107,10 @@ Authority lives in files, not in chat.
 - `planning/PHASE_VI_LOOP_1_AUDIT.md`
 - `planning/PHASE_VI_LOOP_2.md`
 - `planning/PHASE_VII_WORK_CHARTER.md`
+- `planning/PHASE_VII_LOOP_1.md`
+- `planning/PHASE_VII_LOOP_1_AUDIT.md`
+- `planning/PHASE_VII_LOOP_2.md`
+- `planning/PHASE_VII_LOOP_2_AUDIT.md`
 - `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_AUDIT.md`
 - `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V3_GUARANTEES_PHASE.md`
 - `planning/project phase constitution amendment audit 2.md`

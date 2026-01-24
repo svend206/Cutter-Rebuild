@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 13.3
+version: 13.8
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -18,35 +18,32 @@ tags: [integrator, status]
 This is the single status surface.
 
 ## Phase
-- Phase: VII — Guarantees & Claim Boundaries (DEFINITION ONLY)
+- Phase: VII — Guarantees & Claim Boundaries (CLOSED)
 - Phase intent: Define explicit guarantees, denials, and refusal binding.
 - Phase exit gate: Every considered claim is guaranteed, denied, or out of scope.
 
 Phase rule: Items in Current/Next/Active must be allowed work for the declared phase in `boot/PROJECT_PHASE_CONSTITUTION.md`. Out-of-phase work must be refused and removed from those lists, not deferred.
 
 ## Current
-- Draft Guarantee Registry.
-- Draft Non-Guarantee Registry.
-- Draft Claim Consideration Log.
+- (none)
 
 ## Next
-- Draft Guarantee → Refusal Binding Table.
-- Define Phase VII adversarial audit record scope.
+- (none)
 
 ## Active Tasks
 - (none)
 
 ## Recently Completed
+- Phase VII closed (PASS) with Loop 2 audit recorded.
+- Created Phase VII Loop 2 adversarial audit record and registered it in DIRECTORY.
+- Created Phase VII Loop 2 decision artifact.
+- Created Phase VII Loop 1 adversarial audit record and registered it in DIRECTORY.
+- Created Phase VII Loop 1 artifact for claim hardening.
+- Hardened Phase VII Loop 1 semantics per reopening directives.
 - Updated Phase VII work charter for guarantees and projected tasks.
 - Applied Constitutional Amendment v4 to Project Phase Constitution.
 - Created constitutional amendment v4 draft document and registered it in DIRECTORY.
 - Replaced amendment v3 audit draft with adversarial review.
-- Created amendment v3 audit draft document and registered it in DIRECTORY.
-- Renamed amendment v3 draft to strict naming convention.
-- Created constitutional amendment v3 draft document and registered it in DIRECTORY.
-- Realigned Phase VII work charter to the post-reliance amendment.
-- Added Phase VI–X tightening amendment to Project Phase Constitution.
-- Created Project Phase Constitution amendment audit and registered it in DIRECTORY.
 
 Notes:
 - Keep "Current" capped at 3 items.
