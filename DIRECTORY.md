@@ -102,6 +102,12 @@ Authority lives in files, not in chat.
 - `planning/PHASE_IV_EXPOSURE_INVARIANTS.md`
 - `planning/PHASE_IV_EXPOSURE_VIEWS_CATALOG.md`
 - `planning/PHASE_V_WORK_CHARTER.md`
+- `planning/PHASE_VI_WORK_CHARTER.md`
+- `planning/PHASE_VI_LOOP_1.md`
+- `planning/PHASE_VI_LOOP_1_AUDIT.md`
+- `planning/PHASE_VI_LOOP_2.md`
+- `planning/PHASE_VII_WORK_CHARTER.md`
+- `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_AUDIT.md`
 - `ux/UX_INDEX.md`
 - `ux/ui_surface_rules_and_pages.md`
 - `ux/SYSTEM_PAGE_PURPOSE_SPEC.md`

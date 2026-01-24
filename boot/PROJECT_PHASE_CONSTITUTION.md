@@ -694,6 +694,374 @@ If an auditor can demonstrate:
 
 Then Phase V has failed and must be corrected before completion.
 
+## CONSTITUTIONAL AMENDMENT v2 — Tightening of Post-Reliance Phases VI–X
+
+### Date
+2026-01-24
+
+### Author
+Erik
+
+### Sponsor
+Erik
+
+### Approver
+Erik
+
+### Recorded Adversarial Review
+- planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_AUDIT.md
+
+### Reason for Change
+
+An adversarial review of the prior amendment defining Phases VI–X
+identified several exploitable ambiguities that could permit:
+
+- selective implementation of defined constraints,
+- semantic fallback via “degraded operation,”
+- implicit value judgments regarding abuse,
+- selective erasure via survivorship definitions.
+
+This amendment tightens language and adds explicit constraints to
+eliminate those ambiguities **without expanding scope or authority**.
+
+This is a corrective clarification amendment, not a structural redesign.
+
+---
+
+### Statement of Compatibility
+
+This amendment:
+- does not reopen or weaken Phases I–V,
+- does not weaken any Global Invariant,
+- preserves refusal rules and non-invention,
+- preserves exposure as non-authoritative,
+- preserves reports as the primary interface,
+- strengthens auditability and constitutional enforceability.
+
+If any conflict is discovered, this amendment is void.
+
+---
+
+### Full Prior Text (Being Replaced)
+
+The following text is replaced **in full**:
+
+> **Phase VI — Operability (Definition Only)**  
+> **Phase VII — Abuse & Adversarial Resistance (Definition Only)**  
+> **Phase VIII — Commercialization Boundaries (Definition Only)**  
+> **Phase IX — Exit, Shutdown, and Irreversibility (Definition Only)**  
+> **Phase X — Implementation (Execution)**  
+>
+> (As defined in the immediately preceding amendment.)
+
+No other sections are modified.
+
+---
+
+### Full Replacement Text
+
+---
+
+#### Phase VI — Operability (Definition Only)
+
+##### Purpose
+
+Phase VI exists to define the **operability contract** of the system.
+
+It specifies how the system is permitted to behave when:
+- components fail,
+- dependencies degrade,
+- inputs are missing or malformed,
+- capacity is exceeded,
+- or the environment becomes unstable.
+
+This phase defines constraints only.  
+**No implementation is authorized.**
+
+---
+
+##### Allowed Work
+
+During Phase VI, the project may **define and document**:
+
+- classes of runtime failure,
+- conditions under which operation must refuse,
+- distinctions between:
+  - operating,
+  - reduced availability or capacity,
+  - refusal,
+  - unavailability,
+- how failure, absence, silence, and uncertainty must remain visible,
+- what “operational” explicitly does **not** imply.
+
+Any description of reduced availability or capacity must not imply:
+- reduced correctness requirements,
+- reduced refusal obligations,
+- continued fitness for purpose.
+
+If defined guarantees cannot be met, **refusal is required**.
+
+All outputs must be declarative and non-executable.
+
+---
+
+##### Forbidden Work
+
+Phase VI must not:
+
+- implement code, UI, or infrastructure,
+- define recovery, retry, or self-healing,
+- encode health, quality, or status judgments,
+- optimize for uptime or resilience,
+- suggest operator or user responses.
+
+---
+
+##### Required Artifacts
+
+- Failure Mode Definition Catalog  
+- Refusal Semantics Definition  
+- Operational Non-Claims Statement  
+- Phase VI Adversarial Audit Record  
+
+---
+
+##### Exit Gate
+
+Phase VI may be exited only when a reviewer can say:
+
+> “Operation here cannot be mistaken for correctness, safety, or success.”
+
+---
+
+#### Phase VII — Abuse & Adversarial Resistance (Definition Only)
+
+##### Purpose
+
+Phase VII exists to define how misuse, coercion, and adversarial behavior
+are **made visible rather than prevented, moralized, or denied**.
+
+This phase does not create guarantees.
+
+---
+
+##### Allowed Work
+
+During Phase VII, the project may **define and document**:
+
+- abuse and misuse scenarios,
+- incentive and economic attack patterns,
+- which abuse scenarios are surfaced explicitly,
+- which abuse scenarios remain possible **without system-level visibility**, and
+- explicit explanations for why visibility is not provided in those cases.
+
+All distinctions must be descriptive, not evaluative.
+
+---
+
+##### Forbidden Work
+
+Phase VII must not:
+
+- promise prevention or safety,
+- classify intent,
+- enforce morality,
+- suppress uncomfortable usage,
+- implement controls or mitigations.
+
+---
+
+##### Required Artifacts
+
+- Adversarial Misuse Catalog  
+- Abuse Visibility Boundary (Surfaced vs Not Surfaced, with explanation)  
+- Residual Harm Disclosure  
+- Phase VII Adversarial Audit Record  
+
+---
+
+##### Exit Gate
+
+Phase VII may be exited only when a reviewer can say:
+
+> “If this is abused, the limits of visibility are explicit and not denied.”
+
+---
+
+#### Phase VIII — Commercialization Boundaries (Definition Only)
+
+##### Purpose
+
+Phase VIII exists to define what may be sold **without selling authority,
+judgment, correctness, or protection**.
+
+---
+
+##### Allowed Work
+
+During Phase VIII, the project may **define and document**:
+
+- allowed marketing and sales claims,
+- forbidden representations,
+- contractual and warranty boundaries,
+- demo behavior constraints.
+
+---
+
+##### Forbidden Work
+
+Phase VIII must not:
+
+- imply correctness, prediction, or safety,
+- promise outcomes,
+- collapse uncertainty for sales convenience,
+- implement product behavior.
+
+Demos must not display behavior, states, or language forbidden in the
+production system.  
+Any demo-specific simplifications must be **visibly disclosed within the demo itself**.
+
+---
+
+##### Required Artifacts
+
+- Allowed Claims List  
+- Forbidden Claims List  
+- Sales & Marketing Language Constraints  
+- Legal Representation Boundary  
+- Phase VIII Adversarial Audit Record  
+
+---
+
+##### Exit Gate
+
+Phase VIII may be exited only when a reviewer can say:
+
+> “Nothing sold or demonstrated here implies the system knows or decides.”
+
+---
+
+#### Phase IX — Exit, Shutdown, and Irreversibility (Definition Only)
+
+##### Purpose
+
+Phase IX exists to ensure the system can be exited
+**without erasing, rewriting, or softening reality**.
+
+---
+
+##### Allowed Work
+
+During Phase IX, the project may **define and document**:
+
+- shutdown semantics,
+- customer exit paths,
+- data export guarantees,
+- post-shutdown data survivorship.
+
+---
+
+##### Forbidden Work
+
+Phase IX must not:
+
+- erase epistemic history,
+- promise reputational cleanup,
+- rewrite past records,
+- implement exit tooling.
+
+---
+
+##### Required Artifacts
+
+- Shutdown Protocol  
+- Data Survivorship Map  
+- Exit Disclosures  
+- Irreversibility Acknowledgment  
+- Phase IX Adversarial Audit Record  
+
+**Binding Survivorship Constraint:**  
+All records designated as binding or irreversible under Phase III
+must survive export, shutdown, and post-operation retention.
+No Phase III-bound record may be excluded by categorization or convenience.
+
+---
+
+##### Exit Gate
+
+Phase IX may be exited only when a reviewer can say:
+
+> “Stopping this system does not hide or revise reality.”
+
+---
+
+#### Phase X — Implementation (Execution)
+
+##### Purpose
+
+Phase X exists to authorize **construction** of the system strictly as a
+realization of constraints defined in Phases VI–IX.
+
+Implementation is permitted **only here**.
+
+---
+
+##### Allowed Work
+
+During Phase X, the project may:
+
+- implement code, UI, services, and infrastructure,
+- implement refusal behavior **as specified** in Phase VI,
+- implement abuse visibility **as specified** in Phase VII,
+- enforce commercialization boundaries **as specified** in Phase VIII,
+- implement exit and shutdown behavior **as specified** in Phase IX.
+
+All implementation must be **explicitly traceable** to prior-phase artifacts.
+
+---
+
+##### Forbidden Work
+
+Phase X must not:
+
+- redefine meaning, authority, or boundaries,
+- introduce new promises,
+- encode judgment, scoring, or guidance,
+- hide failures, absence, silence, or uncertainty,
+- automate decision-making,
+- implement behavior not defined in earlier phases.
+
+Partial implementation of defined behavior is non-compliant.
+
+---
+
+##### Required Artifacts
+
+- Implementation Trace Map (Phase VI–IX → components)
+- **Coverage Verification Statement** affirming that all Phase VI–IX
+  constraints are either:
+  - fully implemented, or
+  - explicitly unimplemented with justification and adversarial acknowledgment
+- Phase X Adversarial Implementation Audit Record  
+
+---
+
+##### Exit Gate
+
+Phase X may be exited only when a reviewer can say:
+
+> “Everything defined was either implemented or explicitly accounted for,  
+> and nothing built added authority.”
+
+---
+
+### Amendment Closure
+
+This amendment tightens Phases VI–X to eliminate ambiguity while preserving
+their original intent and scope.
+
+Phases I–V remain closed and binding.
+
 ## Phase Exit Audits (Adversarial, Human-Final)
 
 ### Purpose
