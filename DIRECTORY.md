@@ -108,6 +108,9 @@ Authority lives in files, not in chat.
 - `planning/PHASE_VI_LOOP_2.md`
 - `planning/PHASE_VII_WORK_CHARTER.md`
 - `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_AUDIT.md`
+- `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V3_GUARANTEES_PHASE.md`
+- `planning/project phase constitution amendment audit 2.md`
+- `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V4_GUARANTEES_PHASE.md`
 - `ux/UX_INDEX.md`
 - `ux/ui_surface_rules_and_pages.md`
 - `ux/SYSTEM_PAGE_PURPOSE_SPEC.md`

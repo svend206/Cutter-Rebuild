@@ -27,6 +27,12 @@ Each entry must include:
 - Supersedes (optional, list of prior decisions)
 
 ## Entries
+- Date: 2026-01-26
+  Decision: Added Constitutional Amendment v4 to insert a dedicated Guarantees phase and renumber post-reliance phases.
+  Scope: boot/PROJECT_PHASE_CONSTITUTION.md
+  Authority: Erik
+  Rationale: Make guarantees explicit, auditable, and refusal-bound with clear phase sequencing.
+  Supersedes: none
 - Date: 2026-01-21
   Decision: Clarified Guild execution-variance language to avoid implicit scoring or blame.
   Scope: constitution/guild/GUILD_ALLOWED_QUESTIONS_AND_EXHAUST_MAP.md
