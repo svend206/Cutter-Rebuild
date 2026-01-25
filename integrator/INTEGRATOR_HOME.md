@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 15.5
+version: 15.9
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -18,9 +18,9 @@ tags: [integrator, status]
 This is the single status surface.
 
 ## Phase
-- Phase: IX — Commercialization Boundaries (CLOSED)
-- Phase intent: Define commercialization boundaries without implying authority.
-- Phase exit gate: No commercial representation introduces claims not present or denied in Phase VII.
+- Phase: X — Exit, Shutdown, and Irreversibility (CLOSED)
+- Phase intent: Define exit and irreversibility boundaries without implied closure.
+- Phase exit gate: Stopping this system does not hide, revise, or soften reality.
 
 Phase rule: Items in Current/Next/Active must be allowed work for the declared phase in `boot/PROJECT_PHASE_CONSTITUTION.md`. Out-of-phase work must be refused and removed from those lists, not deferred.
 
@@ -34,17 +34,19 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - (none)
 
 ## Recently Completed
+- Phase X closed (PASS) with adversarial audit recorded.
+- Created Phase X adversarial audit record.
+- Drafted Phase X exit disclosure statement.
+- Drafted Phase X irreversibility register.
+- Drafted Phase X data survivorship map.
+- Drafted Phase X shutdown semantics document.
+- Created Phase X work charter and registered it in DIRECTORY.
+- Projected Phase X tasks from work charter.
 - Applied Constitutional Amendment v5 to Phase X.
 - Drafted Phase X amendment v5 and audit placeholder.
 - Updated Phase IX prohibited-claims wording.
-- Phase IX closed (PASS) with pass/fail determination recorded.
 - Aligned Phase IX allowed work with constitution.
-- Removed non-authorized Phase IX audit requirement.
 - Drafted Phase IX demonstration constraint statement.
-- Drafted Phase IX prohibited claim list.
-- Drafted Phase IX claim consistency check against Phase VII.
-- Created Phase IX work charter and registered it in DIRECTORY.
-- Updated Phase VIII audit record content.
 
 Notes:
 - Keep "Current" capped at 3 items.
