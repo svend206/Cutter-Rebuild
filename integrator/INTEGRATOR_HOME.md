@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 16.1
+version: 16.3
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -34,6 +34,9 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - (none)
 
 ## Recently Completed
+- Applied Constitutional Amendment v7 to add Layer 2 phases.
+- Recorded decision log entry for Amendment v7.
+- Drafted Layer 2 amendment v7 and recorded adversarial review.
 - Applied Constitutional Amendment v6 to Phase XI.
 - Drafted Phase XI amendment v6 and audit placeholder.
 - Phase X closed (PASS) with adversarial audit recorded.
@@ -41,14 +44,6 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - Drafted Phase X exit disclosure statement.
 - Drafted Phase X irreversibility register.
 - Drafted Phase X data survivorship map.
-- Drafted Phase X shutdown semantics document.
-- Created Phase X work charter and registered it in DIRECTORY.
-- Projected Phase X tasks from work charter.
-- Applied Constitutional Amendment v5 to Phase X.
-- Drafted Phase X amendment v5 and audit placeholder.
-- Updated Phase IX prohibited-claims wording.
-- Aligned Phase IX allowed work with constitution.
-- Drafted Phase IX demonstration constraint statement.
 
 Notes:
 - Keep "Current" capped at 3 items.

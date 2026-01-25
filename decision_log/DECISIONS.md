@@ -28,6 +28,12 @@ Each entry must include:
 
 ## Entries
 - Date: 2026-01-26
+  Decision: Added Constitutional Amendment v7 to introduce Layer 2 product realization phases.
+  Scope: boot/PROJECT_PHASE_CONSTITUTION.md
+  Authority: Erik
+  Rationale: Establish subordinate product realization phases without altering Layer 1 constraints.
+  Supersedes: none
+- Date: 2026-01-26
   Decision: Added Constitutional Amendment v6 to expand Phase XI implementation artifacts.
   Scope: boot/PROJECT_PHASE_CONSTITUTION.md
   Authority: Erik
