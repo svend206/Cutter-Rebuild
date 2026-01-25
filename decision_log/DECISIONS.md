@@ -28,6 +28,12 @@ Each entry must include:
 
 ## Entries
 - Date: 2026-01-26
+  Decision: Added Constitutional Amendment v6 to expand Phase XI implementation artifacts.
+  Scope: boot/PROJECT_PHASE_CONSTITUTION.md
+  Authority: Erik
+  Rationale: Make Phase XI implementation traceability and auditability explicit.
+  Supersedes: none
+- Date: 2026-01-26
   Decision: Added Constitutional Amendment v5 to expand Phase X exit artifacts.
   Scope: boot/PROJECT_PHASE_CONSTITUTION.md
   Authority: Erik

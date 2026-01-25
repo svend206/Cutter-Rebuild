@@ -1338,10 +1338,23 @@ Phase XI authorizes implementation **only** as a realization of constraints defi
 
 ##### Required Artifacts
 
-- **Constraint Coverage Matrix**
-  - Demonstrating that all constraints from Phases VI–X are:
-    - realized, or
-    - explicitly deferred with adversarial review
+1. **Constraint Coverage Matrix (Authoritative)**
+   - Mapping every constraint from Phases VI–X to one of:
+     - Implemented → component(s) named
+     - Explicitly Unimplemented → reason + adversarial acknowledgment
+
+2. **Implementation Trace Map**
+   - For each implemented constraint:
+     - which components realize it
+     - where refusal occurs
+     - where absence is surfaced
+
+3. **Phase XI Adversarial Implementation Audit Record**
+   - Adversarial review attempting to show:
+     - meaning smuggled in through behavior
+     - guarantees implied by UX
+     - refusals inconsistent
+     - omissions hidden
 
 Selective implementation is forbidden.
 

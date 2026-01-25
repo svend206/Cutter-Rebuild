@@ -2,7 +2,7 @@
 doc_id: directory
 doc_type: spec
 status: active
-version: 7.2
+version: 7.3
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -127,6 +127,8 @@ Authority lives in files, not in chat.
 - `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V4_GUARANTEES_PHASE.md`
 - `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V5_PHASE_X_EXIT_ARTIFACTS.md`
 - `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V5_AUDIT.md`
+- `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V6_PHASE_XI_ARTIFACTS.md`
+- `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V6_AUDIT.md`
 - `planning/PHASE_X_WORK_CHARTER.md`
 - `planning/PHASE_X_SHUTDOWN_SEMANTICS.md`
 - `planning/PHASE_X_DATA_SURVIVORSHIP_MAP.md`

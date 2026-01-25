@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 15.9
+version: 16.1
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -34,6 +34,8 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - (none)
 
 ## Recently Completed
+- Applied Constitutional Amendment v6 to Phase XI.
+- Drafted Phase XI amendment v6 and audit placeholder.
 - Phase X closed (PASS) with adversarial audit recorded.
 - Created Phase X adversarial audit record.
 - Drafted Phase X exit disclosure statement.
