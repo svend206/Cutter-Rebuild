@@ -1288,14 +1288,39 @@ No commercial representation may introduce claims not present in Phase VII.
 
 ##### Purpose
 
-Phase X defines irreversible actions and exit conditions, including shutdown semantics.
+Phase X defines exit, shutdown, and irreversibility boundaries without erasing, rewriting, or softening reality. Stopping the system must not create implied closure, safety, or correction.
+
+---
+
+##### Allowed Work
+
+During Phase X, the project may **define and document**:
+- shutdown semantics,
+- irreversibility boundaries,
+- exit disclosure constraints,
+- survivorship scope for records defined as irreversible.
+
+All outputs are declarative and refusal-compatible.
+
+---
+
+##### Forbidden Work
+
+Phase X must not:
+- implement tooling, automation, or operational execution,
+- promise completeness, cleanup, or compliance sufficiency at exit,
+- introduce guarantees not defined in Phase VII,
+- soften historical records through exit framing.
 
 ---
 
 ##### Required Artifacts
 
+- Shutdown Semantics Document
+- Data Survivorship Map
 - Irreversibility Register
-- Shutdown Disclosure Statement
+- Exit Disclosure Statement
+- Phase X Adversarial Audit Record
 
 No exit behavior may imply guarantees not defined in Phase VII.
 

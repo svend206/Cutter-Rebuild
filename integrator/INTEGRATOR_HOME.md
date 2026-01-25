@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 15.3
+version: 15.5
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -34,6 +34,8 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - (none)
 
 ## Recently Completed
+- Applied Constitutional Amendment v5 to Phase X.
+- Drafted Phase X amendment v5 and audit placeholder.
 - Updated Phase IX prohibited-claims wording.
 - Phase IX closed (PASS) with pass/fail determination recorded.
 - Aligned Phase IX allowed work with constitution.
@@ -42,8 +44,6 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - Drafted Phase IX prohibited claim list.
 - Drafted Phase IX claim consistency check against Phase VII.
 - Created Phase IX work charter and registered it in DIRECTORY.
-- Projected Phase IX tasks from work charter.
-- Phase VIII closed (PASS) with adversarial audit recorded.
 - Updated Phase VIII audit record content.
 
 Notes:
