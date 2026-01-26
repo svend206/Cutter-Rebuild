@@ -2,7 +2,7 @@
 doc_id: directory
 doc_type: spec
 status: active
-version: 7.4
+version: 7.7
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -131,12 +131,17 @@ Authority lives in files, not in chat.
 - `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V6_AUDIT.md`
 - `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V7_LAYER2_PRODUCT_REALIZATION.md`
 - `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V7_AUDIT.md`
+- `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V8_CONSTITUTIONAL_AMENDMENT_AUTHORIZATION.md`
+- `planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V8_AUDIT.md`
 - `planning/PHASE_X_WORK_CHARTER.md`
 - `planning/PHASE_X_SHUTDOWN_SEMANTICS.md`
 - `planning/PHASE_X_DATA_SURVIVORSHIP_MAP.md`
 - `planning/PHASE_X_IRREVERSIBILITY_REGISTER.md`
 - `planning/PHASE_X_EXIT_DISCLOSURE_STATEMENT.md`
 - `planning/PHASE_X_AUDIT_RECORD.md`
+- `planning/PHASE_XI_WORK_CHARTER.md`
+- `planning/PHASE_XI_CONSTRAINT_COVERAGE_MATRIX.md`
+- `planning/PHASE_XI_IMPLEMENTATION_TRACE_MAP.md`
 - `ux/UX_INDEX.md`
 - `ux/ui_surface_rules_and_pages.md`
 - `ux/SYSTEM_PAGE_PURPOSE_SPEC.md`

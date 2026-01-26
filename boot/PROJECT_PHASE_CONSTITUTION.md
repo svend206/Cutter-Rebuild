@@ -1334,6 +1334,21 @@ No exit behavior may imply guarantees not defined in Phase VII.
 
 Phase XI authorizes implementation **only** as a realization of constraints defined in Phases VI–X.
 
+Phase XI also authorizes constitutional amendments **only** when a named human explicitly requests the change and the amendment strengthens constraints or closes ambiguity without adding new authority.
+
+---
+
+##### Allowed Work
+
+During Phase XI, the project may:
+
+- implement constraints defined in Phases VI–X
+- perform constitutional amendments that:
+  - strengthen constraints or close ambiguity
+  - do not authorize new capabilities, guarantees, or authority
+  - follow the constitutional amendment ceremony (full prior text, full replacement text, justification, sponsor, approver, recorded adversarial review)
+  - satisfy governance requirements (decision log entry when required; `DIRECTORY.md` updates for new documents)
+
 ---
 
 ##### Required Artifacts
@@ -1355,6 +1370,8 @@ Phase XI authorizes implementation **only** as a realization of constraints defi
      - guarantees implied by UX
      - refusals inconsistent
      - omissions hidden
+
+If a constitutional amendment is performed during Phase XI, its amendment record and adversarial audit must be created and registered in `DIRECTORY.md` in the same change.
 
 Selective implementation is forbidden.
 
@@ -1755,6 +1772,150 @@ When a violation occurs:
 - it must not be explained away
 
 Repeated violations indicate structural failure, not individual failure.
+
+---
+
+## CONSTITUTIONAL AMENDMENT v8 — Authorization of Constitutional Amendments During Phase XI
+
+### Date
+2026-01-26
+
+### Author
+Erik
+
+### Sponsor
+Erik
+
+### Approver
+Erik
+
+### Recorded Adversarial Review
+- planning/PROJECT_PHASE_CONSTITUTION_AMENDMENT_V8_AUDIT.md
+
+### Reason for Change
+
+Phase XI currently authorizes implementation but does not explicitly authorize constitutional amendments. This creates ambiguity when a named human needs to strengthen constraints or close ambiguity in a canon during implementation.
+
+Constitutional amendments are a governance act, not a feature. The project needs an explicit, auditable path to perform them without implying new authority or bypassing phase discipline.
+
+---
+
+### Compatibility Statement
+
+This amendment:
+- does not weaken any Global Invariant,
+- does not reduce refusal requirements,
+- does not automate judgment or authority,
+- does not bypass phase discipline,
+- does not resolve tension through vagueness.
+
+If any conflict with the Constitution is discovered, this amendment is void.
+
+---
+
+### Full Prior Text (Being Replaced)
+
+The following section is replaced **in full**:
+
+> #### Phase XI — Implementation (Execution)
+>
+> ##### Purpose
+>
+> Phase XI authorizes implementation **only** as a realization of constraints defined in Phases VI–X.
+>
+> ---
+>
+> ##### Required Artifacts
+>
+> 1. **Constraint Coverage Matrix (Authoritative)**
+>    - Mapping every constraint from Phases VI–X to one of:
+>      - Implemented → component(s) named
+>      - Explicitly Unimplemented → reason + adversarial acknowledgment
+>
+> 2. **Implementation Trace Map**
+>    - For each implemented constraint:
+>      - which components realize it
+>      - where refusal occurs
+>      - where absence is surfaced
+>
+> 3. **Phase XI Adversarial Implementation Audit Record**
+>    - Adversarial review attempting to show:
+>      - meaning smuggled in through behavior
+>      - guarantees implied by UX
+>      - refusals inconsistent
+>      - omissions hidden
+>
+> Selective implementation is forbidden.
+
+---
+
+### Full Replacement Text
+
+#### Phase XI — Implementation (Execution)
+
+##### Purpose
+
+Phase XI authorizes implementation **only** as a realization of constraints defined in Phases VI–X.
+
+Phase XI also authorizes constitutional amendments **only** when a named human explicitly requests the change and the amendment strengthens constraints or closes ambiguity without adding new authority.
+
+---
+
+##### Allowed Work
+
+During Phase XI, the project may:
+
+- implement constraints defined in Phases VI–X
+- perform constitutional amendments that:
+  - strengthen constraints or close ambiguity
+  - do not authorize new capabilities, guarantees, or authority
+  - follow the constitutional amendment ceremony (full prior text, full replacement text, justification, sponsor, approver, recorded adversarial review)
+  - satisfy governance requirements (decision log entry when required; `DIRECTORY.md` updates for new documents)
+
+---
+
+##### Required Artifacts
+
+1. **Constraint Coverage Matrix (Authoritative)**
+   - Mapping every constraint from Phases VI–X to one of:
+     - Implemented → component(s) named
+     - Explicitly Unimplemented → reason + adversarial acknowledgment
+
+2. **Implementation Trace Map**
+   - For each implemented constraint:
+     - which components realize it
+     - where refusal occurs
+     - where absence is surfaced
+
+3. **Phase XI Adversarial Implementation Audit Record**
+   - Adversarial review attempting to show:
+     - meaning smuggled in through behavior
+     - guarantees implied by UX
+     - refusals inconsistent
+     - omissions hidden
+
+If a constitutional amendment is performed during Phase XI, its amendment record and adversarial audit must be created and registered in `DIRECTORY.md` in the same change.
+
+Selective implementation is forbidden.
+
+---
+
+### Impact Analysis (All Phases)
+
+- **Phases I–X:** Unchanged.
+- **Phase XI:** Explicitly permits constitutional amendments that strengthen constraints and do not add authority.
+- **Phases XII–XVI:** Unchanged.
+
+---
+
+### Amendment Closure
+
+This amendment becomes authoritative only after:
+
+- adversarial review records PASS,
+- amendment is committed and tagged.
+
+Until then, the prior Phase XI text remains in force.
 
 ---
 

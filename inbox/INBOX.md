@@ -26,6 +26,9 @@ Append-only capture. No authority until promoted.
 
 ## Feature / Module Ideas (Unvetted)
 
+- Legacy handover must be doable in 10 minutes.
+- State ledger is completely optional; ops should work without it.
+- Clarify source of "self deception" concept and any doc claims about surfacing uncomfortable items.
 - Node 2: Traffic Cop (shop floor) — QR/NFC traveler scanning
 - Node 2: Traffic Cop — automatic cycle time capture
 - Node 2: Traffic Cop — mobile PWA interface

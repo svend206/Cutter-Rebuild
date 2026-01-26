@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 16.3
+version: 16.9
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -18,14 +18,14 @@ tags: [integrator, status]
 This is the single status surface.
 
 ## Phase
-- Phase: X — Exit, Shutdown, and Irreversibility (CLOSED)
-- Phase intent: Define exit and irreversibility boundaries without implied closure.
-- Phase exit gate: Stopping this system does not hide, revise, or soften reality.
+- Phase: XI — Implementation (Execution)
+- Phase intent: Authorize implementation only as a realization of constraints defined in Phases VI–X.
+- Phase exit gate: Not specified in the Project Phase Constitution.
 
 Phase rule: Items in Current/Next/Active must be allowed work for the declared phase in `boot/PROJECT_PHASE_CONSTITUTION.md`. Out-of-phase work must be refused and removed from those lists, not deferred.
 
 ## Current
-- (none)
+- Create Phase XI adversarial implementation audit record.
 
 ## Next
 - (none)
@@ -34,16 +34,16 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - (none)
 
 ## Recently Completed
+- Amended Project Phase Constitution to authorize constitutional amendments in Phase XI.
+- Added state ledger optionality and self-deception questions to inbox.
+- Added legacy handover timing idea to inbox.
+- Created Phase XI implementation trace map and registered it in DIRECTORY.
+- Created Phase XI constraint coverage matrix and registered it in DIRECTORY.
+- Created Phase XI work charter and registered it in DIRECTORY.
 - Applied Constitutional Amendment v7 to add Layer 2 phases.
 - Recorded decision log entry for Amendment v7.
 - Drafted Layer 2 amendment v7 and recorded adversarial review.
 - Applied Constitutional Amendment v6 to Phase XI.
-- Drafted Phase XI amendment v6 and audit placeholder.
-- Phase X closed (PASS) with adversarial audit recorded.
-- Created Phase X adversarial audit record.
-- Drafted Phase X exit disclosure statement.
-- Drafted Phase X irreversibility register.
-- Drafted Phase X data survivorship map.
 
 Notes:
 - Keep "Current" capped at 3 items.
