@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 16.9
+version: 17.0
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -34,6 +34,7 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - (none)
 
 ## Recently Completed
+- Added Ops Canon O9 operator anonymity in exhaust.
 - Amended Project Phase Constitution to authorize constitutional amendments in Phase XI.
 - Added state ledger optionality and self-deception questions to inbox.
 - Added legacy handover timing idea to inbox.
@@ -43,7 +44,6 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - Applied Constitutional Amendment v7 to add Layer 2 phases.
 - Recorded decision log entry for Amendment v7.
 - Drafted Layer 2 amendment v7 and recorded adversarial review.
-- Applied Constitutional Amendment v6 to Phase XI.
 
 Notes:
 - Keep "Current" capped at 3 items.

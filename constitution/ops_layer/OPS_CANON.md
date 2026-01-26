@@ -2,8 +2,8 @@
 doc_id: ops_canon
 doc_type: constitution
 status: locked
-version: 1.2
-date: 2026-01-21
+version: 1.3
+date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
 supersedes: []
@@ -62,7 +62,7 @@ Immutable records emitted by Ops representing:
 - actions taken
 - values chosen or overridden
 - timestamps
-- role identity
+- role class (non-identifying)
 - non-occurrence where applicable
 
 Capture is a byproduct of work, never an explanation of it. <!-- Invariant 3 -->
@@ -140,6 +140,23 @@ Execution may not be gated on required explanation. <!-- Ambiguity resolved: no 
 
 ---
 
+### O9 — Operator Anonymity in Exhaust
+Exhaust capture must not record operator identity in a manner that enables evaluation of individual operator performance.
+
+The system must make it structurally impossible to:
+- identify which operator entered a specific record
+- produce reports comparing operators by efficiency, speed, scrap rate, or similar metrics
+- associate patterns of variance with specific individuals
+- enable any form of operator-level performance analysis derived from exhaust
+
+This constraint exists to protect data quality, not operator privacy.
+
+Attribution enables punishment. Punishment incentivizes gaming. Gaming destroys data integrity.
+
+The only path to honest exhaust is exhaust that is safe to produce honestly.
+
+---
+
 ## Failure Conditions
 Ops is constitutionally failed if it:
 - Allows action without emitting exhaust
@@ -147,6 +164,9 @@ Ops is constitutionally failed if it:
 - Treats repeated deviation as resolved by familiarity
 - Suppresses inconvenient records to preserve flow
 - Enables authority to unknowingly outrun evidence
+- Allows operator identity to be associated with exhaust in a manner enabling individual performance evaluation
+- Provides any mechanism, report, query, or export that enables operator-level performance comparison
+- Defers operator anonymity to configuration, customer preference, or policy
 
 Failure is defined by loss of exhaust fidelity, not usability issues.
 
@@ -203,3 +223,4 @@ from deciding what that movement means.
 - Added execution/planning separation constraint (Invariant 5).
 - Added non-blocking execution constraint (Invariant 2).
 - Clarified no blocking on settlement and no explanation gate.
+- Added O9 operator anonymity in exhaust and failure conditions.

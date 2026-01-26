@@ -2,8 +2,8 @@
 doc_id: decision_log
 doc_type: decision_log
 status: active
-version: 2.3
-date: 2026-01-21
+version: 2.4
+date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
 supersedes: [archive/DECISION_LOG.md]
@@ -27,6 +27,12 @@ Each entry must include:
 - Supersedes (optional, list of prior decisions)
 
 ## Entries
+- Date: 2026-01-26
+  Decision: Added Ops Canon O9 operator anonymity in exhaust and related failure conditions.
+  Scope: constitution/ops_layer/OPS_CANON.md
+  Authority: Erik
+  Rationale: Protect exhaust fidelity by preventing operator-level evaluation incentives.
+  Supersedes: none
 - Date: 2026-01-26
   Decision: Added Constitutional Amendment v7 to introduce Layer 2 product realization phases.
   Scope: boot/PROJECT_PHASE_CONSTITUTION.md
