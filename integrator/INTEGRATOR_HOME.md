@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 18.3
+version: 18.6
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -34,6 +34,9 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - (none)
 
 ## Recently Completed
+- Tightened TRACE-VI-OP-04 refusal envelope guardrail and test consistency.
+- Enforced TRACE-VI-OP-04 refusal termination and schema guard.
+- Added TRACE-VI-OP-04 enforcement test for refusal semantics.
 - Hardened TRACE-VI-OP-03 test assertions for schema-safe refusal semantics.
 - Realigned TRACE-VI-OP-03 to API disclosure semantics and test coverage.
 - Implemented TRACE-VI-OP-03 refusal visibility disclosure + test.

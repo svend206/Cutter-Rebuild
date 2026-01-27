@@ -114,7 +114,7 @@ def build_mvp15_refusal(
         subject_ref=f"query:{query_ref}",
         event_data=event_data
     )
-    return jsonify({
+    refusal_payload = {
         "success": False,
         "refused": True,
         "refusal": {
@@ -124,7 +124,9 @@ def build_mvp15_refusal(
             "query_class": query_class
         },
         "event_id": event_id
-    }), 403
+    }
+    assert set(refusal_payload.keys()) == {"success", "refused", "refusal", "event_id"}
+    return jsonify(refusal_payload), 403
 
 def get_ops_mode() -> str | None:
     """Return explicit ops_mode from request or None if missing/invalid."""
