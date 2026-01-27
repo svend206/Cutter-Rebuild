@@ -24,12 +24,13 @@ import * as manual from './modules/manual.js';
 import * as ui from './modules/ui.js';
 import * as variance from './modules/variance.js';
 import * as saveConfirm from './modules/save_confirm.js';
-import * as sidebar from './modules/sidebar.js'; // Phase 4: Sidebar navigation
-import * as identity from './modules/identity.js'; // Phase 4: Customer/Contact autocomplete
-import * as rfq from './modules/rfq.js'; // Phase 5: RFQ-First workflow
-import * as parametric from './modules/parametric.js'; // Phase 5.5: Parametric Configurator
+import * as sidebar from './modules/sidebar.js'; // Sidebar navigation
+import * as identity from './modules/identity.js'; // Customer/Contact autocomplete
+import * as rfq from './modules/rfq.js'; // RFQ-First workflow
+import * as parametric from './modules/parametric.js'; // Parametric Configurator
 import * as outcome from './modules/outcome.js'; // Quote outcome tracking
-import * as customers from './modules/customers.js'; // Phase 5.6: Customer Management
+import * as customers from './modules/customers.js'; // Customer Management
+import { initFailureDisclosure } from './modules/failure_disclosure.js';
 
 // Get DOM elements (these are used across modules)
 const uploadZone = document.getElementById('upload-zone');
@@ -59,25 +60,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
     
-    // Phase 4: Initialize Sidebar (Desktop only, hidden on mobile)
+    // Initialize Sidebar (Desktop only, hidden on mobile)
     sidebar.initSidebar();
     
-    // Phase 4: Initialize Identity Autocomplete (Guild Intelligence)
+    // Initialize Identity Autocomplete (Guild Intelligence)
     identity.initIdentity();
     
-    // Phase 4: Initialize Variance UI (Price Stack interactions)
+    // Initialize Variance UI (Price Stack interactions)
     variance.initVarianceUI();
     
-    // Phase 5: Initialize RFQ Module (RFQ-First workflow)
+    // Initialize RFQ Module (RFQ-First workflow)
     rfq.initRFQ();
     
-    // Phase 5.5: Initialize Parametric Configurator (Napkin Mode shape builder)
+    // Initialize Parametric Configurator (Napkin Mode shape builder)
     parametric.initParametricConfigurator();
     
-    // Phase 5.6: Initialize Quick-Fix Buttons (Unit Verification - Enhanced UX)
+    // Initialize Quick-Fix Buttons (Unit Verification - Enhanced UX)
     ui.initQuickFixButtons();
+
+    // Initialize failure disclosure wiring (semantic selector)
+    initFailureDisclosure();
     
-    // Phase 5.6: Initialize Customers Module
+    // Initialize Customers Module
     customers.initCustomers();
     
     // Initialize Three.js viewer
@@ -309,7 +313,7 @@ async function handleSaveQuote() {
         return;
     }
     
-    // Phase 4: Validate Glass Box variance (if visible)
+    // Validate Glass Box variance (if visible)
     const varianceSliders = document.getElementById('variance-sliders');
     if (varianceSliders && varianceSliders.style.display !== 'none') {
         if (!variance.validateVariance()) {
@@ -329,7 +333,7 @@ async function handleSaveQuote() {
             selectedTravelers: state.selectedTravelers,
             isManualMode: state.getIsManualMode(),
             referenceImagePath: state.referenceImagePath,
-            glassBoxData: glassBoxData  // NEW: Phase 4 Glass Box tracking
+            glassBoxData: glassBoxData  // Glass Box tracking
         };
         
         // Show save confirmation modal (handles duplicate detection)
@@ -460,10 +464,10 @@ function setupRecalculateListeners() {
         });
     }
     
-    // Phase 5.5: Removal Rate Slider REMOVED (replaced by parametric configurator)
+    // Removal Rate Slider removed (replaced by parametric configurator)
     // Part volume is now calculated physically from shape dimensions, not manual input
     
-    // Glass Box: Final Price Input (Phase 4: Variance Attribution)
+    // Glass Box: Final Price Input (Variance Attribution)
     const finalPriceInput = document.getElementById('final-price-input');
     if (finalPriceInput) {
         finalPriceInput.addEventListener('input', () => {

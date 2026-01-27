@@ -8,8 +8,9 @@ import * as api from './api.js';
 import * as ui from './ui.js';
 import * as stock from './stock.js';
 import * as variance from './variance.js';
-import * as parametric from './parametric.js'; // Phase 5.5: Parametric shapes
-import * as viewer from './viewer.js'; // Phase 5.5: Clear viewer on init
+import * as parametric from './parametric.js';
+import * as viewer from './viewer.js';
+import { validateManualQuoteInputs } from './manual_validation.js';
 
 // ==== HELPER FUNCTIONS ====
 
@@ -42,7 +43,7 @@ export function initManualMode() {
     console.log('🗑️ Viewer cleared for Napkin Mode');
     
     // Toggle UI Visibility (New Flow: Hide landing screen, show home button)
-    // PHASE 5.5: Show viewer in Napkin Mode, hide removal rate slider (replaced by parametric configurator)
+    // Show viewer in Napkin Mode, hide removal rate slider (replaced by parametric configurator)
     const hide = ['upload-zone', 'file-input', 'calculate-btn', 'landing-screen', 'file-mode-guide', 'removal-rate-row'];
     const show = ['viewer-section', 'evidence-locker', 'quote-metadata', 'physics-section', 'configuration-section', 'economics-section', 'result-card', 'traveler-zone', 'tag-zone', 'home-btn', 'shape-configurator'];
     
@@ -55,7 +56,7 @@ export function initManualMode() {
         }
     });
     
-    // Phase 5.5: Part volume is now calculated from parametric shape, not manual input
+    // Part volume is calculated from the parametric shape input
     
     // Defaults
     setVal('stock-x', 4.0); setVal('stock-y', 2.0); setVal('stock-z', 1.0);
@@ -174,7 +175,7 @@ export function initFileMode() {
     const quantityInput = document.getElementById('quantity-input');
     if (quantityInput) quantityInput.value = '1';
     
-    // Phase 5: Complexity slider removed (Glass Box integrity)
+    // Complexity slider removed (Glass Box integrity)
     
     // PHASE 4: Clear identity fields (Customer/Contact)
     const customerInput = document.getElementById('customer-input');
@@ -295,7 +296,7 @@ export function showLandingScreen() {
         delete contactInput.dataset.customerId;
     }
     
-    // Phase 5: Complexity slider removed (Glass Box integrity)
+    // Complexity slider removed (Glass Box integrity)
     
     // Reset removal rate slider (Napkin Mode specific)
     const removalSlider = document.getElementById('removal-rate-slider');
@@ -325,7 +326,7 @@ export function updatePartVolumeFromRemovalRate() {
     // Calculate Removal Volume (Stock - Part)
     const removalVol = stockVol - partVol;
     
-    // PHASE 3 VALIDATION: Removal volume cannot be negative
+    // Validation: Removal volume cannot be negative
     if (removalVol < 0) {
         console.warn(`⚠️ Invalid state: Removal volume cannot be negative (${removalVol.toFixed(3)})`);
         // Clamp part volume to stock volume
@@ -349,7 +350,7 @@ export function updateRemovalRateFromPartVolume() {
     
     if (stockVol <= 0) return;
     
-    // PHASE 3 VALIDATION: Part volume cannot exceed stock volume
+    // Validation: Part volume cannot exceed stock volume
     if (partVol > stockVol) {
         console.warn(`⚠️ Part volume (${partVol.toFixed(3)}) exceeds stock volume (${stockVol.toFixed(3)}). Showing warning.`);
         
@@ -361,7 +362,7 @@ export function updateRemovalRateFromPartVolume() {
         if (input) input.value = partVol.toFixed(3);
     }
     
-    // PHASE 3 VALIDATION: Part volume cannot be negative
+    // Validation: Part volume cannot be negative
     if (partVol < 0) {
         console.warn(`⚠️ Part volume cannot be negative. Resetting to 0.`);
         partVol = 0;
@@ -426,16 +427,12 @@ export async function calculateManualQuote() {
     const stockY = parseFloat(getVal('stock-y')) || 0;
     const stockZ = parseFloat(getVal('stock-z')) || 0;
     const material = document.getElementById('material-select')?.value;
-    // Phase 5.5: Get part volume from parametric configurator instead of input field
+    // Get part volume from parametric configurator instead of input field
     const partVol = parametric.getCurrentPartVolume() || 0;
     const quantity = parseInt(document.getElementById('quantity-input')?.value) || 1;
 
-    if (!material) return;
-    
-    // Phase 5.5: Don't validate if part volume is 0 (user hasn't selected a shape yet)
-    if (partVol === 0) {
-        console.log('⏳ Waiting for shape configuration...');
-        return; // Silently return, no error needed
+    if (!validateManualQuoteInputs({ material, partVol })) {
+        return;
     }
     
     // Client-side validation: Part volume cannot exceed stock volume
@@ -462,7 +459,7 @@ export async function calculateManualQuote() {
         stock_x: stockX, stock_y: stockY, stock_z: stockZ,
         material_name: material,
         part_volume: partVol,
-        // Phase 5: complexity removed (always 1.0 for pure physics)
+        // Complexity removed (always 1.0 for pure physics)
         setup_time: parseFloat(getVal('setup-time')) || 60,
         shop_rate: parseFloat(getVal('shop-rate')) || 75,
         quantity: quantity,
@@ -548,7 +545,7 @@ function getVal(id) { return document.getElementById(id)?.value || 0; }
 function setVal(id, v) { const el = document.getElementById(id); if(el) el.value = v; }
 function setText(id, t) { const el = document.getElementById(id); if(el) el.textContent = t; }
 
-// PHASE 3: Visual validation feedback
+// Visual validation feedback
 function showLinkedLeverWarning(message) {
     // Use centralized error display for consistent viewport positioning
     ui.showError(`⚠️ Linked Lever Warning: ${message}`);
@@ -556,7 +553,7 @@ function showLinkedLeverWarning(message) {
 
 /**
  * Show popup warning when part volume exceeds stock volume
- * Uses viewport-fixed error display for visibility (Phase 4 UX improvement)
+ * Uses viewport-fixed error display for visibility
  */
 function showPartVolumeWarning(partVol, stockVol) {
     const message = `⚠️ PART VOLUME EXCEEDS STOCK SIZE

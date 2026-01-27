@@ -2,7 +2,7 @@
 doc_id: phase_xi_work_charter
 doc_type: spec
 status: draft
-version: 1.0
+version: 1.1
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -109,6 +109,34 @@ Refusal is compliance.
 
 All Phase XI artifacts are written to be attacked by an adversarial reviewer.
 They must be legible, testable, and structured for adversarial scrutiny.
+
+---
+
+## 9. Execution Invariant — Failure Visibility Semantics (Binding)
+
+All Phase XI implementations that satisfy operability or refusal constraints
+MUST use **failure-event semantics** and a **stable disclosure surface**.
+
+Specifically:
+
+- Failures MUST be represented as emitted semantic events
+  (e.g. failure codes or typed failure records),
+  not as page-specific UI behavior.
+- Visibility MUST be verified semantically
+  (event emission + disclosure handling),
+  not by asserting DOM structure, layout, or string presence.
+- UI pages and layouts are considered **replaceable wiring**.
+  Constraint satisfaction MUST survive page relocation and redesign.
+- Tests MUST validate:
+  - that a failure event is emitted when the failure condition occurs
+  - that the disclosure surface receives and renders the event
+
+Page-bound assertions, string-presence tests,
+and layout-dependent visibility checks
+are insufficient to satisfy Phase XI operability constraints.
+This invariant is binding on all Phase XI implementation work and must be referenced in the Implementation Trace Map for all VI-OP and refusal-related constraints.
+Any implementation that violates this invariant
+is constitutionally non-compliant and MUST be rejected.
 
 ---
 

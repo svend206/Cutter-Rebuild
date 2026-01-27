@@ -47,7 +47,7 @@ function isFocused(elementId) {
 
 /**
  * Update the price card with calculated costs and runtime.
- * Phase 4 Ready: Can be conditionally hidden for "Blind Mode" (User role).
+ * Can be conditionally hidden for "Blind Mode" (User role).
  * 
  * @param {Object} data - Quote data from backend
  * @param {number} quantity - Number of parts to quote
@@ -200,7 +200,7 @@ function updateMaterialSelect(data) {
 
 /**
  * Update Market Radar (Market Intelligence visualization).
- * Phase 4 Ready: This section will be visible to both Bob and Tim.
+ * This section is visible to both Bob and Tim.
  * 
  * @param {Object} data - Quote data from backend
  * @param {number} finalTotal - Final price after markups (for marker positioning)
@@ -254,7 +254,7 @@ function updateMarketRadar(data, finalTotal) {
  * @param {Object} data - Quote data from backend
  */
 /**
- * Update Extracted Geometry section (Phase 5.6 - Unit Verification)
+ * Update Extracted Geometry section (Unit Verification)
  * Shows part volume and assumed units, allows user to correct if wrong
  */
 function updateExtractedGeometry(data) {
@@ -323,7 +323,7 @@ function checkDimensionsUnusual(bbox, units) {
 }
 
 /**
- * Initialize quick-fix buttons for unit conversion (Phase 5.6 - Enhanced UX)
+ * Initialize quick-fix buttons for unit conversion (Enhanced UX)
  * Called once when page loads
  */
 export function initQuickFixButtons() {
@@ -578,13 +578,13 @@ export function displayResult(data) {
     updatePartVolume(data);                                   // Part volume (mode-specific)
     updateMaterialSelect(data);                               // Material dropdown
     updateMarketRadar(data, finalTotal);                      // Market Intelligence
-    variance.updateGlassBox(data);                            // Phase 4: Glass Box variance tracking
+    variance.updateGlassBox(data);                            // Glass Box variance tracking
     showResultUIElements(data);                               // Result card + tags/travelers
     
     // File Mode specific: 3D Viewer setup + Unit Verification
     if (!state.getIsManualMode()) {
         setupFileMode3DViewer(data);
-        updateExtractedGeometry(data);                        // Phase 5.6: Unit Verification
+        updateExtractedGeometry(data);                        // Unit Verification
     } else {
         // Napkin Mode: Hide extracted geometry section
         const extractedGeometry = document.getElementById('extracted-geometry-section');
