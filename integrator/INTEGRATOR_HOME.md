@@ -2,7 +2,7 @@
 doc_id: integrator_home
 doc_type: spec
 status: active
-version: 18.0
+version: 18.3
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -34,6 +34,9 @@ Phase rule: Items in Current/Next/Active must be allowed work for the declared p
 - (none)
 
 ## Recently Completed
+- Hardened TRACE-VI-OP-03 test assertions for schema-safe refusal semantics.
+- Realigned TRACE-VI-OP-03 to API disclosure semantics and test coverage.
+- Implemented TRACE-VI-OP-03 refusal visibility disclosure + test.
 - Hardened TRACE-VI-OP-01 fallback visibility and semantic assertions.
 - Amended Phase XI work charter with failure visibility invariant.
 - Corrected TRACE-VI-OP-01 failure event emission and disclosure verification.
