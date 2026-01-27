@@ -2,7 +2,7 @@
 doc_id: directory
 doc_type: spec
 status: active
-version: 7.7
+version: 7.9
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -142,6 +142,8 @@ Authority lives in files, not in chat.
 - `planning/PHASE_XI_WORK_CHARTER.md`
 - `planning/PHASE_XI_CONSTRAINT_COVERAGE_MATRIX.md`
 - `planning/PHASE_XI_IMPLEMENTATION_TRACE_MAP.md`
+- `planning/PHASE_XI_CONSTRAINT_COVERAGE_MATRIX_AUDIT.md`
+- `planning/PHASE_XI_IMPLEMENTATION_TRACE_MAP_AUDIT.md`
 - `ux/UX_INDEX.md`
 - `ux/ui_surface_rules_and_pages.md`
 - `ux/SYSTEM_PAGE_PURPOSE_SPEC.md`
@@ -169,6 +171,7 @@ Authority lives in files, not in chat.
 - `context/MVP_LOCK_AT_TAG.md`
 - `context/POST_MVP_INTENT.md`
 - `context/UNLOCK_MVP.md.template`
+- `context/Cutter Project Overview.md`
 - `context/manifesto/CORE_MANIFESTO.md`
 - `context/manifesto/# Cannot Outsource Risk.md`
 - `context/manifesto/think_different.md`

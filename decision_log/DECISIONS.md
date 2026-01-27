@@ -2,7 +2,7 @@
 doc_id: decision_log
 doc_type: decision_log
 status: active
-version: 2.4
+version: 2.5
 date: 2026-01-26
 owner: Erik
 authoring_agent: cursor
@@ -27,6 +27,12 @@ Each entry must include:
 - Supersedes (optional, list of prior decisions)
 
 ## Entries
+- Date: 2026-01-26
+  Decision: Added Constitutional Amendment v8 to authorize constitutional amendments during Phase XI.
+  Scope: boot/PROJECT_PHASE_CONSTITUTION.md
+  Authority: Erik
+  Rationale: Allow constraint-strengthening amendments during Phase XI without adding authority.
+  Supersedes: none
 - Date: 2026-01-26
   Decision: Added Ops Canon O9 operator anonymity in exhaust and related failure conditions.
   Scope: constitution/ops_layer/OPS_CANON.md
